@@ -1,0 +1,167 @@
+[gd_scene load_steps=4 format=3 uid="uid://cfjxkoduefsup"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_qfeat"]
+[ext_resource type="Theme" uid="uid://i63124txlj1h" path="res://label_theme.tres" id="2_hmp6o"]
+[ext_resource type="Theme" uid="uid://ppd28w7sx5wa" path="res://button_theme.tres" id="3_sxpny"]
+
+[node name="main" type="Node2D"]
+script = ExtResource("1_qfeat")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="TitleContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="MenuButton" type="MenuButton" parent="VBoxContainer/TitleContainer"]
+layout_mode = 2
+theme = ExtResource("3_sxpny")
+text = "마라닉 타이머"
+flat = false
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TitleContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="StartButton" type="Button" parent="VBoxContainer/TitleContainer"]
+layout_mode = 2
+theme = ExtResource("3_sxpny")
+toggle_mode = true
+text = "시작하기"
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TotalSecContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/TotalSecContainer"]
+layout_mode = 2
+theme = ExtResource("2_hmp6o")
+text = "총시간"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TotalSecContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TotalSecDecButton" type="Button" parent="VBoxContainer/TotalSecContainer"]
+layout_mode = 2
+theme = ExtResource("3_sxpny")
+text = "<"
+
+[node name="TotalSecLabel" type="Label" parent="VBoxContainer/TotalSecContainer"]
+layout_mode = 2
+theme = ExtResource("2_hmp6o")
+text = "00:00"
+
+[node name="TotalSecIncButton" type="Button" parent="VBoxContainer/TotalSecContainer"]
+layout_mode = 2
+theme = ExtResource("3_sxpny")
+text = ">"
+
+[node name="TotalSecRemainLabel" type="Label" parent="VBoxContainer/TotalSecContainer"]
+layout_mode = 2
+theme = ExtResource("2_hmp6o")
+text = "00:00"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="WalkSecContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/WalkSecContainer"]
+layout_mode = 2
+theme = ExtResource("2_hmp6o")
+text = "걷기"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/WalkSecContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="WalkSecDecButton" type="Button" parent="VBoxContainer/WalkSecContainer"]
+layout_mode = 2
+theme = ExtResource("3_sxpny")
+text = "<"
+
+[node name="WalkSecLabel" type="Label" parent="VBoxContainer/WalkSecContainer"]
+layout_mode = 2
+theme = ExtResource("2_hmp6o")
+text = "00:00"
+
+[node name="WalkSecIncButton" type="Button" parent="VBoxContainer/WalkSecContainer"]
+layout_mode = 2
+theme = ExtResource("3_sxpny")
+text = ">"
+
+[node name="WalkSecRemainLabel" type="Label" parent="VBoxContainer/WalkSecContainer"]
+layout_mode = 2
+theme = ExtResource("2_hmp6o")
+text = "00:00"
+
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RunSecContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/RunSecContainer"]
+layout_mode = 2
+theme = ExtResource("2_hmp6o")
+text = "뛰기"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/RunSecContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RunSecDecButton" type="Button" parent="VBoxContainer/RunSecContainer"]
+layout_mode = 2
+theme = ExtResource("3_sxpny")
+text = "<"
+
+[node name="RunSecLabel" type="Label" parent="VBoxContainer/RunSecContainer"]
+layout_mode = 2
+theme = ExtResource("2_hmp6o")
+text = "00:00"
+
+[node name="RunSecIncButton" type="Button" parent="VBoxContainer/RunSecContainer"]
+layout_mode = 2
+theme = ExtResource("3_sxpny")
+text = ">"
+
+[node name="RunSecRemainLabel" type="Label" parent="VBoxContainer/RunSecContainer"]
+layout_mode = 2
+theme = ExtResource("2_hmp6o")
+text = "00:00"
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="toggled" from="VBoxContainer/TitleContainer/MenuButton" to="." method="_on_menu_button_toggled"]
+[connection signal="toggled" from="VBoxContainer/TitleContainer/StartButton" to="." method="_on_start_button_toggled"]
+[connection signal="pressed" from="VBoxContainer/TotalSecContainer/TotalSecDecButton" to="." method="_on_total_sec_dec_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/TotalSecContainer/TotalSecIncButton" to="." method="_on_total_sec_inc_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/WalkSecContainer/WalkSecDecButton" to="." method="_on_walk_sec_dec_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/WalkSecContainer/WalkSecIncButton" to="." method="_on_walk_sec_inc_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/RunSecContainer/RunSecDecButton" to="." method="_on_run_sec_dec_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/RunSecContainer/RunSecIncButton" to="." method="_on_run_sec_inc_button_pressed"]
