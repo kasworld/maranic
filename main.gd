@@ -14,7 +14,9 @@ func Text2Speech(s):
 	DisplayServer.tts_speak(s, voice_id)
 
 
-var Works = []
+var Works = [
+	$VBoxContainer/MainWorkContainer
+]
 var subWorkIndex = 1
 
 func updateTimeLabels():
@@ -49,10 +51,14 @@ func _ready() -> void:
 
 func makeWorks(n ):
 	for i in range(len(Works)):
+		if i == 0:
+			continue
 		$VBoxContainer/ScrollContainer/WorksContainer.remove_child(Works[i])
 		Works[i].queue_free()
-	Works = []
-	for i in range(n):
+	Works = [
+		$VBoxContainer/MainWorkContainer
+	]
+	for i in range(n-1):
 		var work = workScene.instantiate()
 		Works.append(work)
 		$VBoxContainer/ScrollContainer/WorksContainer.add_child(work)

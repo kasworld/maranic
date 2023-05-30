@@ -39,6 +39,10 @@ theme = ExtResource("3_sxpny")
 toggle_mode = true
 text = "시작하기"
 
+[node name="MainWorkContainer" parent="VBoxContainer" instance=ExtResource("2_ongj6")]
+layout_mode = 2
+size_flags_vertical = 1
+
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
