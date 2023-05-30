@@ -21,29 +21,17 @@ var programs = [
 	[ 1800, 60*0,   60*30  ],
 ]
 
-var totalSecond = 0
-var totalSecondRemain = 0
-var walkSecond = 0
-var walkSecondRemain = 0
-var runSecond = 0
-var runSecondRemain = 0
 
 func updateTimeLabels():
-	$VBoxContainer/TotalSecContainer/TotalSecLabel.text = second2text(totalSecond)
-	$VBoxContainer/WalkSecContainer/WalkSecLabel.text = second2text(walkSecond)
-	$VBoxContainer/RunSecContainer/RunSecLabel.text = second2text(runSecond)
-	$VBoxContainer/TotalSecContainer/TotalSecRemainLabel.text = second2text(totalSecondRemain)
-	$VBoxContainer/WalkSecContainer/WalkSecRemainLabel.text = second2text(walkSecondRemain)
-	$VBoxContainer/RunSecContainer/RunSecRemainLabel.text = second2text(runSecondRemain)
+	$VBoxContainer/TotalWork.updateTimeLabels()
+	$VBoxContainer/WalkWork.updateTimeLabels()
+	$VBoxContainer/RunWork.updateTimeLabels()
 
 func buttonsDisable(disable :bool):
 	$VBoxContainer/TitleContainer/MenuButton.disabled =disable
-	$VBoxContainer/TotalSecContainer/TotalSecDecButton.disabled =disable
-	$VBoxContainer/TotalSecContainer/TotalSecIncButton.disabled =disable
-	$VBoxContainer/WalkSecContainer/WalkSecDecButton.disabled =disable
-	$VBoxContainer/WalkSecContainer/WalkSecIncButton.disabled =disable
-	$VBoxContainer/RunSecContainer/RunSecDecButton.disabled =disable
-	$VBoxContainer/RunSecContainer/RunSecIncButton.disabled =disable
+	$VBoxContainer/TotalWork.buttonsDisable(disable)
+	$VBoxContainer/WalkWork.buttonsDisable(disable)
+	$VBoxContainer/RunWork.buttonsDisable(disable)
 	
 
 func second2text(sec :int):
@@ -57,7 +45,9 @@ func program2text(i):
 func _ready() -> void:
 	for i in range(len( programs)):
 		$VBoxContainer/TitleContainer/MenuButton.get_popup().add_item(program2text(i),i)
-		
+	$VBoxContainer/TotalWork/Label.text = "총시간"
+	$VBoxContainer/WalkWork/Label.text = "걷기"
+	$VBoxContainer/RunWork/Label.text = "뛰기"
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -66,8 +56,8 @@ func _process(delta: float) -> void:
 
 
 func _on_timer_timeout() -> void:
-	totalSecondRemain -= 1 
-	if totalSecondRemain <= 0 :
+	$VBoxContainer/TotalWork.remainSec -= 1 
+	if $VBoxContainer/TotalWork.remainSec <= 0 :
 		$VBoxContainer/TitleContainer/StartButton.button_pressed = false
 	updateTimeLabels()
 
@@ -76,63 +66,23 @@ func _on_menu_button_toggled(button_pressed: bool) -> void:
 	var sel = $VBoxContainer/TitleContainer/MenuButton.get_popup().get_focused_item()
 	if sel ==-1 :
 		return
-	totalSecond =  programs[sel][0]
-	walkSecond =  programs[sel][1]
-	runSecond =  programs[sel][2]
+	$VBoxContainer/TotalWork.totalSec =  programs[sel][0]
+	$VBoxContainer/WalkWork.totalSec =  programs[sel][1]
+	$VBoxContainer/RunWork.totalSec =  programs[sel][2]
 	resetTime()
 	updateTimeLabels()
 
 func resetTime():
-	totalSecondRemain = totalSecond
-	walkSecondRemain = walkSecond
-	runSecondRemain = runSecond
+	$VBoxContainer/TotalWork.resetTime()
+	$VBoxContainer/WalkWork.resetTime()
+	$VBoxContainer/RunWork.resetTime()
 
 
-func _on_total_sec_dec_button_pressed() -> void:
-	totalSecond -= 60*5
-	if totalSecond < 0 :
-		totalSecond = 0
-	resetTime()
-	updateTimeLabels()
-
-
-func _on_total_sec_inc_button_pressed() -> void:
-	totalSecond += 10 # 60*5
-	resetTime()
-	updateTimeLabels()
-
-
-func _on_walk_sec_dec_button_pressed() -> void:
-	walkSecond -= 30
-	if walkSecond < 0 :
-		walkSecond = 0
-	resetTime()
-	updateTimeLabels()
-
-
-func _on_walk_sec_inc_button_pressed() -> void:
-	walkSecond += 30
-	resetTime()
-	updateTimeLabels()
-
-
-func _on_run_sec_dec_button_pressed() -> void:
-	runSecond -= 30
-	if runSecond < 0 :
-		runSecond = 0
-	resetTime()
-	updateTimeLabels()
-
-
-func _on_run_sec_inc_button_pressed() -> void:
-	runSecond += 30
-	resetTime()
-	updateTimeLabels()
 
 
 func _on_start_button_toggled(button_pressed: bool) -> void:
 	if button_pressed :
-		if totalSecondRemain<=0:
+		if $VBoxContainer/TotalWork.remainSec<=0:
 			resetTime()
 		$VBoxContainer/TitleContainer/StartButton.text = "멈추기"
 		$Timer.start()
