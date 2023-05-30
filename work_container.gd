@@ -22,6 +22,9 @@ func setLabelTotalSec(str,sec):
 	$Label.text = str
 	totalSec = sec
 
+func getLabelText():
+	return $Label.text
+
 func decRemainSec() -> bool:
 	remainSec -= 1
 	if remainSec <= 0:

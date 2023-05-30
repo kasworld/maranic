@@ -25,6 +25,16 @@ var programs = [
 	[ ["달리기",60*30] ],
 ]
 
+# tts
+
+var voices = DisplayServer.tts_get_voices_for_language("ko")
+var voice_id = voices[0]
+
+func Text2Speech(str):
+	DisplayServer.tts_stop()
+	DisplayServer.tts_speak(str, voice_id)
+
+
 var Works = []
 var subWorkIndex = 1
 
@@ -79,9 +89,12 @@ func _on_timer_timeout() -> void:
 	if len(Works) > subWorkIndex:
 		if Works[subWorkIndex].decRemainSec() != true: # move to next sub work
 			Works[subWorkIndex].resetTime()
+			var oldWorkStr = Works[subWorkIndex].getLabelText()
 			subWorkIndex += 1
 			if len(Works) <= subWorkIndex:
 				subWorkIndex = 1
+			var newWorkStr = Works[subWorkIndex].getLabelText()
+			Text2Speech("%s를 끝내고 %s를 시작합니다." %[oldWorkStr,newWorkStr])
 	updateTimeLabels()
 
 
@@ -105,9 +118,13 @@ func _on_start_button_toggled(button_pressed: bool) -> void:
 		if Works[0].remainSec<=0:
 			resetTime()
 		$VBoxContainer/TitleContainer/StartButton.text = "멈추기"
+		Text2Speech("시작합니다.")
+#		Text2Speech("start main work")
 		$Timer.start()
 	else:
 		$VBoxContainer/TitleContainer/StartButton.text = "시작하기"
+		Text2Speech("멈춥니다.")
+#		Text2Speech("end main work")
 		$Timer.stop()
 	buttonsDisable(button_pressed)
 
