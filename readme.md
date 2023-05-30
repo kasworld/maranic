@@ -1,4 +1,4 @@
-# 마라닉TV 30일 훈련용 타이머 
+# godot4로 만든 마라닉TV 30일 훈련용 타이머 
 
 https://www.youtube.com/watch?v=rOoYrqdCVc0 를 위한 타이머 
 
