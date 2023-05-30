@@ -18,8 +18,8 @@ func buttonsDisable(disable :bool):
 func resetTime():
 	remainSec = totalSec
 
-func setLabelTotalSec(str,sec):
-	$Label.text = str
+func setLabelTotalSec(s,sec):
+	$Label.text = s
 	totalSec = sec
 
 func getLabelText():

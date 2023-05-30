@@ -30,9 +30,9 @@ var programs = [
 var voices = DisplayServer.tts_get_voices_for_language("ko")
 var voice_id = voices[0]
 
-func Text2Speech(str):
+func Text2Speech(s):
 	DisplayServer.tts_stop()
-	DisplayServer.tts_speak(str, voice_id)
+	DisplayServer.tts_speak(s, voice_id)
 
 
 var Works = []
@@ -99,6 +99,8 @@ func _on_timer_timeout() -> void:
 
 
 func _on_menu_button_toggled(button_pressed: bool) -> void:
+	if button_pressed: # list opened
+		return
 	var sel = $VBoxContainer/TitleContainer/MenuButton.get_popup().get_focused_item()
 	if sel ==-1 :
 		return
