@@ -21,7 +21,7 @@ var programs = [
 	[ ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*5  ] ],
 	[ ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*20 ] ],
 	[ ["총시간",60*30], ["걷기", 60*2.5], ["달리기", 60*25 ], ["걷기", 60*2.5] ],
-	[ ["달리기",60*30]                                     ],
+	[ ["달리기",60*30] ],
 ]
 
 var Works = []
@@ -55,6 +55,7 @@ func program2text(i):
 func _ready() -> void:
 	for i in range(len( programs)):
 		$VBoxContainer/TitleContainer/MenuButton.get_popup().add_item(program2text(i),i)
+	$VBoxContainer/TitleContainer/MenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 
 func makeWorks(n ):
 	for i in range(len(Works)):
