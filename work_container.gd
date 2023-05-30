@@ -2,7 +2,7 @@ extends HBoxContainer
 
 var totalSec = 0
 var remainSec = 0
-var incSec = 30
+var incSec = 10
 
 func second2text(sec :int):
 	return "%02d:%02d" %[ sec/60,sec % 60]
@@ -17,7 +17,16 @@ func buttonsDisable(disable :bool):
 
 func resetTime():
 	remainSec = totalSec
-	
+
+func setLabelTotalSec(str,sec):
+	$Label.text = str
+	totalSec = sec
+
+func decRemainSec() -> bool:
+	if remainSec <= 0:
+		return false # not success 
+	remainSec -= 1
+	return true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

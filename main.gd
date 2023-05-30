@@ -1,37 +1,41 @@
 extends Node2D
 
+@export var workScene: PackedScene
 
 var programs = [
 	#총시간초,걷기초,달리기초 
-	[ 1800, 60*3,   60*1   ],
-	[ 1800, 60*3,   60*1.5 ],
-	[ 1800, 60*3,   60*2   ],
-	[ 1800, 60*2,   60*2   ],
-	[ 1800, 60*2,   60*3   ],
-	[ 1800, 60*1,   60*3   ],
-	[ 1800, 60*1,   60*4   ],
-	[ 1800, 60*2,   60*5   ],
-	[ 1800, 60*3,   60*7   ],
-	[ 1800, 60*4,   60*10  ],
-	[ 1800, 60*2,   60*13  ],
-	[ 1800, 60*2,   60*15  ],
-	[ 1800, 60*3,   60*5   ],
-	[ 1800, 60*2,   60*20  ],
-	[ 1800, 60*2.5, 60*25  ],
-	[ 1800, 60*0,   60*30  ],
+	[ ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*1  ] ],
+	[ ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*1.5] ],
+	[ ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*2  ] ],
+	[ ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*2  ] ],
+	[ ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*3  ] ],
+	[ ["총시간",60*30], ["걷기", 60*1  ], ["달리기", 60*3  ] ],
+	[ ["총시간",60*30], ["걷기", 60*1  ], ["달리기", 60*4  ] ],
+	[ ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*5  ] ],
+	[ ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*7  ] ],
+	[ ["총시간",60*30], ["걷기", 60*4  ], ["달리기", 60*10 ] ],
+	[ ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*13 ] ],
+	[ ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*15 ] ],
+	[ ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*5  ] ],
+	[ ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*20 ] ],
+	[ ["총시간",60*30], ["걷기", 60*2.5], ["달리기", 60*25 ] ],
+	[ ["총시간",60*30], ["걷기", 60*0  ], ["달리기", 60*30 ] ],
 ]
 
+var Works = []
 
 func updateTimeLabels():
-	$VBoxContainer/TotalWork.updateTimeLabels()
-	$VBoxContainer/WalkWork.updateTimeLabels()
-	$VBoxContainer/RunWork.updateTimeLabels()
+	for o in Works:
+		o.updateTimeLabels()
+
+func resetTime():
+	for o in Works:
+		o.resetTime()
 
 func buttonsDisable(disable :bool):
 	$VBoxContainer/TitleContainer/MenuButton.disabled =disable
-	$VBoxContainer/TotalWork.buttonsDisable(disable)
-	$VBoxContainer/WalkWork.buttonsDisable(disable)
-	$VBoxContainer/RunWork.buttonsDisable(disable)
+	for o in Works:
+		o.buttonsDisable(disable)
 	
 
 func second2text(sec :int):
@@ -39,16 +43,20 @@ func second2text(sec :int):
 
 func program2text(i):
 	var data = programs[i]
-	return "%s,%s" % [ second2text(data[1]), second2text(data[2]) ]
+	var rtn = ""
+	for j in range(len(data)):
+		rtn += "%s(%s)" % [  data[j][0],  second2text(data[j][1]) ]
+	return rtn
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	for i in range(len( programs)):
 		$VBoxContainer/TitleContainer/MenuButton.get_popup().add_item(program2text(i),i)
-	$VBoxContainer/TotalWork/Label.text = "총시간"
-	$VBoxContainer/WalkWork/Label.text = "걷기"
-	$VBoxContainer/RunWork/Label.text = "뛰기"
-
+	Works = [
+		$VBoxContainer/TotalWork,
+		$VBoxContainer/WalkWork,
+		$VBoxContainer/RunWork,
+	]
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -56,8 +64,7 @@ func _process(delta: float) -> void:
 
 
 func _on_timer_timeout() -> void:
-	$VBoxContainer/TotalWork.remainSec -= 1 
-	if $VBoxContainer/TotalWork.remainSec <= 0 :
+	if Works[0].decRemainSec() != true: # fail to dec
 		$VBoxContainer/TitleContainer/StartButton.button_pressed = false
 	updateTimeLabels()
 
@@ -66,18 +73,12 @@ func _on_menu_button_toggled(button_pressed: bool) -> void:
 	var sel = $VBoxContainer/TitleContainer/MenuButton.get_popup().get_focused_item()
 	if sel ==-1 :
 		return
-	$VBoxContainer/TotalWork.totalSec =  programs[sel][0]
-	$VBoxContainer/WalkWork.totalSec =  programs[sel][1]
-	$VBoxContainer/RunWork.totalSec =  programs[sel][2]
+	
+	var selData =programs[sel]
+	for i in range(len(selData)):
+		Works[i].setLabelTotalSec( selData[i][0],selData[i][1])
 	resetTime()
 	updateTimeLabels()
-
-func resetTime():
-	$VBoxContainer/TotalWork.resetTime()
-	$VBoxContainer/WalkWork.resetTime()
-	$VBoxContainer/RunWork.resetTime()
-
-
 
 
 func _on_start_button_toggled(button_pressed: bool) -> void:
