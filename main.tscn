@@ -23,7 +23,6 @@ alignment = 1
 
 [node name="TitleContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
 alignment = 1
 
 [node name="MenuButton" type="MenuButton" parent="VBoxContainer/TitleContainer"]
@@ -41,6 +40,16 @@ layout_mode = 2
 theme = ExtResource("3_sxpny")
 toggle_mode = true
 text = "시작하기"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+
+[node name="WorksContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="toggled" from="VBoxContainer/TitleContainer/MenuButton" to="." method="_on_menu_button_toggled"]

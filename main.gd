@@ -17,10 +17,10 @@ var programs = [
 	[ ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*7  ] ],
 	[ ["총시간",60*30], ["걷기", 60*4  ], ["달리기", 60*10 ] ],
 	[ ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*13 ] ],
-	[ ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*15 ] ],
+	[ ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*13 ], ["걷기", 60*2  ], ["달리기", 60*15 ] ],
 	[ ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*5  ] ],
 	[ ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*20 ] ],
-	[ ["총시간",60*30], ["걷기", 60*2.5], ["달리기", 60*25 ] ],
+	[ ["총시간",60*30], ["걷기", 60*2.5], ["달리기", 60*25 ], ["걷기", 60*2.5] ],
 	[ ["달리기",60*30]                                     ],
 ]
 
@@ -58,13 +58,13 @@ func _ready() -> void:
 
 func makeWorks(n ):
 	for i in range(len(Works)):
-		$VBoxContainer.remove_child(Works[i])
+		$VBoxContainer/ScrollContainer/WorksContainer.remove_child(Works[i])
 		Works[i].queue_free()
 	Works = []
 	for i in range(n):
 		var work = workScene.instantiate()
 		Works.append(work)
-		$VBoxContainer.add_child(work)
+		$VBoxContainer/ScrollContainer/WorksContainer.add_child(work)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
