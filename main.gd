@@ -6,6 +6,7 @@ var workScene = preload("res://work_container.tscn")
 
 var programs = [
 	#총시간초,걷기초,달리기초 
+	[ ["총시간",60*30], ["걷기", 10*1  ], ["달리기", 10*1  ] ],
 	[ ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*1  ] ],
 	[ ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*1.5] ],
 	[ ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*2  ] ],
@@ -48,7 +49,7 @@ func program2text(i):
 	var data = programs[i]
 	var rtn = ""
 	for j in range(len(data)):
-		rtn += "%s(%s)" % [  data[j][0],  second2text(data[j][1]) ]
+		rtn += "%s(%s)" % [ data[j][0], second2text(data[j][1]) ]
 	return rtn
 
 # Called when the node enters the scene tree for the first time.
@@ -75,6 +76,12 @@ func _process(delta: float) -> void:
 func _on_timer_timeout() -> void:
 	if Works[0].decRemainSec() != true: # fail to dec
 		$VBoxContainer/TitleContainer/StartButton.button_pressed = false
+	if len(Works) > subWorkIndex:
+		if Works[subWorkIndex].decRemainSec() != true: # move to next sub work
+			Works[subWorkIndex].resetTime()
+			subWorkIndex += 1
+			if len(Works) <= subWorkIndex:
+				subWorkIndex = 1
 	updateTimeLabels()
 
 

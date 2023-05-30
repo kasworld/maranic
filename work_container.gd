@@ -23,9 +23,9 @@ func setLabelTotalSec(str,sec):
 	totalSec = sec
 
 func decRemainSec() -> bool:
+	remainSec -= 1
 	if remainSec <= 0:
 		return false # not success 
-	remainSec -= 1
 	return true
 
 # Called when the node enters the scene tree for the first time.
