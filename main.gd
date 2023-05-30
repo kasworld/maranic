@@ -1,6 +1,8 @@
 extends Node2D
 
-@export var workScene: PackedScene
+#@export var workScene: PackedScene
+
+var workScene = preload("res://work_container.tscn")
 
 var programs = [
 	#총시간초,걷기초,달리기초 
@@ -19,10 +21,11 @@ var programs = [
 	[ ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*5  ] ],
 	[ ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*20 ] ],
 	[ ["총시간",60*30], ["걷기", 60*2.5], ["달리기", 60*25 ] ],
-	[ ["총시간",60*30], ["걷기", 60*0  ], ["달리기", 60*30 ] ],
+	[ ["달리기",60*30]                                     ],
 ]
 
 var Works = []
+var subWorkIndex = 1
 
 func updateTimeLabels():
 	for o in Works:
@@ -52,11 +55,16 @@ func program2text(i):
 func _ready() -> void:
 	for i in range(len( programs)):
 		$VBoxContainer/TitleContainer/MenuButton.get_popup().add_item(program2text(i),i)
-	Works = [
-		$VBoxContainer/TotalWork,
-		$VBoxContainer/WalkWork,
-		$VBoxContainer/RunWork,
-	]
+
+func makeWorks(n ):
+	for i in range(len(Works)):
+		$VBoxContainer.remove_child(Works[i])
+		Works[i].queue_free()
+	Works = []
+	for i in range(n):
+		var work = workScene.instantiate()
+		Works.append(work)
+		$VBoxContainer.add_child(work)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -75,6 +83,7 @@ func _on_menu_button_toggled(button_pressed: bool) -> void:
 		return
 	
 	var selData =programs[sel]
+	makeWorks(len(selData))
 	for i in range(len(selData)):
 		Works[i].setLabelTotalSec( selData[i][0],selData[i][1])
 	resetTime()

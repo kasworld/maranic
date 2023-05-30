@@ -6,7 +6,6 @@
 
 [node name="main" type="Node2D"]
 script = ExtResource("1_qfeat")
-workScene = ExtResource("2_ongj6")
 
 [node name="WorkContainer" parent="." instance=ExtResource("2_ongj6")]
 visible = false
@@ -42,30 +41,6 @@ layout_mode = 2
 theme = ExtResource("3_sxpny")
 toggle_mode = true
 text = "시작하기"
-
-[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="TotalWork" parent="VBoxContainer" instance=ExtResource("2_ongj6")]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="WalkWork" parent="VBoxContainer" instance=ExtResource("2_ongj6")]
-layout_mode = 2
-
-[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="RunWork" parent="VBoxContainer" instance=ExtResource("2_ongj6")]
-layout_mode = 2
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="toggled" from="VBoxContainer/TitleContainer/MenuButton" to="." method="_on_menu_button_toggled"]
