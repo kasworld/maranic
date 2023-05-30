@@ -93,6 +93,7 @@ func _on_menu_button_toggled(button_pressed: bool) -> void:
 	var selData = workData[sel].duplicate()
 	var title=selData.pop_front()
 	$VBoxContainer/TitleContainer/MenuButton.text = title
+	Text2Speech("%s로 설정합니다." % title)
 	makeWorks(len(selData))
 	for i in range(len(selData)):
 		Works[i].setLabelTotalSec( selData[i][0],selData[i][1])
