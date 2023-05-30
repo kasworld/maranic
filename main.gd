@@ -92,8 +92,10 @@ func _on_menu_button_toggled(button_pressed: bool) -> void:
 
 
 func _on_start_button_toggled(button_pressed: bool) -> void:
+	if len(Works) == 0 :
+		return
 	if button_pressed :
-		if $VBoxContainer/TotalWork.remainSec<=0:
+		if Works[0].remainSec<=0:
 			resetTime()
 		$VBoxContainer/TitleContainer/StartButton.text = "멈추기"
 		$Timer.start()
