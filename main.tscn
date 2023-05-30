@@ -28,6 +28,7 @@ alignment = 1
 [node name="MenuButton" type="MenuButton" parent="VBoxContainer/TitleContainer"]
 layout_mode = 2
 theme = ExtResource("3_sxpny")
+action_mode = 1
 text = "마라닉 타이머"
 flat = false
 
