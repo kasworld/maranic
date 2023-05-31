@@ -2,6 +2,9 @@
 
 https://www.youtube.com/watch?v=rOoYrqdCVc0 를 위한 타이머 
 
+실행 동영상 https://youtu.be/S_8EV3-4nzY
+
+
 최초 시작 화면에서 [마라닉 타이머]버튼을 누르면 
 ![최초시작화면](screen3.png)
 
