@@ -60,6 +60,7 @@ func makeWorks(n ):
 	]
 	for i in range(n-1):
 		var work = workScene.instantiate()
+		work.focus_mode = Control.FOCUS_ALL 
 		Works.append(work)
 		$VBoxContainer/ScrollContainer/WorksContainer.add_child(work)
 
@@ -80,6 +81,7 @@ func _on_timer_timeout() -> void:
 				subWorkIndex = 1
 			var newWorkStr = Works[subWorkIndex].getLabelText()
 			Text2Speech("%s를 끝내고 %s를 시작합니다." %[oldWorkStr,newWorkStr])
+			Works[subWorkIndex].grab_focus()
 	updateTimeLabels()
 
 
