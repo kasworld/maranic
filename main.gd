@@ -71,7 +71,7 @@ func _process(delta: float) -> void:
 func _on_timer_timeout() -> void:
 	if Works[0].decRemainSec() != true: # fail to dec
 		$VBoxContainer/TitleContainer/StartButton.button_pressed = false
-	if len(Works) > subWorkIndex:
+	elif len(Works) > subWorkIndex:
 		if Works[subWorkIndex].decRemainSec() != true: # move to next sub work
 			Works[subWorkIndex].resetTime()
 			var oldWorkStr = Works[subWorkIndex].getLabelText()
