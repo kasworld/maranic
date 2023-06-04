@@ -2,6 +2,8 @@ class_name WorkData
 
 extends Object
 
+var file_name = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/workdata.json"
+
 var workData = [
 	# 이름,총시간초,걷기초,달리기초 
 	[ "테스트", ["총시간",60*1 ], ["걷기", 10*1  ], ["달리기", 10*1  ], ["걷기", 10*1  ], ["달리기", 10*1 ] ],
@@ -21,3 +23,27 @@ var workData = [
 	[ "27일차", ["총시간",60*30], ["걷기", 60*2.5], ["달리기", 60*25 ], ["걷기", 60*2.5] ],
 	[ "29일차", ["달리기",60*30] ],
 ]
+
+func Save():
+	var fileobj = FileAccess.open(file_name, FileAccess.WRITE)
+	var json_string = JSON.stringify(workData)
+	fileobj.store_line(json_string)
+	
+func Load():
+	if not FileAccess.file_exists(file_name):
+		print("file not exist", file_name)
+		return # Error! We don't have a save to load.
+
+	var fileobj = FileAccess.open(file_name, FileAccess.READ)
+	var json_string = fileobj.get_as_text()
+	var json = JSON.new()
+	var error = json.parse(json_string)
+	if error == OK:
+		var data_received = json.data
+		if typeof(data_received) == TYPE_ARRAY:
+			print(data_received) # Prints array
+			workData = data_received
+		else:
+			print("Unexpected data")
+	else:
+		print("JSON Parse Error: ", json.get_error_message(), " in ", json_string, " at line ", json.get_error_line())

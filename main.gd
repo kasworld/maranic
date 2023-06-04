@@ -4,7 +4,7 @@ extends Node2D
 
 var workScene = preload("res://work_container.tscn")
 
-var workData = WorkData.new().workData
+var workData 
 
 var voices = DisplayServer.tts_get_voices_for_language("ko")
 var voice_id = voices[0]
@@ -14,9 +14,7 @@ func Text2Speech(s):
 	DisplayServer.tts_speak(s, voice_id)
 
 
-var Works = [
-	$VBoxContainer/MainWorkContainer
-]
+var Works = []
 var subWorkIndex = 1
 
 func updateTimeLabels():
@@ -45,6 +43,12 @@ func program2text(i):
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	var wd = WorkData.new()
+#	wd.Save() # save test
+#	wd.Load() # load_test
+	workData = wd.workData
+
+	Works = [$VBoxContainer/MainWorkContainer]
 	for i in range(len( workData)):
 		$VBoxContainer/TitleContainer/MenuButton.get_popup().add_item(program2text(i),i)
 	$VBoxContainer/TitleContainer/MenuButton.get_popup().theme = preload("res://menulist_theme.tres")
