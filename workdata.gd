@@ -24,16 +24,16 @@ var workData = [
 	[ "29일차", ["달리기",60*30] ],
 ]
 
-func Save():
+func FileExist():
+	return FileAccess.file_exists(file_name)
+
+func Save()-> String:
 	var fileobj = FileAccess.open(file_name, FileAccess.WRITE)
 	var json_string = JSON.stringify(workData)
 	fileobj.store_line(json_string)
+	return "%s save" % [file_name]
 	
-func Load():
-	if not FileAccess.file_exists(file_name):
-		print("file not exist", file_name)
-		return # Error! We don't have a save to load.
-
+func Load()->String:
 	var fileobj = FileAccess.open(file_name, FileAccess.READ)
 	var json_string = fileobj.get_as_text()
 	var json = JSON.new()
@@ -41,9 +41,9 @@ func Load():
 	if error == OK:
 		var data_received = json.data
 		if typeof(data_received) == TYPE_ARRAY:
-			print(data_received) # Prints array
 			workData = data_received
+			return "%s loaded" % [file_name]
 		else:
-			print("Unexpected data")
+			return "Unexpected data %s" % [ error ]
 	else:
-		print("JSON Parse Error: ", json.get_error_message(), " in ", json_string, " at line ", json.get_error_line())
+		return "JSON Parse Error: %s in %s at line %s" % [ json.get_error_message(),  json_string,  json.get_error_line()]

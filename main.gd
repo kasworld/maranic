@@ -44,8 +44,15 @@ func program2text(i):
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var wd = WorkData.new()
-#	wd.Save() # save test
-#	wd.Load() # load_test
+	var msg = ""
+	if !wd.FileExist():
+		msg = wd.Save()
+	else:
+		msg = wd.Load() 
+	$MessageLabel.text = msg
+	$MessageLabel.visible = true
+	$MessageTimer.start(3.0)
+	
 	workData = wd.workData
 
 	Works = [$VBoxContainer/MainWorkContainer]
@@ -121,3 +128,7 @@ func _on_start_button_toggled(button_pressed: bool) -> void:
 		Text2Speech("%s를 멈춥니다." % [ $VBoxContainer/TitleContainer/MenuButton.text ])
 		$Timer.stop()
 	buttonsDisable(button_pressed)
+
+
+func _on_message_timer_timeout() -> void:
+	$MessageLabel.visible = false

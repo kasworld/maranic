@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cfjxkoduefsup"]
+[gd_scene load_steps=5 format=3 uid="uid://cfjxkoduefsup"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_qfeat"]
 [ext_resource type="PackedScene" uid="uid://dvgdal4hlx1ws" path="res://work_container.tscn" id="2_ongj6"]
 [ext_resource type="Theme" uid="uid://ppd28w7sx5wa" path="res://button_theme.tres" id="3_sxpny"]
+[ext_resource type="Theme" uid="uid://ddksgr4axityd" path="res://menulist_theme.tres" id="4_se8d5"]
 
 [node name="main" type="Node2D"]
 script = ExtResource("1_qfeat")
@@ -53,6 +54,24 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="MessageLabel" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 492.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_se8d5")
+autowrap_mode = 3
+clip_text = true
+
+[node name="MessageTimer" type="Timer" parent="."]
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="toggled" from="VBoxContainer/TitleContainer/MenuButton" to="." method="_on_menu_button_toggled"]
 [connection signal="toggled" from="VBoxContainer/TitleContainer/StartButton" to="." method="_on_start_button_toggled"]
+[connection signal="timeout" from="MessageTimer" to="." method="_on_message_timer_timeout"]
