@@ -5,7 +5,7 @@ extends Object
 var file_name = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/workdata.json"
 
 var workData = [
-	# 이름,총시간초,걷기초,달리기초 
+	# 이름,총시간초,걷기초,달리기초
 	[ "테스트", ["총시간",60*1 ], ["걷기", 10*1  ], ["달리기", 10*1  ], ["걷기", 10*1  ], ["달리기", 10*1 ] ],
 	[ "1일차",  ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*1  ] ],
 	[ "3일차",  ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*1.5] ],
@@ -32,7 +32,7 @@ func Save()-> String:
 	var json_string = JSON.stringify(workData)
 	fileobj.store_line(json_string)
 	return "%s save" % [file_name]
-	
+
 func Load()->String:
 	var fileobj = FileAccess.open(file_name, FileAccess.READ)
 	var json_string = fileobj.get_as_text()

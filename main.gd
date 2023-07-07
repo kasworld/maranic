@@ -4,7 +4,7 @@ extends Node2D
 
 var workScene = preload("res://work_container.tscn")
 
-var workData 
+var workData
 
 var voices = DisplayServer.tts_get_voices_for_language("ko")
 var voice_id = voices[0]
@@ -29,7 +29,7 @@ func buttonsDisable(disable :bool):
 	$VBoxContainer/TitleContainer/MenuButton.disabled =disable
 	for o in Works:
 		o.buttonsDisable(disable)
-	
+
 
 func second2text(sec :int):
 	return "%02d:%02d" %[ sec/60,sec % 60]
@@ -48,11 +48,11 @@ func _ready() -> void:
 	if !wd.FileExist():
 		msg = wd.Save()
 	else:
-		msg = wd.Load() 
+		msg = wd.Load()
 	$MessageLabel.text = msg
 	$MessageLabel.visible = true
 	$MessageTimer.start(3.0)
-	
+
 	workData = wd.workData
 
 	Works = [$VBoxContainer/MainWorkContainer]
@@ -71,7 +71,7 @@ func makeWorks(n ):
 	]
 	for i in range(n-1):
 		var work = workScene.instantiate()
-		work.focus_mode = Control.FOCUS_ALL 
+		work.focus_mode = Control.FOCUS_ALL
 		Works.append(work)
 		$VBoxContainer/ScrollContainer/WorksContainer.add_child(work)
 
@@ -102,7 +102,7 @@ func _on_menu_button_toggled(button_pressed: bool) -> void:
 	var sel = $VBoxContainer/TitleContainer/MenuButton.get_popup().get_focused_item()
 	if sel ==-1 :
 		return
-	
+
 	var selData = workData[sel].duplicate()
 	var title=selData.pop_front()
 	$VBoxContainer/TitleContainer/MenuButton.text = title

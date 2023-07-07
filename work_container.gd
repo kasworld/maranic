@@ -28,7 +28,7 @@ func getLabelText():
 func decRemainSec() -> bool:
 	remainSec -= 1
 	if remainSec <= 0:
-		return false # not success 
+		return false # not success
 	return true
 
 # Called when the node enters the scene tree for the first time.
