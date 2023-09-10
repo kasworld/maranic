@@ -59,6 +59,7 @@ func _ready() -> void:
 	for i in range(len( workData)):
 		$VBoxContainer/TitleContainer/MenuButton.get_popup().add_item(program2text(i),i)
 	$VBoxContainer/TitleContainer/MenuButton.get_popup().theme = preload("res://menulist_theme.tres")
+	$VBoxContainer/TitleContainer/CmdButton.get_popup().theme = preload("res://menulist_theme.tres")
 
 func makeWorks(n ):
 	for i in range(len(Works)):

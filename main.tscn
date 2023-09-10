@@ -30,6 +30,20 @@ theme = ExtResource("3_sxpny")
 text = "인터벌 타이머"
 flat = false
 
+[node name="CmdButton" type="MenuButton" parent="VBoxContainer/TitleContainer"]
+layout_mode = 2
+theme = ExtResource("3_sxpny")
+text = "메뉴"
+item_count = 4
+popup/item_0/text = "읽어오기"
+popup/item_0/id = 0
+popup/item_1/text = "저장하기"
+popup/item_1/id = 1
+popup/item_2/text = "초기화하기"
+popup/item_2/id = 2
+popup/item_3/text = "새작업추가하기"
+popup/item_3/id = 3
+
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TitleContainer"]
 layout_mode = 2
 size_flags_horizontal = 3

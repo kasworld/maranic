@@ -33,6 +33,7 @@ func decRemainSec() -> bool:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	$MenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	pass # Replace with function body.
 
 
