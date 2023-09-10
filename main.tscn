@@ -27,7 +27,7 @@ alignment = 1
 [node name="MenuButton" type="MenuButton" parent="VBoxContainer/TitleContainer"]
 layout_mode = 2
 theme = ExtResource("3_sxpny")
-text = "마라닉 타이머"
+text = "인터벌 타이머"
 flat = false
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TitleContainer"]
@@ -52,7 +52,6 @@ follow_focus = true
 [node name="WorksContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
 
 [node name="MessageLabel" type="Label" parent="."]
 anchors_preset = 8

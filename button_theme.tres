@@ -4,4 +4,4 @@
 
 [resource]
 default_font = SubResource("SystemFont_61b2u")
-default_font_size = 170
+default_font_size = 100

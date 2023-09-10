@@ -7,15 +7,17 @@
 [node name="WorkContainer" type="HBoxContainer"]
 offset_top = 496.0
 offset_right = 1920.0
-offset_bottom = 736.0
+offset_bottom = 643.0
 size_flags_vertical = 3
 alignment = 1
 script = ExtResource("1_3r0v0")
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="LineEdit" parent="."]
 layout_mode = 2
 theme = ExtResource("1_eug6i")
-text = "총시간"
+placeholder_text = "새항목추가"
+editable = false
+expand_to_text_length = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

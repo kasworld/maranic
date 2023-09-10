@@ -2,7 +2,7 @@ extends HBoxContainer
 
 var totalSec = 0
 var remainSec = 0
-var incSec = 30
+var incSec = 10
 
 func second2text(sec :int):
 	return "%02d:%02d" %[ sec/60,sec % 60]
