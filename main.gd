@@ -44,14 +44,14 @@ func program2text(i):
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var wd = WorkData.new()
-	var msg = ""
-	if !wd.FileExist():
-		msg = wd.Save()
-	else:
-		msg = wd.Load()
-	$MessageLabel.text = msg
-	$MessageLabel.visible = true
-	$MessageTimer.start(3.0)
+#	var msg = ""
+#	if !wd.FileExist():
+#		msg = wd.Save()
+#	else:
+#		msg = wd.Load()
+#	$MessageLabel.text = msg
+#	$MessageLabel.visible = true
+#	$MessageTimer.start(3.0)
 
 	workData = wd.workData
 
