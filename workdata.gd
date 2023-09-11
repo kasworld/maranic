@@ -4,7 +4,7 @@ extends Object
 
 var file_name = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/gd4timer_workdata.json"
 
-var workData = [
+var workList = [
 	# 이름,총시간초,work1 sec, work2 sec, etc
 	[ "1일차",  ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*1  ] ],
 	[ "3일차",  ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*1.5] ],
@@ -32,7 +32,7 @@ func FileExist():
 
 func Save()-> String:
 	var fileobj = FileAccess.open(file_name, FileAccess.WRITE)
-	var json_string = JSON.stringify(workData)
+	var json_string = JSON.stringify(workList)
 	fileobj.store_line(json_string)
 	return "%s save" % [file_name]
 
@@ -44,7 +44,7 @@ func Load()->String:
 	if error == OK:
 		var data_received = json.data
 		if typeof(data_received) == TYPE_ARRAY:
-			workData = data_received
+			workList = data_received
 			return "%s loaded" % [file_name]
 		else:
 			return "Unexpected data %s" % [ error ]

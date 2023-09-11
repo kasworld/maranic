@@ -36,19 +36,12 @@ func _ready() -> void:
 	$MenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	pass # Replace with function body.
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
 func _on_sec_dec_button_pressed() -> void:
 	totalSec -= incSec
 	if totalSec < 0 :
 		totalSec = 0
 	resetTime()
 	updateTimeLabels()
-
 
 func _on_sec_inc_button_pressed() -> void:
 	totalSec += incSec

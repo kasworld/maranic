@@ -24,13 +24,13 @@ alignment = 1
 layout_mode = 2
 alignment = 1
 
-[node name="MenuButton" type="MenuButton" parent="VBoxContainer/TitleContainer"]
+[node name="WorkDataMenuButton" type="MenuButton" parent="VBoxContainer/TitleContainer"]
 layout_mode = 2
 theme = ExtResource("3_sxpny")
 text = "인터벌 타이머"
 flat = false
 
-[node name="CmdButton" type="MenuButton" parent="VBoxContainer/TitleContainer"]
+[node name="CmdMenuButton" type="MenuButton" parent="VBoxContainer/TitleContainer"]
 layout_mode = 2
 theme = ExtResource("3_sxpny")
 text = "메뉴"
@@ -85,6 +85,7 @@ clip_text = true
 [node name="MessageTimer" type="Timer" parent="."]
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
-[connection signal="toggled" from="VBoxContainer/TitleContainer/MenuButton" to="." method="_on_menu_button_toggled"]
+[connection signal="toggled" from="VBoxContainer/TitleContainer/WorkDataMenuButton" to="." method="_on_work_data_menu_button_toggled"]
+[connection signal="toggled" from="VBoxContainer/TitleContainer/CmdMenuButton" to="." method="_on_cmd_menu_button_toggled"]
 [connection signal="toggled" from="VBoxContainer/TitleContainer/StartButton" to="." method="_on_start_button_toggled"]
 [connection signal="timeout" from="MessageTimer" to="." method="_on_message_timer_timeout"]
