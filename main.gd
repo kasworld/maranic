@@ -34,12 +34,12 @@ func _ready() -> void:
 	WorkDataMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	CmdMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 
-	resetWorkdData()
-	workData2WorkDataMenu()
+	reset_workd_data()
+	work_data2work_data_menu()
 
-func workData2WorkDataMenu():
+func work_data2work_data_menu():
 	WorkDataMenuButton.get_popup().clear()
-	for i in range(len( workData.workList)):
+	for i in range(workData.len()):
 		WorkDataMenuButton.get_popup().add_item(workData.work2text(i),i)
 
 func _on_timer_timeout() -> void:
@@ -64,7 +64,7 @@ func _on_work_data_menu_button_toggled(button_pressed: bool) -> void:
 	if sel ==-1 :
 		return
 
-	var selData = workData.workList[sel].duplicate()
+	var selData = workData.get_at(sel).duplicate()
 	var title=selData.pop_front()
 	WorkDataMenuButton.text = title
 	Text2Speech("%s로 설정합니다." % title)
@@ -112,36 +112,36 @@ func _on_cmd_menu_button_toggled(button_pressed: bool) -> void:
 		return
 	match sel :
 		0: # 읽어오기
-			loadWorkData()
+			load_work_data()
 		1: # 저장하기
-			saveWorkData()
+			save_work_data()
 		2: # 초기화하기
-			resetWorkdData()
+			reset_workd_data()
 		3: # 새작업추가하기
-			addNewWork()
+			add_new_work()
 		_: # unknown
 			print_debug("unknown", sel)
 
-func resetWorkdData():
+func reset_workd_data():
 	workData = WorkData.new()
-	workData2WorkDataMenu()
-	showMessage("초기화합니다.")
+	work_data2work_data_menu()
+	show_message("초기화합니다.")
 
-func loadWorkData():
-	var msg =  workData.Load()
-	workData2WorkDataMenu()
-	showMessage(msg)
+func load_work_data():
+	var msg =  workData.load()
+	work_data2work_data_menu()
+	show_message(msg)
 
-func saveWorkData():
-	var msg = workData.Save()
-	showMessage(msg)
+func save_work_data():
+	var msg = workData.save()
+	show_message(msg)
 
-func addNewWork():
-	workData.addNewWork("새워크",[ ["총시간",60*30], ["운동", 60*3], ["휴식", 60*1] ] )
-	workData2WorkDataMenu()
-	showMessage("새워크를추가합니다.")
+func add_new_work():
+	workData.add_new_work("새워크",[ ["총시간",60*30], ["운동", 60*3], ["휴식", 60*1] ] )
+	work_data2work_data_menu()
+	show_message("새워크를추가합니다.")
 
-func showMessage(msg):
+func show_message(msg):
 	$MessageLabel.text = msg
 	$MessageLabel.visible = true
 	$MessageTimer.start(3.0)
