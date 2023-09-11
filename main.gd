@@ -28,15 +28,6 @@ func buttonsDisable(disable :bool):
 	for o in Works:
 		o.buttonsDisable(disable)
 
-func second2text(sec :int):
-	return "%02d:%02d" %[ sec/60,sec % 60]
-
-func program2text(i):
-	var data = workData.workList[i].duplicate()
-	var rtn = "%s:" % [ data.pop_front() ]
-	for j in range(len(data)):
-		rtn += "%s(%s)" % [ data[j][0], second2text(data[j][1]) ]
-	return rtn
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -49,7 +40,7 @@ func _ready() -> void:
 func workData2WorkDataMenu():
 	WorkDataMenuButton.get_popup().clear()
 	for i in range(len( workData.workList)):
-		WorkDataMenuButton.get_popup().add_item(program2text(i),i)
+		WorkDataMenuButton.get_popup().add_item(workData.work2text(i),i)
 
 func _on_timer_timeout() -> void:
 	if Works[0].decRemainSec() != true: # fail to dec
@@ -127,9 +118,9 @@ func _on_cmd_menu_button_toggled(button_pressed: bool) -> void:
 		2: # 초기화하기
 			resetWorkdData()
 		3: # 새작업추가하기
-			pass
-		_: # known
-			print_debug("known", sel)
+			addNewWork()
+		_: # unknown
+			print_debug("unknown", sel)
 
 func resetWorkdData():
 	workData = WorkData.new()
@@ -144,6 +135,11 @@ func loadWorkData():
 func saveWorkData():
 	var msg = workData.Save()
 	showMessage(msg)
+
+func addNewWork():
+	workData.addNewWork("새워크",[ ["총시간",60*30], ["운동", 60*3], ["휴식", 60*1] ] )
+	workData2WorkDataMenu()
+	showMessage("새워크를추가합니다.")
 
 func showMessage(msg):
 	$MessageLabel.text = msg

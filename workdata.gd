@@ -23,6 +23,25 @@ var workList = [
 	[ "29일차", ["총시간",60*35], ["걷기", 60*2.5], ["달리기", 60*30 ], ["걷기", 60*2.5] ],
 ]
 
+
+func second2text(sec :int):
+	return "%02d:%02d" %[ sec/60,sec % 60]
+
+func work2text(i):
+	var data = workList[i].duplicate()
+	var rtn = "%s:" % [ data.pop_front() ]
+	for j in range(len(data)):
+		rtn += "%s(%s)" % [ data[j][0], second2text(data[j][1]) ]
+	return rtn
+
+func addNewWork(title, subWorkList):
+	var adddata = [title]
+	adddata.append_array(subWorkList)
+	workList.append(adddata)
+
+func delAt(pos):
+	workList.remove_at(pos)
+
 func FileExist():
 	return FileAccess.file_exists(file_name)
 
