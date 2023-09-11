@@ -44,9 +44,10 @@ func _ready() -> void:
 	CmdMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 
 	resetWorkdData()
-	workData2menu()
+	workData2WorkDataMenu()
 
-func workData2menu():
+func workData2WorkDataMenu():
+	WorkDataMenuButton.get_popup().clear()
 	for i in range(len( workData.workList)):
 		WorkDataMenuButton.get_popup().add_item(program2text(i),i)
 
@@ -132,10 +133,12 @@ func _on_cmd_menu_button_toggled(button_pressed: bool) -> void:
 
 func resetWorkdData():
 	workData = WorkData.new()
+	workData2WorkDataMenu()
 	showMessage("초기화합니다.")
 
 func loadWorkData():
 	var msg =  workData.Load()
+	workData2WorkDataMenu()
 	showMessage(msg)
 
 func saveWorkData():
