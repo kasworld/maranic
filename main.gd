@@ -69,7 +69,7 @@ func _on_work_data_menu_button_toggled(button_pressed: bool) -> void:
 	resetTime()
 	updateTimeLabels()
 
-func makeWorks(work :WorkData.Work):
+func makeWorks(wk :WorkData.Work):
 	# clear
 	for i in work_nodes.size():
 		if i == 0:
@@ -79,14 +79,14 @@ func makeWorks(work :WorkData.Work):
 	work_nodes = [
 		$VBoxContainer/MainWorkContainer
 	]
-	for wd in work.sub_work_list.size()-1:
-		var wk = workScene.instantiate()
-		wk.focus_mode = Control.FOCUS_ALL
-		work_nodes.append(wk)
-		$VBoxContainer/ScrollContainer/WorksContainer.add_child(wk)
+	for i in wk.sub_work_list.size()-1:
+		var wn = workScene.instantiate()
+		wn.focus_mode = Control.FOCUS_ALL
+		work_nodes.append(wn)
+		$VBoxContainer/ScrollContainer/WorksContainer.add_child(wn)
 	for i in work_nodes.size():
-		var wd = work.sub_work_list[i]
-		work_nodes[i].setLabelTotalSec( wd.name, wd.second)
+		var sw = wk.sub_work_list[i]
+		work_nodes[i].setLabelTotalSec( sw.name, sw.second)
 
 func _on_start_button_toggled(button_pressed: bool) -> void:
 	if work_nodes.size() == 0 :
@@ -122,22 +122,22 @@ func _on_cmd_menu_button_toggled(button_pressed: bool) -> void:
 			print_debug("unknown", sel)
 
 func reset_workd_data():
-	var neww = WorkData.new(work_rawdata)
-	if not neww.errmsg.is_empty():
-#		print_debug(neww.errmsg)
-		show_message(neww.errmsg)
+	var new_wd = WorkData.new(work_rawdata)
+	if not new_wd.errmsg.is_empty():
+#		print_debug(new_wd.errmsg)
+		show_message(new_wd.errmsg)
 		return
-	workData = neww
+	workData = new_wd
 #	print_debug(workData.to_data())
 	work_data2work_data_menu()
 	show_message("초기화합니다.")
 
 func load_work_data():
-	var neww =  workData.load_new(file_name)
-	if not neww.errmsg.is_empty():
-		show_message(neww.errmsg)
+	var new_wd =  workData.load_new(file_name)
+	if not new_wd.errmsg.is_empty():
+		show_message(new_wd.errmsg)
 		return
-	workData = neww
+	workData = new_wd
 	work_data2work_data_menu()
 	show_message("load %s" % [file_name])
 
