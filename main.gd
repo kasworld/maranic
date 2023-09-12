@@ -125,34 +125,31 @@ func reset_workd_data():
 	var new_wd = WorkData.new(work_rawdata)
 	if not new_wd.errmsg.is_empty():
 #		print_debug(new_wd.errmsg)
-		show_message(new_wd.errmsg)
+		$TimedMessage.show_message(new_wd.errmsg)
 		return
 	workData = new_wd
 #	print_debug(workData.to_data())
 	work_data2work_data_menu()
-	show_message("초기화합니다.")
+	$TimedMessage.show_message("초기화합니다.")
 
 func load_work_data():
 	var new_wd =  workData.load_new(file_name)
 	if not new_wd.errmsg.is_empty():
-		show_message(new_wd.errmsg)
+		$TimedMessage.show_message(new_wd.errmsg)
 		return
 	workData = new_wd
 	work_data2work_data_menu()
-	show_message("load %s" % [file_name])
+	$TimedMessage.show_message("load %s" % [file_name])
 
 func save_work_data():
 	var msg = workData.save(file_name)
-	show_message(msg)
+	$TimedMessage.show_message(msg)
 
 func add_new_work():
 	var wk = ["새워크", ["총시간",60*30], ["운동", 60*3], ["휴식", 60*1] ]
 	workData.add_new_work( workData.Work.new(wk) )
 	work_data2work_data_menu()
-	show_message("새워크를추가합니다.")
-
-func show_message(msg):
-	$TimedMessage.show_message(msg)
+	$TimedMessage.show_message("새워크를추가합니다.")
 
 # raw data
 var file_name = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/gd4timer_workdata.json"

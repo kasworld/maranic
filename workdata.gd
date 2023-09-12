@@ -2,7 +2,6 @@ class_name WorkData
 
 extends Object
 
-
 class SubWork:
 	var errmsg :String
 	var name :String
