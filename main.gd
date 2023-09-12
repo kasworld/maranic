@@ -42,12 +42,12 @@ func work_data2work_data_menu():
 func _on_timer_timeout() -> void:
 	if work_nodes[0].dec_remain_sec() != true: # fail to dec
 		$VBoxContainer/TitleContainer/StartButton.button_pressed = false
-	elif len(work_nodes) > sub_work_index:
+	elif work_nodes.size() > sub_work_index:
 		if work_nodes[sub_work_index].dec_remain_sec() != true: # move to next sub work
 			work_nodes[sub_work_index].reset_time()
 			var oldWorkStr = work_nodes[sub_work_index].get_label_text()
 			sub_work_index += 1
-			if len(work_nodes) <= sub_work_index:
+			if work_nodes.size() <= sub_work_index:
 				sub_work_index = 1
 			var newWorkStr = work_nodes[sub_work_index].get_label_text()
 			text2speech("%s를 끝내고 %s를 시작합니다." %[oldWorkStr,newWorkStr])
