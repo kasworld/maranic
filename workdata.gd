@@ -5,10 +5,39 @@ extends Object
 class SubWork:
 	var name :String
 	var second :int
+	func from_data(rawdata):
+		name = rawdata[0]
+		second = rawdata[1]
+		return self
+	func to_data():
+		return [name,second]
 
 class Work:
 	var title :String
 	var sub_work_list :Array[SubWork]
+	func from_data(rawdata):
+		rawdata = rawdata.duplicate()
+		title = rawdata.pop_front()
+		for sw in rawdata:
+			sub_work_list.append( SubWork.new().from_data(sw) )
+		return self
+	func to_data():
+		var swl = [title]
+		for d in sub_work_list:
+			swl.append(d.to_data())
+		return swl
+
+class WorkList:
+	var works :Array[Work]
+	func from_data(rawdata):
+		for rd in rawdata:
+			works.append(Work.new().from_data(rd))
+		return self
+	func to_data():
+		var rtn = []
+		for d in works:
+			rtn.append(d.to_data())
+		return rtn
 
 var file_name = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/gd4timer_workdata.json"
 

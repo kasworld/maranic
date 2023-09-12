@@ -37,6 +37,9 @@ func _ready() -> void:
 	reset_workd_data()
 	work_data2work_data_menu()
 
+	var wl = WorkData.WorkList.new().from_data(workData.work_list)
+	print_debug(wl.to_data())
+
 func work_data2work_data_menu():
 	WorkDataMenuButton.get_popup().clear()
 	for i in range(workData.len()):
