@@ -12,31 +12,28 @@ func Text2Speech(s):
 @onready var CmdMenuButton = $VBoxContainer/TitleContainer/CmdMenuButton
 
 var workData :WorkData
-var Works = []
+var work_nodes = []
 var subWorkIndex = 1
 
 func updateTimeLabels():
-	for o in Works:
+	for o in work_nodes:
 		o.updateTimeLabels()
 
 func resetTime():
-	for o in Works:
+	for o in work_nodes:
 		o.resetTime()
 
 func buttonsDisable(disable :bool):
 	WorkDataMenuButton.disabled =disable
-	for o in Works:
+	for o in work_nodes:
 		o.buttonsDisable(disable)
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	WorkDataMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	CmdMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
-
 	reset_workd_data()
 	work_data2work_data_menu()
-
 
 func work_data2work_data_menu():
 	WorkDataMenuButton.get_popup().clear()
@@ -44,18 +41,18 @@ func work_data2work_data_menu():
 		WorkDataMenuButton.get_popup().add_item(workData.get_at(i).to_str(),i)
 
 func _on_timer_timeout() -> void:
-	if Works[0].decRemainSec() != true: # fail to dec
+	if work_nodes[0].decRemainSec() != true: # fail to dec
 		$VBoxContainer/TitleContainer/StartButton.button_pressed = false
-	elif len(Works) > subWorkIndex:
-		if Works[subWorkIndex].decRemainSec() != true: # move to next sub work
-			Works[subWorkIndex].resetTime()
-			var oldWorkStr = Works[subWorkIndex].getLabelText()
+	elif len(work_nodes) > subWorkIndex:
+		if work_nodes[subWorkIndex].decRemainSec() != true: # move to next sub work
+			work_nodes[subWorkIndex].resetTime()
+			var oldWorkStr = work_nodes[subWorkIndex].getLabelText()
 			subWorkIndex += 1
-			if len(Works) <= subWorkIndex:
+			if len(work_nodes) <= subWorkIndex:
 				subWorkIndex = 1
-			var newWorkStr = Works[subWorkIndex].getLabelText()
+			var newWorkStr = work_nodes[subWorkIndex].getLabelText()
 			Text2Speech("%s를 끝내고 %s를 시작합니다." %[oldWorkStr,newWorkStr])
-			Works[subWorkIndex].grab_focus()
+			work_nodes[subWorkIndex].grab_focus()
 	updateTimeLabels()
 
 func _on_work_data_menu_button_toggled(button_pressed: bool) -> void:
@@ -66,35 +63,36 @@ func _on_work_data_menu_button_toggled(button_pressed: bool) -> void:
 		return
 
 	var selData = workData.get_at(sel)
-	var title=selData.title
-	WorkDataMenuButton.text = title
-	Text2Speech("%s로 설정합니다." % title)
+	WorkDataMenuButton.text = selData.title
+	Text2Speech("%s로 설정합니다." % selData.title)
 	makeWorks(selData)
 	resetTime()
 	updateTimeLabels()
 
 func makeWorks(work :WorkData.Work):
 	# clear
-	for i in range(len(Works)):
+	for i in work_nodes.size():
 		if i == 0:
 			continue
-		$VBoxContainer/ScrollContainer/WorksContainer.remove_child(Works[i])
-		Works[i].queue_free()
-	Works = [
+		$VBoxContainer/ScrollContainer/WorksContainer.remove_child(work_nodes[i])
+		work_nodes[i].queue_free()
+	work_nodes = [
 		$VBoxContainer/MainWorkContainer
 	]
-	for wd in work.sub_work_list:
+	for wd in work.sub_work_list.size()-1:
 		var wk = workScene.instantiate()
 		wk.focus_mode = Control.FOCUS_ALL
-		wk.setLabelTotalSec( wd.name, wd.second)
-		Works.append(wk)
+		work_nodes.append(wk)
 		$VBoxContainer/ScrollContainer/WorksContainer.add_child(wk)
+	for i in work_nodes.size():
+		var wd = work.sub_work_list[i]
+		work_nodes[i].setLabelTotalSec( wd.name, wd.second)
 
 func _on_start_button_toggled(button_pressed: bool) -> void:
-	if len(Works) == 0 :
+	if work_nodes.size() == 0 :
 		return
 	if button_pressed :
-		if Works[0].remainSec<=0:
+		if work_nodes[0].remainSec<=0:
 			resetTime()
 		$VBoxContainer/TitleContainer/StartButton.text = "멈추기"
 		Text2Speech("%s를 시작합니다." % [ WorkDataMenuButton.text ])
@@ -125,7 +123,7 @@ func _on_cmd_menu_button_toggled(button_pressed: bool) -> void:
 
 func reset_workd_data():
 	workData = WorkData.new().from_data(work_rawdata)
-	print_debug(workData.to_data())
+#	print_debug(workData.to_data())
 	work_data2work_data_menu()
 	show_message("초기화합니다.")
 
