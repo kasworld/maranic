@@ -2,13 +2,17 @@ class_name WorkData
 
 extends Object
 
+
 class SubWork:
+	var errmsg :String
 	var name :String
 	var second :int
-	func from_data(rawdata):
+	func _init(rawdata) -> void:
+		if rawdata.size() != 2 :
+			errmsg = "invalid subwork %s" % [rawdata]
+			return
 		name = rawdata[0]
 		second = rawdata[1]
-		return self
 	func to_data():
 		return [name,second]
 	func second2text()->String:
@@ -17,14 +21,18 @@ class SubWork:
 		return "%s(%s)" % [ name, second2text() ]
 
 class Work:
+	var errmsg :String
 	var title :String
 	var sub_work_list :Array[SubWork]
-	func from_data(rawdata):
+	func _init(rawdata)->void:
 		rawdata = rawdata.duplicate()
 		title = rawdata.pop_front()
 		for sw in rawdata:
-			sub_work_list.append( SubWork.new().from_data(sw) )
-		return self
+			var s = SubWork.new(sw)
+			if not s.errmsg.is_empty() :
+				errmsg = s.errmsg
+				return
+			sub_work_list.append( s )
 	func to_data():
 		var swl = [title]
 		for d in sub_work_list:
@@ -36,11 +44,16 @@ class Work:
 			rtn += j.to_str()
 		return rtn
 
+var errmsg :String
 var works :Array[Work]
-func from_data(rawdata)->WorkData:
+func _init(rawdata)->void:
 	for rd in rawdata:
-		works.append(Work.new().from_data(rd))
-	return self
+		var w = Work.new(rd)
+		if not w.errmsg.is_empty():
+			errmsg = w.errmsg
+			return
+		works.append(w)
+
 func to_data()->Array:
 	var rtn = []
 	for d in works:
@@ -56,7 +69,7 @@ func del_at(pos):
 func get_at(pos)->Work:
 	return works[pos]
 
-func len()->int:
+func size()->int:
 	return works.size()
 
 func file_exist(file_name :String)->bool:
@@ -67,21 +80,19 @@ func save(file_name :String)-> String:
 	var work_list = to_data()
 	var json_string = JSON.stringify(work_list)
 	fileobj.store_line(json_string)
-	return "%s save" % [file_name]
+	return "save %s" % [file_name]
 
-func load(file_name :String)->String:
+func load_new(file_name :String)->WorkData:
 	var fileobj = FileAccess.open(file_name, FileAccess.READ)
 	var json_string = fileobj.get_as_text()
 	var json = JSON.new()
 	var error = json.parse(json_string)
 	if error == OK:
 		var data_received = json.data
-		if typeof(data_received) == TYPE_ARRAY:
-			from_data(data_received)
-			return "%s loaded" % [file_name]
-		else:
-			return "Unexpected data %s" % [ error ]
+		return WorkData.new(data_received)
 	else:
-		return "JSON Parse Error: %s in %s at line %s" % [ json.get_error_message(),  json_string,  json.get_error_line()]
+		var neww = WorkData.new([])
+		neww.errmsg = "JSON Parse Error: %s in %s at line %s" % [ json.get_error_message(),  json_string,  json.get_error_line()]
+		return neww
 
 

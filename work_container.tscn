@@ -12,7 +12,7 @@ size_flags_vertical = 3
 alignment = 1
 script = ExtResource("1_3r0v0")
 
-[node name="Label" type="LineEdit" parent="."]
+[node name="NameEdit" type="LineEdit" parent="."]
 layout_mode = 2
 theme = ExtResource("1_eug6i")
 placeholder_text = "새항목추가"

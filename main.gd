@@ -122,15 +122,24 @@ func _on_cmd_menu_button_toggled(button_pressed: bool) -> void:
 			print_debug("unknown", sel)
 
 func reset_workd_data():
-	workData = WorkData.new().from_data(work_rawdata)
+	var neww = WorkData.new(work_rawdata)
+	if not neww.errmsg.is_empty():
+#		print_debug(neww.errmsg)
+		show_message(neww.errmsg)
+		return
+	workData = neww
 #	print_debug(workData.to_data())
 	work_data2work_data_menu()
 	show_message("초기화합니다.")
 
 func load_work_data():
-	var msg =  workData.load(file_name)
+	var neww =  workData.load_new(file_name)
+	if not neww.errmsg.is_empty():
+		show_message(neww.errmsg)
+		return
+	workData = neww
 	work_data2work_data_menu()
-	show_message(msg)
+	show_message("load %s" % [file_name])
 
 func save_work_data():
 	var msg = workData.save(file_name)
@@ -138,7 +147,7 @@ func save_work_data():
 
 func add_new_work():
 	var wk = ["새워크", ["총시간",60*30], ["운동", 60*3], ["휴식", 60*1] ]
-	workData.add_new_work( workData.Work.new().from_data(wk) )
+	workData.add_new_work( workData.Work.new(wk) )
 	work_data2work_data_menu()
 	show_message("새워크를추가합니다.")
 

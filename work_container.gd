@@ -12,18 +12,19 @@ func updateTimeLabels():
 	$SecRemainLabel.text = second2text(remainSec)
 
 func buttonsDisable(disable :bool):
-	$SecDecButton.disabled =disable
-	$SecIncButton.disabled =disable
+	$MenuButton.disabled = disable
+	$SecDecButton.disabled = disable
+	$SecIncButton.disabled = disable
 
 func resetTime():
 	remainSec = totalSec
 
 func setLabelTotalSec(s,sec):
-	$Label.text = s
+	$NameEdit.text = s
 	totalSec = sec
 
 func getLabelText():
-	return $Label.text
+	return $NameEdit.text
 
 func decRemainSec() -> bool:
 	remainSec -= 1
