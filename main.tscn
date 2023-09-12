@@ -21,7 +21,7 @@ alignment = 1
 layout_mode = 2
 alignment = 1
 
-[node name="WorkDataMenuButton" type="MenuButton" parent="VBoxContainer/TitleContainer"]
+[node name="WorkListMenuButton" type="MenuButton" parent="VBoxContainer/TitleContainer"]
 layout_mode = 2
 theme = ExtResource("3_sxpny")
 text = "인터벌 타이머"
@@ -72,6 +72,6 @@ offset_right = 1837.0
 offset_bottom = 695.0
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
-[connection signal="toggled" from="VBoxContainer/TitleContainer/WorkDataMenuButton" to="." method="_on_work_data_menu_button_toggled"]
+[connection signal="toggled" from="VBoxContainer/TitleContainer/WorkListMenuButton" to="." method="_on_work_list_menu_button_toggled"]
 [connection signal="toggled" from="VBoxContainer/TitleContainer/CmdMenuButton" to="." method="_on_cmd_menu_button_toggled"]
 [connection signal="toggled" from="VBoxContainer/TitleContainer/StartButton" to="." method="_on_start_button_toggled"]

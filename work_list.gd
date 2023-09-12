@@ -1,4 +1,4 @@
-class_name WorkData
+class_name WorkList
 
 extends Object
 
@@ -81,16 +81,16 @@ func save(file_name :String)-> String:
 	fileobj.store_line(json_string)
 	return "save %s" % [file_name]
 
-func load_new(file_name :String)->WorkData:
+func load_new(file_name :String)->WorkList:
 	var fileobj = FileAccess.open(file_name, FileAccess.READ)
 	var json_string = fileobj.get_as_text()
 	var json = JSON.new()
 	var error = json.parse(json_string)
 	if error == OK:
 		var data_received = json.data
-		return WorkData.new(data_received)
+		return WorkList.new(data_received)
 	else:
-		var neww = WorkData.new([])
+		var neww = WorkList.new([])
 		neww.errmsg = "JSON Parse Error: %s in %s at line %s" % [ json.get_error_message(),  json_string,  json.get_error_line()]
 		return neww
 
