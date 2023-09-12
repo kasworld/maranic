@@ -16,7 +16,7 @@ func disable_buttons(disable :bool):
 	$SecDecButton.disabled = disable
 	$SecIncButton.disabled = disable
 
-func resetTime():
+func reset_time():
 	remainSec = totalSec
 
 func set_label_total_sec(s,sec):
@@ -41,10 +41,10 @@ func _on_sec_dec_button_pressed() -> void:
 	totalSec -= incSec
 	if totalSec < 0 :
 		totalSec = 0
-	resetTime()
+	reset_time()
 	update_time_labels()
 
 func _on_sec_inc_button_pressed() -> void:
 	totalSec += incSec
-	resetTime()
+	reset_time()
 	update_time_labels()
