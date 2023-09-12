@@ -7,11 +7,11 @@ var incSec = 10
 func second2text(sec :int):
 	return "%02d:%02d" %[ sec/60,sec % 60]
 
-func updateTimeLabels():
+func update_time_labels():
 	$SecLabel.text = second2text(totalSec)
 	$SecRemainLabel.text = second2text(remainSec)
 
-func buttonsDisable(disable :bool):
+func disable_buttons(disable :bool):
 	$MenuButton.disabled = disable
 	$SecDecButton.disabled = disable
 	$SecIncButton.disabled = disable
@@ -19,14 +19,14 @@ func buttonsDisable(disable :bool):
 func resetTime():
 	remainSec = totalSec
 
-func setLabelTotalSec(s,sec):
+func set_label_total_sec(s,sec):
 	$NameEdit.text = s
 	totalSec = sec
 
-func getLabelText():
+func get_label_text():
 	return $NameEdit.text
 
-func decRemainSec() -> bool:
+func dec_remain_sec() -> bool:
 	remainSec -= 1
 	if remainSec <= 0:
 		return false # not success
@@ -42,9 +42,9 @@ func _on_sec_dec_button_pressed() -> void:
 	if totalSec < 0 :
 		totalSec = 0
 	resetTime()
-	updateTimeLabels()
+	update_time_labels()
 
 func _on_sec_inc_button_pressed() -> void:
 	totalSec += incSec
 	resetTime()
-	updateTimeLabels()
+	update_time_labels()
