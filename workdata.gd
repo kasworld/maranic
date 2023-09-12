@@ -11,6 +11,10 @@ class SubWork:
 		return self
 	func to_data():
 		return [name,second]
+	func second2text()->String:
+		return "%02d:%02d" %[ second/60,second % 60]
+	func to_str()->String:
+		return "%s(%s)" % [ name, second2text() ]
 
 class Work:
 	var title :String
@@ -26,75 +30,46 @@ class Work:
 		for d in sub_work_list:
 			swl.append(d.to_data())
 		return swl
-
-class WorkList:
-	var works :Array[Work]
-	func from_data(rawdata):
-		for rd in rawdata:
-			works.append(Work.new().from_data(rd))
-		return self
-	func to_data():
-		var rtn = []
-		for d in works:
-			rtn.append(d.to_data())
+	func to_str():
+		var rtn = "%s:" % [ title ]
+		for j in sub_work_list:
+			rtn += j.to_str()
 		return rtn
 
-var file_name = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/gd4timer_workdata.json"
-
-var work_list = [
-	# 이름,총시간초,work1 sec, work2 sec, etc
-	[ "1일차",  ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*1  ] ],
-	[ "3일차",  ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*1.5] ],
-	[ "5일차",  ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*2  ] ],
-	[ "7일차",  ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*2  ] ],
-	[ "9일차",  ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*3  ] ],
-	[ "11일차", ["총시간",60*30], ["걷기", 60*1  ], ["달리기", 60*3  ] ],
-	[ "13일차", ["총시간",60*30], ["걷기", 60*1  ], ["달리기", 60*4  ] ],
-	[ "15일차", ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*5  ] ],
-	[ "17일차", ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*7  ] ],
-	[ "19일차", ["총시간",60*30], ["걷기", 60*4  ], ["달리기", 60*10 ] ],
-	[ "21일차", ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*13 ] ],
-	[ "23일차", ["총시간",60*32], ["걷기", 60*2  ], ["달리기", 60*13 ], ["걷기", 60*2  ], ["달리기", 60*15 ] ],
-	[ "25일차", ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*5  ], ["걷기", 60*2  ], ["달리기", 60*20 ] ],
-	[ "27일차", ["총시간",60*30], ["걷기", 60*2.5], ["달리기", 60*25 ], ["걷기", 60*2.5] ],
-	[ "29일차", ["총시간",60*35], ["걷기", 60*2.5], ["달리기", 60*30 ], ["걷기", 60*2.5] ],
-]
-
-
-func second2text(sec :int):
-	return "%02d:%02d" %[ sec/60,sec % 60]
-
-func work2text(i):
-	var data = work_list[i].duplicate()
-	var rtn = "%s:" % [ data.pop_front() ]
-	for j in range(len(data)):
-		rtn += "%s(%s)" % [ data[j][0], second2text(data[j][1]) ]
+var works :Array[Work]
+func from_data(rawdata)->WorkData:
+	for rd in rawdata:
+		works.append(Work.new().from_data(rd))
+	return self
+func to_data()->Array:
+	var rtn = []
+	for d in works:
+		rtn.append(d.to_data())
 	return rtn
 
-func add_new_work(title, subWorkList):
-	var adddata = [title]
-	adddata.append_array(subWorkList)
-	work_list.append(adddata)
+func add_new_work(wk :Work):
+	works.append(wk)
 
 func del_at(pos):
-	work_list.remove_at(pos)
+	works.remove_at(pos)
 
-func get_at(pos):
-	return work_list[pos]
-
-func file_exist():
-	return FileAccess.file_exists(file_name)
+func get_at(pos)->Work:
+	return works[pos]
 
 func len()->int:
-	return len(work_list)
+	return works.size()
 
-func save()-> String:
+func file_exist(file_name :String)->bool:
+	return FileAccess.file_exists(file_name)
+
+func save(file_name :String)-> String:
 	var fileobj = FileAccess.open(file_name, FileAccess.WRITE)
+	var work_list = to_data()
 	var json_string = JSON.stringify(work_list)
 	fileobj.store_line(json_string)
 	return "%s save" % [file_name]
 
-func load()->String:
+func load(file_name :String)->String:
 	var fileobj = FileAccess.open(file_name, FileAccess.READ)
 	var json_string = fileobj.get_as_text()
 	var json = JSON.new()
@@ -102,9 +77,11 @@ func load()->String:
 	if error == OK:
 		var data_received = json.data
 		if typeof(data_received) == TYPE_ARRAY:
-			work_list = data_received
+			from_data(data_received)
 			return "%s loaded" % [file_name]
 		else:
 			return "Unexpected data %s" % [ error ]
 	else:
 		return "JSON Parse Error: %s in %s at line %s" % [ json.get_error_message(),  json_string,  json.get_error_line()]
+
+
