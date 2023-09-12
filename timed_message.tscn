@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6cct2gj2a3im"]
+
+[ext_resource type="Script" path="res://timed_message.gd" id="1_4npvt"]
+[ext_resource type="Theme" uid="uid://ddksgr4axityd" path="res://menulist_theme.tres" id="2_cb4ra"]
+
+[node name="TimedMessage" type="PanelContainer"]
+offset_right = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_4npvt")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Label" type="RichTextLabel" parent="."]
+layout_mode = 2
+theme = ExtResource("2_cb4ra")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

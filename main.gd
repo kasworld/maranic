@@ -152,12 +152,7 @@ func add_new_work():
 	show_message("새워크를추가합니다.")
 
 func show_message(msg):
-	$MessageLabel.text = msg
-	$MessageLabel.visible = true
-	$MessageTimer.start(3.0)
-
-func _on_message_timer_timeout() -> void:
-	$MessageLabel.visible = false
+	$TimedMessage.show_message(msg)
 
 # raw data
 var file_name = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/gd4timer_workdata.json"
