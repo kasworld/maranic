@@ -67,6 +67,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="TimedMessage" parent="." instance=ExtResource("4_mflyv")]
+visible = false
 offset_left = 120.0
 offset_top = 595.0
 offset_right = 1837.0

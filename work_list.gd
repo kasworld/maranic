@@ -16,10 +16,10 @@ class SubWork:
 		second = rawdata[1]
 	func to_data()->Array:
 		return [name,second]
-	func second2text()->String:
-		return "%02d:%02d" %[ second/60,second % 60]
+	func second2text(s :int)->String:
+		return "%02d:%02d" %[ s/60,s % 60]
 	func to_str()->String:
-		return "%s(%s)" % [ name, second2text() ]
+		return "%s(%s)" % [ name, second2text(second) ]
 
 class Work:
 	var errmsg :String
