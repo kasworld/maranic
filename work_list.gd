@@ -4,6 +4,8 @@ extends Object
 
 class SubWork:
 	var errmsg :String
+	func has_error()->bool:
+		return not errmsg.is_empty()
 	var name :String
 	var second :int
 	func _init(rawdata) -> void:
@@ -21,6 +23,8 @@ class SubWork:
 
 class Work:
 	var errmsg :String
+	func has_error()->bool:
+		return not errmsg.is_empty()
 	var title :String
 	var sub_work_list :Array[SubWork]
 	func _init(rawdata)->void:
@@ -28,7 +32,7 @@ class Work:
 		title = rawdata.pop_front()
 		for sw in rawdata:
 			var s = SubWork.new(sw)
-			if not s.errmsg.is_empty() :
+			if s.has_error():
 				errmsg = s.errmsg
 				return
 			sub_work_list.append( s )
@@ -44,11 +48,13 @@ class Work:
 		return rtn
 
 var errmsg :String
+func has_error()->bool:
+	return not errmsg.is_empty()
 var works :Array[Work]
 func _init(rawdata)->void:
 	for rd in rawdata:
 		var w = Work.new(rd)
-		if not w.errmsg.is_empty():
+		if w.has_error():
 			errmsg = w.errmsg
 			return
 		works.append(w)
@@ -59,8 +65,10 @@ func to_data()->Array:
 		rtn.append(d.to_data())
 	return rtn
 
+# return added work index
 func add_new_work(wk :Work):
 	works.append(wk)
+	return works.size()-1
 
 func del_at(pos):
 	works.remove_at(pos)

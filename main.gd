@@ -60,8 +60,10 @@ func _on_work_list_menu_button_toggled(button_pressed: bool) -> void:
 	var sel = WorkListMenuButton.get_popup().get_focused_item()
 	if sel ==-1 :
 		return
+	select_work(sel)
 
-	var sel_wd = work_list.get_at(sel)
+func select_work(work_index):
+	var sel_wd = work_list.get_at(work_index)
 	WorkListMenuButton.text = sel_wd.title
 	text2speech("%s로 설정합니다." % sel_wd.title)
 	make_works(sel_wd)
@@ -122,7 +124,7 @@ func _on_cmd_menu_button_toggled(button_pressed: bool) -> void:
 
 func reset_work_list():
 	var new_wl = WorkList.new(work_rawdata)
-	if not new_wl.errmsg.is_empty():
+	if new_wl.has_error():
 #		print_debug(new_wl.errmsg)
 		$TimedMessage.show_message(new_wl.errmsg)
 		return
@@ -133,7 +135,7 @@ func reset_work_list():
 
 func load_work_list():
 	var new_wl =  work_list.load_new(file_name)
-	if not new_wl.errmsg.is_empty():
+	if new_wl.has_error():
 		$TimedMessage.show_message(new_wl.errmsg)
 		return
 	work_list = new_wl
@@ -146,9 +148,14 @@ func save_work_list():
 
 func add_new_work():
 	var wk = ["새워크", ["총시간",60*30], ["운동", 60*3], ["휴식", 60*1] ]
-	work_list.add_new_work( work_list.Work.new(wk) )
+	var new_work = work_list.Work.new(wk)
+	if new_work.has_error():
+		$TimedMessage.show_message(new_work.errmsg)
+		return
+	var new_work_index = work_list.add_new_work( new_work )
 	work_list2work_list_menu()
 	$TimedMessage.show_message("새워크를추가합니다.")
+	select_work( new_work_index )
 
 # raw data
 var file_name = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/gd4timer_workdata.json"
