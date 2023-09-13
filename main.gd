@@ -14,15 +14,15 @@ var work_list :WorkList
 var work_nodes = []
 var sub_work_index = 1
 
-func update_time_labels():
+func update_time_labels()->void:
 	for o in work_nodes:
 		o.update_time_labels()
 
-func reset_time():
+func reset_time()->void:
 	for o in work_nodes:
 		o.reset_time()
 
-func disable_buttons(disable :bool):
+func disable_buttons(disable :bool)->void:
 	WorkListMenuButton.disabled =disable
 	for o in work_nodes:
 		o.disable_buttons(disable)
@@ -34,7 +34,7 @@ func _ready() -> void:
 	reset_work_list()
 	work_list2work_list_menu()
 
-func work_list2work_list_menu():
+func work_list2work_list_menu()->void:
 	WorkListMenuButton.get_popup().clear()
 	for i in work_list.works.size():
 		WorkListMenuButton.get_popup().add_item(work_list.get_at(i).to_str(),i)
@@ -62,7 +62,7 @@ func _on_work_list_menu_button_toggled(button_pressed: bool) -> void:
 		return
 	select_work(sel)
 
-func select_work(work_index):
+func select_work(work_index)->void:
 	var sel_wd = work_list.get_at(work_index)
 	WorkListMenuButton.text = sel_wd.title
 	text2speech("%s로 설정합니다." % sel_wd.title)
@@ -70,7 +70,7 @@ func select_work(work_index):
 	reset_time()
 	update_time_labels()
 
-func make_works(wk :WorkList.Work):
+func make_works(wk :WorkList.Work)->void:
 	# clear
 	for i in work_nodes.size():
 		if i == 0:
@@ -122,7 +122,7 @@ func _on_cmd_menu_button_toggled(button_pressed: bool) -> void:
 		_: # unknown
 			print_debug("unknown", sel)
 
-func reset_work_list():
+func reset_work_list()->void:
 	var new_wl = WorkList.new(work_rawdata)
 	if new_wl.has_error():
 #		print_debug(new_wl.errmsg)
@@ -133,7 +133,7 @@ func reset_work_list():
 	work_list2work_list_menu()
 	$TimedMessage.show_message("초기화합니다.")
 
-func load_work_list():
+func load_work_list()->void:
 	var new_wl =  work_list.load_new(file_name)
 	if new_wl.has_error():
 		$TimedMessage.show_message(new_wl.errmsg)
@@ -142,11 +142,11 @@ func load_work_list():
 	work_list2work_list_menu()
 	$TimedMessage.show_message("load %s" % [file_name])
 
-func save_work_list():
+func save_work_list()->void:
 	var msg = work_list.save(file_name)
 	$TimedMessage.show_message(msg)
 
-func add_new_work():
+func add_new_work()->void:
 	var wk = ["새워크", ["총시간",60*30], ["운동", 60*3], ["휴식", 60*1] ]
 	var new_work = work_list.Work.new(wk)
 	if new_work.has_error():

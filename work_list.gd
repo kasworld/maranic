@@ -14,7 +14,7 @@ class SubWork:
 			return
 		name = rawdata[0]
 		second = rawdata[1]
-	func to_data():
+	func to_data()->Array:
 		return [name,second]
 	func second2text()->String:
 		return "%02d:%02d" %[ second/60,second % 60]
@@ -36,12 +36,12 @@ class Work:
 				errmsg = s.errmsg
 				return
 			sub_work_list.append( s )
-	func to_data():
+	func to_data()->Array:
 		var swl = [title]
 		for d in sub_work_list:
 			swl.append(d.to_data())
 		return swl
-	func to_str():
+	func to_str()->String:
 		var rtn = "%s:" % [ title ]
 		for j in sub_work_list:
 			rtn += j.to_str()
@@ -66,11 +66,11 @@ func to_data()->Array:
 	return rtn
 
 # return added work index
-func add_new_work(wk :Work):
+func add_new_work(wk :Work)->int:
 	works.append(wk)
 	return works.size()-1
 
-func del_at(pos):
+func del_at(pos)->void:
 	works.remove_at(pos)
 
 func get_at(pos)->Work:

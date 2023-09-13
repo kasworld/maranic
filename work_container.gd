@@ -4,26 +4,26 @@ var totalSec = 0
 var remainSec = 0
 var incSec = 10
 
-func second2text(sec :int):
+func second2text(sec :int)->String:
 	return "%02d:%02d" %[ sec/60,sec % 60]
 
-func update_time_labels():
+func update_time_labels()->void:
 	$SecLabel.text = second2text(totalSec)
 	$SecRemainLabel.text = second2text(remainSec)
 
-func disable_buttons(disable :bool):
+func disable_buttons(disable :bool)->void:
 	$MenuButton.disabled = disable
 	$SecDecButton.disabled = disable
 	$SecIncButton.disabled = disable
 
-func reset_time():
+func reset_time()->void:
 	remainSec = totalSec
 
-func set_label_total_sec(s,sec):
+func set_label_total_sec(s,sec)->void:
 	$NameEdit.text = s
 	totalSec = sec
 
-func get_label_text():
+func get_label_text()->String:
 	return $NameEdit.text
 
 func dec_remain_sec() -> bool:
