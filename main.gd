@@ -74,7 +74,6 @@ func select_work(work_index)->void:
 	update_time_labels()
 	WorkListMenuButton.text = sel_wd.title
 
-
 func clear_work_nodes()->void:
 	# clear
 	for i in work_nodes.size():
