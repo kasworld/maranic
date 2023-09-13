@@ -55,6 +55,7 @@ layout_mode = 2
 theme = ExtResource("1_eug6i")
 text = "00:00"
 
+[connection signal="text_submitted" from="NameEdit" to="." method="_on_name_edit_text_submitted"]
 [connection signal="toggled" from="MenuButton" to="." method="_on_menu_button_toggled"]
 [connection signal="pressed" from="SecDecButton" to="." method="_on_sec_dec_button_pressed"]
 [connection signal="pressed" from="SecIncButton" to="." method="_on_sec_inc_button_pressed"]

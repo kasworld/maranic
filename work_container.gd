@@ -1,10 +1,15 @@
 extends HBoxContainer
 
+signal del_sub_work(index :int, sw :WorkList.SubWork)
+signal add_sub_work(index :int, sw :WorkList.SubWork)
+
 var sub_work :WorkList.SubWork
+var sub_work_index :int
 var remainSec = 0
 var incSec = 10
 
-func set_sub_work(sw :WorkList.SubWork)->void:
+func set_sub_work(i :int,  sw :WorkList.SubWork)->void:
+	sub_work_index = i
 	sub_work = sw
 	$NameEdit.text = sub_work.name
 
@@ -54,8 +59,16 @@ func _on_menu_button_toggled(button_pressed: bool) -> void:
 	if sel ==-1 :
 		return
 	match sel :
-		0: pass
-		1: pass
-		2: pass
+		0: # 서브워크이름바꾸기
+			$NameEdit.editable = true
+		1: # 서브워크지우기
+			del_sub_work.emit(sub_work_index, sub_work)
+		2: # 서브워크추가하기
+			add_sub_work.emit(sub_work_index, sub_work)
 		_: # unknown
 			print_debug("unknown", sel)
+
+
+func _on_name_edit_text_submitted(new_text: String) -> void:
+	$NameEdit.editable = false
+	sub_work.name = $NameEdit.text

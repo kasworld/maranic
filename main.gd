@@ -94,7 +94,7 @@ func make_work_nodes(wk :WorkList.Work)->void:
 		$VBoxContainer/ScrollContainer/WorksContainer.add_child(wn)
 	for i in work_nodes.size():
 		var sw = wk.sub_work_list[i]
-		work_nodes[i].set_sub_work(sw)
+		work_nodes[i].set_sub_work(i,sw)
 
 func _on_start_button_toggled(button_pressed: bool) -> void:
 	if work_nodes.size() == 0 :
