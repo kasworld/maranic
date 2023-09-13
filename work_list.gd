@@ -70,8 +70,11 @@ func add_new_work(wk :Work)->int:
 	works.append(wk)
 	return works.size()-1
 
-func del_at(pos)->void:
+func del_at(pos)->String:
+	if pos < 0 or pos >= works.size() :
+		return "invalid index"
 	works.remove_at(pos)
+	return ""
 
 func get_at(pos)->Work:
 	return works[pos]

@@ -12,6 +12,7 @@ func text2speech(s):
 
 var work_list :WorkList
 var work_nodes = []
+var current_work_index = -1
 var sub_work_index = 1
 
 func update_time_labels()->void:
@@ -38,6 +39,7 @@ func work_list2work_list_menu()->void:
 	WorkListMenuButton.get_popup().clear()
 	for i in work_list.works.size():
 		WorkListMenuButton.get_popup().add_item(work_list.get_at(i).to_str(),i)
+	clear_work_nodes()
 
 func _on_timer_timeout() -> void:
 	if work_nodes[0].dec_remain_sec() != true: # fail to dec
@@ -60,17 +62,20 @@ func _on_work_list_menu_button_toggled(button_pressed: bool) -> void:
 	var sel = WorkListMenuButton.get_popup().get_focused_item()
 	if sel ==-1 :
 		return
+	current_work_index = sel
 	select_work(sel)
 
 func select_work(work_index)->void:
 	var sel_wd = work_list.get_at(work_index)
-	WorkListMenuButton.text = sel_wd.title
 	text2speech("%s로 설정합니다." % sel_wd.title)
-	make_works(sel_wd)
+	clear_work_nodes()
+	make_work_nodes(sel_wd)
 	reset_time()
 	update_time_labels()
+	WorkListMenuButton.text = sel_wd.title
 
-func make_works(wk :WorkList.Work)->void:
+
+func clear_work_nodes()->void:
 	# clear
 	for i in work_nodes.size():
 		if i == 0:
@@ -80,6 +85,9 @@ func make_works(wk :WorkList.Work)->void:
 	work_nodes = [
 		$VBoxContainer/MainWorkContainer
 	]
+	$VBoxContainer/TitleContainer/WorkListMenuButton.text = "인터벌 타이머"
+
+func make_work_nodes(wk :WorkList.Work)->void:
 	for i in wk.sub_work_list.size()-1:
 		var wn = work_scene.instantiate()
 		wn.focus_mode = Control.FOCUS_ALL
@@ -111,14 +119,16 @@ func _on_cmd_menu_button_toggled(button_pressed: bool) -> void:
 	if sel ==-1 :
 		return
 	match sel :
-		0: # 읽어오기
+		0: # 워크목록읽어오기
 			load_work_list()
-		1: # 저장하기
+		1: # 워크목록저장하기
 			save_work_list()
-		2: # 초기화하기
+		2: # 워크목록초기화하기
 			reset_work_list()
-		3: # 새작업추가하기
+		3: # 새워크추가하기
 			add_new_work()
+		4: # 현재워크삭제하기
+			del_current_work()
 		_: # unknown
 			print_debug("unknown", sel)
 
@@ -156,6 +166,13 @@ func add_new_work()->void:
 	work_list2work_list_menu()
 	$TimedMessage.show_message("새워크를추가합니다.")
 	select_work( new_work_index )
+
+func del_current_work()->void:
+	var errmsg = work_list.del_at(current_work_index)
+	if not errmsg.is_empty() :
+		$TimedMessage.show_message(errmsg)
+		return
+	work_list2work_list_menu()
 
 # raw data
 var file_name = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/gd4timer_workdata.json"

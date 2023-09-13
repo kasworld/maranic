@@ -31,15 +31,17 @@ flat = false
 layout_mode = 2
 theme = ExtResource("3_sxpny")
 text = "메뉴"
-item_count = 4
-popup/item_0/text = "읽어오기"
+item_count = 5
+popup/item_0/text = "워크목록읽어오기"
 popup/item_0/id = 0
-popup/item_1/text = "저장하기"
+popup/item_1/text = "워크목록저장하기"
 popup/item_1/id = 1
-popup/item_2/text = "초기화하기"
+popup/item_2/text = "워크목록초기화하기"
 popup/item_2/id = 2
-popup/item_3/text = "새작업추가하기"
+popup/item_3/text = "새워크추가하기"
 popup/item_3/id = 3
+popup/item_4/text = "현재워크삭제하기"
+popup/item_4/id = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TitleContainer"]
 layout_mode = 2
