@@ -12,6 +12,13 @@ func set_subwork(i :int,  sw :WorkList.SubWork)->void:
 	subwork = sw
 	$NameEdit.text = subwork.name
 
+func reset()->void:
+	subwork_index = -1
+	subwork = null
+	$SecLabel.text = "00:00"
+	$SecRemainLabel.text = "00:00"
+	$NameEdit.text = ""
+
 func update_time_labels()->void:
 	$SecLabel.text = subwork.second2text(subwork.second)
 	$SecRemainLabel.text = subwork.second2text(remainSec)
@@ -33,10 +40,10 @@ func dec_remain_sec() -> bool:
 		return false # not success
 	return true
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	$MenuButton.get_popup().theme = preload("res://menulist_theme.tres")
-	pass # Replace with function body.
 
 func _on_menu_button_toggled(button_pressed: bool) -> void:
 	if button_pressed: # list opened

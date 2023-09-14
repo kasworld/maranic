@@ -24,7 +24,7 @@ func _ready() -> void:
 	CmdMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	reset_work_list()
 	work_list2work_list_menu()
-
+	FirstSubWorkNode.disable_buttons(true)
 	FirstSubWorkNode.add_subwork.connect(_on_work_container_add_subwork)
 	FirstSubWorkNode.del_subwork.connect(_on_work_container_del_subwork)
 
@@ -127,8 +127,11 @@ func clear_subwork_nodes()->void:
 	subwork_nodes = [
 		FirstSubWorkNode
 	]
+	FirstSubWorkNode.disable_buttons(true)
+	FirstSubWorkNode.reset()
 
 func make_subwork_nodes(wk :WorkList.Work)->void:
+	FirstSubWorkNode.disable_buttons(false)
 	for i in wk.subwork_list.size()-1:
 		var wn = work_scene.instantiate()
 		wn.focus_mode = Control.FOCUS_ALL
