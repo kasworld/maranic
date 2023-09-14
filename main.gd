@@ -9,24 +9,14 @@ func text2speech(s):
 
 @onready var WorkListMenuButton = $VBoxContainer/TitleContainer/WorkListMenuButton
 @onready var CmdMenuButton = $VBoxContainer/TitleContainer/CmdMenuButton
+@onready var StartButton = $VBoxContainer/TitleContainer/StartButton
+@onready var FirstSubWorkNode = $VBoxContainer/FirstSubWorkNode
+@onready var SubWorkNodesContainer = $VBoxContainer/ScrollContainer/SubWorkNodesContainer
 
 var work_list :WorkList
 var current_work_index = -1
 var subwork_nodes = []
 var subwork_index = 1
-
-func update_time_labels()->void:
-	for o in subwork_nodes:
-		o.update_time_labels()
-
-func reset_time()->void:
-	for o in subwork_nodes:
-		o.reset_time()
-
-func disable_buttons(disable :bool)->void:
-	WorkListMenuButton.disabled =disable
-	for o in subwork_nodes:
-		o.disable_buttons(disable)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -35,30 +25,16 @@ func _ready() -> void:
 	reset_work_list()
 	work_list2work_list_menu()
 
-	$VBoxContainer/FirstSubWorkNode.add_subwork.connect(_on_work_container_add_subwork)
-	$VBoxContainer/FirstSubWorkNode.del_subwork.connect(_on_work_container_del_subwork)
+	FirstSubWorkNode.add_subwork.connect(_on_work_container_add_subwork)
+	FirstSubWorkNode.del_subwork.connect(_on_work_container_del_subwork)
 
+# work list ########################################################################################
 
 func work_list2work_list_menu()->void:
 	WorkListMenuButton.get_popup().clear()
 	for i in work_list.works.size():
 		WorkListMenuButton.get_popup().add_item(work_list.get_at(i).to_str(),i)
 	clear_subwork_nodes()
-
-func _on_timer_timeout() -> void:
-	if subwork_nodes[0].dec_remain_sec() != true: # fail to dec
-		$VBoxContainer/TitleContainer/StartButton.button_pressed = false
-	elif subwork_nodes.size() > subwork_index:
-		if subwork_nodes[subwork_index].dec_remain_sec() != true: # move to next sub work
-			subwork_nodes[subwork_index].reset_time()
-			var oldWorkStr = subwork_nodes[subwork_index].get_label_text()
-			subwork_index += 1
-			if subwork_nodes.size() <= subwork_index:
-				subwork_index = 1
-			var newWorkStr = subwork_nodes[subwork_index].get_label_text()
-			text2speech("%s를 끝내고 %s를 시작합니다." %[oldWorkStr,newWorkStr])
-			subwork_nodes[subwork_index].grab_focus()
-	update_time_labels()
 
 func _on_work_list_menu_button_toggled(button_pressed: bool) -> void:
 	if button_pressed: # list opened
@@ -76,45 +52,6 @@ func select_work(work_index)->void:
 	make_subwork_nodes(sel_wd)
 	reset_time()
 	update_time_labels()
-
-func clear_subwork_nodes()->void:
-	# clear
-	for i in subwork_nodes.size():
-		if i == 0:
-			continue
-		$VBoxContainer/ScrollContainer/SubWorkNodesContainer.remove_child(subwork_nodes[i])
-		subwork_nodes[i].queue_free()
-	subwork_nodes = [
-		$VBoxContainer/FirstSubWorkNode
-	]
-
-func make_subwork_nodes(wk :WorkList.Work)->void:
-	for i in wk.subwork_list.size()-1:
-		var wn = work_scene.instantiate()
-		wn.focus_mode = Control.FOCUS_ALL
-		wn.add_subwork.connect(_on_work_container_add_subwork)
-		wn.del_subwork.connect(_on_work_container_del_subwork)
-		subwork_nodes.append(wn)
-		$VBoxContainer/ScrollContainer/SubWorkNodesContainer.add_child(wn)
-	for i in subwork_nodes.size():
-		var sw = wk.subwork_list[i]
-		subwork_nodes[i].set_subwork(i,sw)
-
-func _on_start_button_toggled(button_pressed: bool) -> void:
-	if subwork_nodes.size() == 0 :
-		return
-	var sel_wd = work_list.get_at(current_work_index)
-	if button_pressed :
-		if subwork_nodes[0].remainSec<=0:
-			reset_time()
-		$VBoxContainer/TitleContainer/StartButton.text = "멈추기"
-		text2speech("%s를 시작합니다." % [ sel_wd.get_title() ])
-		$Timer.start()
-	else:
-		$VBoxContainer/TitleContainer/StartButton.text = "시작하기"
-		text2speech("%s를 멈춥니다." % [ sel_wd.get_title() ])
-		$Timer.stop()
-	disable_buttons(button_pressed)
 
 func _on_cmd_menu_button_toggled(button_pressed: bool) -> void:
 	if button_pressed: # list opened
@@ -178,6 +115,75 @@ func del_current_work()->void:
 		return
 	work_list2work_list_menu()
 
+# subwork ##########################################################################################
+
+func _on_start_button_toggled(button_pressed: bool) -> void:
+	if subwork_nodes.size() == 0 :
+		return
+	var sel_wd = work_list.get_at(current_work_index)
+	if button_pressed :
+		if subwork_nodes[0].remainSec<=0:
+			reset_time()
+		StartButton.text = "멈추기"
+		text2speech("%s를 시작합니다." % [ sel_wd.get_title() ])
+		$Timer.start()
+	else:
+		StartButton.text = "시작하기"
+		text2speech("%s를 멈춥니다." % [ sel_wd.get_title() ])
+		$Timer.stop()
+	disable_buttons(button_pressed)
+
+func _on_timer_timeout() -> void:
+	if subwork_nodes[0].dec_remain_sec() != true: # fail to dec
+		StartButton.button_pressed = false
+	elif subwork_nodes.size() > subwork_index:
+		if subwork_nodes[subwork_index].dec_remain_sec() != true: # move to next sub work
+			subwork_nodes[subwork_index].reset_time()
+			var oldWorkStr = subwork_nodes[subwork_index].get_label_text()
+			subwork_index += 1
+			if subwork_nodes.size() <= subwork_index:
+				subwork_index = 1
+			var newWorkStr = subwork_nodes[subwork_index].get_label_text()
+			text2speech("%s를 끝내고 %s를 시작합니다." %[oldWorkStr,newWorkStr])
+			subwork_nodes[subwork_index].grab_focus()
+	update_time_labels()
+
+func update_time_labels()->void:
+	for o in subwork_nodes:
+		o.update_time_labels()
+
+func reset_time()->void:
+	for o in subwork_nodes:
+		o.reset_time()
+
+func disable_buttons(disable :bool)->void:
+	WorkListMenuButton.disabled =disable
+	for o in subwork_nodes:
+		o.disable_buttons(disable)
+
+func clear_subwork_nodes()->void:
+	# clear
+	for i in subwork_nodes.size():
+		if i == 0:
+			continue
+		SubWorkNodesContainer.remove_child(subwork_nodes[i])
+		subwork_nodes[i].queue_free()
+	subwork_nodes = [
+		FirstSubWorkNode
+	]
+
+func make_subwork_nodes(wk :WorkList.Work)->void:
+	for i in wk.subwork_list.size()-1:
+		var wn = work_scene.instantiate()
+		wn.focus_mode = Control.FOCUS_ALL
+		wn.add_subwork.connect(_on_work_container_add_subwork)
+		wn.del_subwork.connect(_on_work_container_del_subwork)
+		subwork_nodes.append(wn)
+		SubWorkNodesContainer.add_child(wn)
+	for i in subwork_nodes.size():
+		var sw = wk.subwork_list[i]
+		subwork_nodes[i].set_subwork(i,sw)
+
 func _on_work_container_del_subwork(index :int, sw :WorkList.SubWork)->void:
 	pass
 
@@ -185,7 +191,8 @@ func _on_work_container_add_subwork(index :int, sw :WorkList.SubWork)->void:
 	pass
 
 
-# raw data
+# raw data #########################################################################################
+
 var file_name = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/gd4timer_workdata.json"
 var work_rawdata = [
 	# 워크이름 총시간 sec, subwork1 sec, subwork2 sec, etc
