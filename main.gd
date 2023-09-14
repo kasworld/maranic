@@ -88,6 +88,8 @@ func make_work_nodes(wk :WorkList.Work)->void:
 	for i in wk.sub_work_list.size()-1:
 		var wn = work_scene.instantiate()
 		wn.focus_mode = Control.FOCUS_ALL
+		wn.add_sub_work.connect(_on_work_container_add_sub_work)
+		wn.del_sub_work.connect(_on_work_container_del_sub_work)
 		work_nodes.append(wn)
 		$VBoxContainer/ScrollContainer/WorksContainer.add_child(wn)
 	for i in work_nodes.size():
@@ -172,6 +174,13 @@ func del_current_work()->void:
 		return
 	work_list2work_list_menu()
 
+func _on_work_container_del_sub_work(index :int, sw :WorkList.SubWork)->void:
+	pass
+
+func _on_work_container_add_sub_work(index :int, sw :WorkList.SubWork)->void:
+	pass
+
+
 # raw data
 var file_name = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/gd4timer_workdata.json"
 var work_rawdata = [
@@ -192,3 +201,5 @@ var work_rawdata = [
 	[ ["27일차", 60*30], ["걷기", 60*2.5], ["달리기", 60*25 ], ["걷기", 60*2.5] ],
 	[ ["29일차", 60*35], ["걷기", 60*2.5], ["달리기", 60*30 ], ["걷기", 60*2.5] ],
 ]
+
+
