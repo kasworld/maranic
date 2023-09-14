@@ -141,10 +141,19 @@ func make_subwork_nodes(wk :WorkList.Work)->void:
 		subwork_nodes[i].set_subwork(i,sw)
 
 func _on_work_container_del_subwork(index :int, sw :WorkList.SubWork)->void:
-	pass
+	var wk = work_list.get_at(current_work_index)
+	if wk.size() <= 1:
+		$TimedMessage.show_message("빈 워크가 되어 지울 수 없습니다.")
+		return
+	wk.del_at(index)
+	work_list2work_list_menu()
+	select_work(current_work_index)
 
 func _on_work_container_add_subwork(index :int, sw :WorkList.SubWork)->void:
-	pass
+	var wk = work_list.get_at(current_work_index)
+	wk.add_new_subwork( WorkList.SubWork.new(["운동", 60*3]) )
+	work_list2work_list_menu()
+	select_work(current_work_index)
 
 func _on_start_button_toggled(button_pressed: bool) -> void:
 	if subwork_nodes.size() == 0 :

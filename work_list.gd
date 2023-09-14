@@ -50,6 +50,16 @@ class Work:
 		for j in subwork_list:
 			rtn += j.to_str()
 		return rtn
+	func del_at(i :int)->String:
+		if i < 0 or i >= subwork_list.size():
+			return "invalid index"
+		subwork_list.remove_at(i)
+		return ""
+	func add_new_subwork(sw :SubWork)->int:
+		subwork_list.append(sw)
+		return subwork_list.size()-1
+	func size()->int:
+		return subwork_list.size()
 
 var errmsg :String
 func has_error()->bool:
