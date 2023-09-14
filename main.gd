@@ -35,6 +35,10 @@ func _ready() -> void:
 	reset_work_list()
 	work_list2work_list_menu()
 
+	$VBoxContainer/FirstSubWorkNode.add_subwork.connect(_on_work_container_add_subwork)
+	$VBoxContainer/FirstSubWorkNode.del_subwork.connect(_on_work_container_del_subwork)
+
+
 func work_list2work_list_menu()->void:
 	WorkListMenuButton.get_popup().clear()
 	for i in work_list.works.size():
