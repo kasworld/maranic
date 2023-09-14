@@ -45,14 +45,6 @@ func _on_work_list_menu_button_toggled(button_pressed: bool) -> void:
 	current_work_index = sel
 	select_work(sel)
 
-func select_work(work_index)->void:
-	var sel_wd = work_list.get_at(work_index)
-	text2speech("%s로 설정합니다." % sel_wd.get_title())
-	clear_subwork_nodes()
-	make_subwork_nodes(sel_wd)
-	reset_time()
-	update_time_labels()
-
 func _on_cmd_menu_button_toggled(button_pressed: bool) -> void:
 	if button_pressed: # list opened
 		return
@@ -117,6 +109,43 @@ func del_current_work()->void:
 
 # subwork ##########################################################################################
 
+func select_work(work_index)->void:
+	var sel_wd = work_list.get_at(work_index)
+	text2speech("%s로 설정합니다." % sel_wd.get_title())
+	clear_subwork_nodes()
+	make_subwork_nodes(sel_wd)
+	reset_time()
+	update_time_labels()
+
+func clear_subwork_nodes()->void:
+	# clear
+	for i in subwork_nodes.size():
+		if i == 0:
+			continue
+		SubWorkNodesContainer.remove_child(subwork_nodes[i])
+		subwork_nodes[i].queue_free()
+	subwork_nodes = [
+		FirstSubWorkNode
+	]
+
+func make_subwork_nodes(wk :WorkList.Work)->void:
+	for i in wk.subwork_list.size()-1:
+		var wn = work_scene.instantiate()
+		wn.focus_mode = Control.FOCUS_ALL
+		wn.add_subwork.connect(_on_work_container_add_subwork)
+		wn.del_subwork.connect(_on_work_container_del_subwork)
+		subwork_nodes.append(wn)
+		SubWorkNodesContainer.add_child(wn)
+	for i in subwork_nodes.size():
+		var sw = wk.subwork_list[i]
+		subwork_nodes[i].set_subwork(i,sw)
+
+func _on_work_container_del_subwork(index :int, sw :WorkList.SubWork)->void:
+	pass
+
+func _on_work_container_add_subwork(index :int, sw :WorkList.SubWork)->void:
+	pass
+
 func _on_start_button_toggled(button_pressed: bool) -> void:
 	if subwork_nodes.size() == 0 :
 		return
@@ -160,36 +189,6 @@ func disable_buttons(disable :bool)->void:
 	WorkListMenuButton.disabled =disable
 	for o in subwork_nodes:
 		o.disable_buttons(disable)
-
-func clear_subwork_nodes()->void:
-	# clear
-	for i in subwork_nodes.size():
-		if i == 0:
-			continue
-		SubWorkNodesContainer.remove_child(subwork_nodes[i])
-		subwork_nodes[i].queue_free()
-	subwork_nodes = [
-		FirstSubWorkNode
-	]
-
-func make_subwork_nodes(wk :WorkList.Work)->void:
-	for i in wk.subwork_list.size()-1:
-		var wn = work_scene.instantiate()
-		wn.focus_mode = Control.FOCUS_ALL
-		wn.add_subwork.connect(_on_work_container_add_subwork)
-		wn.del_subwork.connect(_on_work_container_del_subwork)
-		subwork_nodes.append(wn)
-		SubWorkNodesContainer.add_child(wn)
-	for i in subwork_nodes.size():
-		var sw = wk.subwork_list[i]
-		subwork_nodes[i].set_subwork(i,sw)
-
-func _on_work_container_del_subwork(index :int, sw :WorkList.SubWork)->void:
-	pass
-
-func _on_work_container_add_subwork(index :int, sw :WorkList.SubWork)->void:
-	pass
-
 
 # raw data #########################################################################################
 
