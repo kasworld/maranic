@@ -1,27 +1,27 @@
 [gd_scene load_steps=4 format=3 uid="uid://dvgdal4hlx1ws"]
 
-[ext_resource type="Script" path="res://work_container.gd" id="1_3r0v0"]
-[ext_resource type="Theme" uid="uid://i63124txlj1h" path="res://label_theme.tres" id="1_eug6i"]
-[ext_resource type="Theme" uid="uid://ppd28w7sx5wa" path="res://button_theme.tres" id="2_2j8yh"]
+[ext_resource type="Script" path="res://subwork_node.gd" id="1_mqriv"]
+[ext_resource type="Theme" uid="uid://i63124txlj1h" path="res://label_theme.tres" id="2_dbx7h"]
+[ext_resource type="Theme" uid="uid://ppd28w7sx5wa" path="res://button_theme.tres" id="3_u1yx1"]
 
-[node name="WorkContainer" type="HBoxContainer"]
+[node name="SubWorkNode" type="HBoxContainer"]
 offset_top = 496.0
 offset_right = 1920.0
 offset_bottom = 643.0
 size_flags_vertical = 3
 alignment = 1
-script = ExtResource("1_3r0v0")
+script = ExtResource("1_mqriv")
 
 [node name="NameEdit" type="LineEdit" parent="."]
 layout_mode = 2
-theme = ExtResource("1_eug6i")
+theme = ExtResource("2_dbx7h")
 placeholder_text = "새항목추가"
 editable = false
 expand_to_text_length = true
 
 [node name="MenuButton" type="MenuButton" parent="."]
 layout_mode = 2
-theme = ExtResource("2_2j8yh")
+theme = ExtResource("3_u1yx1")
 text = "수정하기"
 item_count = 3
 popup/item_0/text = "서브워크이름바꾸기"
@@ -37,22 +37,22 @@ size_flags_horizontal = 3
 
 [node name="SecDecButton" type="Button" parent="."]
 layout_mode = 2
-theme = ExtResource("2_2j8yh")
+theme = ExtResource("3_u1yx1")
 text = "<"
 
 [node name="SecLabel" type="Label" parent="."]
 layout_mode = 2
-theme = ExtResource("1_eug6i")
+theme = ExtResource("2_dbx7h")
 text = "00:00"
 
 [node name="SecIncButton" type="Button" parent="."]
 layout_mode = 2
-theme = ExtResource("2_2j8yh")
+theme = ExtResource("3_u1yx1")
 text = ">"
 
 [node name="SecRemainLabel" type="Label" parent="."]
 layout_mode = 2
-theme = ExtResource("1_eug6i")
+theme = ExtResource("2_dbx7h")
 text = "00:00"
 
 [connection signal="text_submitted" from="NameEdit" to="." method="_on_name_edit_text_submitted"]

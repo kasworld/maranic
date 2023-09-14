@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cfjxkoduefsup"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_qfeat"]
-[ext_resource type="PackedScene" uid="uid://dvgdal4hlx1ws" path="res://work_container.tscn" id="2_ongj6"]
+[ext_resource type="PackedScene" uid="uid://dvgdal4hlx1ws" path="res://subwork_node.tscn" id="2_ongj6"]
 [ext_resource type="Theme" uid="uid://ppd28w7sx5wa" path="res://button_theme.tres" id="3_sxpny"]
 [ext_resource type="PackedScene" uid="uid://c6cct2gj2a3im" path="res://timed_message.tscn" id="4_mflyv"]
 
@@ -53,7 +53,7 @@ theme = ExtResource("3_sxpny")
 toggle_mode = true
 text = "시작하기"
 
-[node name="MainWorkContainer" parent="VBoxContainer" instance=ExtResource("2_ongj6")]
+[node name="FirstSubWorkNode" parent="VBoxContainer" instance=ExtResource("2_ongj6")]
 layout_mode = 2
 size_flags_vertical = 1
 
@@ -62,7 +62,7 @@ layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
 
-[node name="WorksContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+[node name="SubWorkNodesContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -77,5 +77,3 @@ offset_bottom = 767.0
 [connection signal="toggled" from="VBoxContainer/TitleContainer/WorkListMenuButton" to="." method="_on_work_list_menu_button_toggled"]
 [connection signal="toggled" from="VBoxContainer/TitleContainer/CmdMenuButton" to="." method="_on_cmd_menu_button_toggled"]
 [connection signal="toggled" from="VBoxContainer/TitleContainer/StartButton" to="." method="_on_start_button_toggled"]
-[connection signal="add_sub_work" from="VBoxContainer/MainWorkContainer" to="." method="_on_work_container_add_sub_work"]
-[connection signal="del_sub_work" from="VBoxContainer/MainWorkContainer" to="." method="_on_work_container_del_sub_work"]
