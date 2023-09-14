@@ -26,7 +26,10 @@ class Work:
 	func has_error()->bool:
 		return not errmsg.is_empty()
 	var sub_work_list :Array[SubWork]
-	func _init(rawdata)->void:
+	func _init(rawdata :Array)->void:
+		if rawdata.size() < 1 :
+			errmsg = "no sub work"
+			return
 		for sw in rawdata:
 			var s = SubWork.new(sw)
 			if s.has_error():
@@ -34,6 +37,8 @@ class Work:
 				return
 			sub_work_list.append( s )
 	func get_title()->String:
+		if sub_work_list.size() < 1 :
+			return "no sub work"
 		return sub_work_list[0].name
 	func to_data()->Array:
 		var swl = []
@@ -49,6 +54,7 @@ class Work:
 var errmsg :String
 func has_error()->bool:
 	return not errmsg.is_empty()
+
 var works :Array[Work]
 func _init(rawdata)->void:
 	for rd in rawdata:

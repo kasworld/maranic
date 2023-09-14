@@ -175,7 +175,7 @@ func del_current_work()->void:
 # raw data
 var file_name = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/gd4timer_workdata.json"
 var work_rawdata = [
-	# 이름,총시간초,work1 sec, work2 sec, etc
+	# 워크이름 총시간 sec, subwork1 sec, subwork2 sec, etc
 	[ ["1일차",  60*30], ["걷기", 60*3  ], ["달리기", 60*1  ] ],
 	[ ["3일차",  60*30], ["걷기", 60*3  ], ["달리기", 60*1.5] ],
 	[ ["5일차",  60*30], ["걷기", 60*3  ], ["달리기", 60*2  ] ],
