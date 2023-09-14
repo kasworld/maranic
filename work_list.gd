@@ -12,6 +12,9 @@ class SubWork:
 		if rawdata.size() != 2 :
 			errmsg = "invalid subwork %s" % [rawdata]
 			return
+		if rawdata[1] < 0 :
+			errmsg = "subwork second must 0 or more %s" % [rawdata]
+			return
 		name = rawdata[0]
 		second = rawdata[1]
 	func to_data()->Array:

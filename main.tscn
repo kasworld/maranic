@@ -24,13 +24,13 @@ alignment = 1
 [node name="WorkListMenuButton" type="MenuButton" parent="VBoxContainer/TitleContainer"]
 layout_mode = 2
 theme = ExtResource("3_sxpny")
-text = "인터벌 타이머"
+text = "워크선택"
 flat = false
 
 [node name="CmdMenuButton" type="MenuButton" parent="VBoxContainer/TitleContainer"]
 layout_mode = 2
 theme = ExtResource("3_sxpny")
-text = "메뉴"
+text = "워크목록메뉴"
 item_count = 5
 popup/item_0/text = "워크목록읽어오기"
 popup/item_0/id = 0
