@@ -67,12 +67,11 @@ func _on_work_list_menu_button_toggled(button_pressed: bool) -> void:
 
 func select_work(work_index)->void:
 	var sel_wd = work_list.get_at(work_index)
-	text2speech("%s로 설정합니다." % sel_wd.title)
+	text2speech("%s로 설정합니다." % sel_wd.get_title())
 	clear_work_nodes()
 	make_work_nodes(sel_wd)
 	reset_time()
 	update_time_labels()
-	WorkListMenuButton.text = sel_wd.title
 
 func clear_work_nodes()->void:
 	# clear
@@ -84,7 +83,6 @@ func clear_work_nodes()->void:
 	work_nodes = [
 		$VBoxContainer/MainWorkContainer
 	]
-	$VBoxContainer/TitleContainer/WorkListMenuButton.text = "인터벌 타이머"
 
 func make_work_nodes(wk :WorkList.Work)->void:
 	for i in wk.sub_work_list.size()-1:
@@ -99,15 +97,16 @@ func make_work_nodes(wk :WorkList.Work)->void:
 func _on_start_button_toggled(button_pressed: bool) -> void:
 	if work_nodes.size() == 0 :
 		return
+	var sel_wd = work_list.get_at(current_work_index)
 	if button_pressed :
 		if work_nodes[0].remainSec<=0:
 			reset_time()
 		$VBoxContainer/TitleContainer/StartButton.text = "멈추기"
-		text2speech("%s를 시작합니다." % [ WorkListMenuButton.text ])
+		text2speech("%s를 시작합니다." % [ sel_wd.get_title() ])
 		$Timer.start()
 	else:
 		$VBoxContainer/TitleContainer/StartButton.text = "시작하기"
-		text2speech("%s를 멈춥니다." % [ WorkListMenuButton.text ])
+		text2speech("%s를 멈춥니다." % [ sel_wd.get_title() ])
 		$Timer.stop()
 	disable_buttons(button_pressed)
 
@@ -156,7 +155,7 @@ func save_work_list()->void:
 	$TimedMessage.show_message(msg)
 
 func add_new_work()->void:
-	var wk = ["새워크", ["총시간",60*30], ["운동", 60*3], ["휴식", 60*1] ]
+	var wk = [ ["새워크", 60*30], ["운동", 60*3], ["휴식", 60*1] ]
 	var new_work = work_list.Work.new(wk)
 	if new_work.has_error():
 		$TimedMessage.show_message(new_work.errmsg)
@@ -177,19 +176,19 @@ func del_current_work()->void:
 var file_name = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/gd4timer_workdata.json"
 var work_rawdata = [
 	# 이름,총시간초,work1 sec, work2 sec, etc
-	[ "1일차",  ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*1  ] ],
-	[ "3일차",  ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*1.5] ],
-	[ "5일차",  ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*2  ] ],
-	[ "7일차",  ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*2  ] ],
-	[ "9일차",  ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*3  ] ],
-	[ "11일차", ["총시간",60*30], ["걷기", 60*1  ], ["달리기", 60*3  ] ],
-	[ "13일차", ["총시간",60*30], ["걷기", 60*1  ], ["달리기", 60*4  ] ],
-	[ "15일차", ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*5  ] ],
-	[ "17일차", ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*7  ] ],
-	[ "19일차", ["총시간",60*30], ["걷기", 60*4  ], ["달리기", 60*10 ] ],
-	[ "21일차", ["총시간",60*30], ["걷기", 60*2  ], ["달리기", 60*13 ] ],
-	[ "23일차", ["총시간",60*32], ["걷기", 60*2  ], ["달리기", 60*13 ], ["걷기", 60*2  ], ["달리기", 60*15 ] ],
-	[ "25일차", ["총시간",60*30], ["걷기", 60*3  ], ["달리기", 60*5  ], ["걷기", 60*2  ], ["달리기", 60*20 ] ],
-	[ "27일차", ["총시간",60*30], ["걷기", 60*2.5], ["달리기", 60*25 ], ["걷기", 60*2.5] ],
-	[ "29일차", ["총시간",60*35], ["걷기", 60*2.5], ["달리기", 60*30 ], ["걷기", 60*2.5] ],
+	[ ["1일차",  60*30], ["걷기", 60*3  ], ["달리기", 60*1  ] ],
+	[ ["3일차",  60*30], ["걷기", 60*3  ], ["달리기", 60*1.5] ],
+	[ ["5일차",  60*30], ["걷기", 60*3  ], ["달리기", 60*2  ] ],
+	[ ["7일차",  60*30], ["걷기", 60*2  ], ["달리기", 60*2  ] ],
+	[ ["9일차",  60*30], ["걷기", 60*2  ], ["달리기", 60*3  ] ],
+	[ ["11일차", 60*30], ["걷기", 60*1  ], ["달리기", 60*3  ] ],
+	[ ["13일차", 60*30], ["걷기", 60*1  ], ["달리기", 60*4  ] ],
+	[ ["15일차", 60*30], ["걷기", 60*2  ], ["달리기", 60*5  ] ],
+	[ ["17일차", 60*30], ["걷기", 60*3  ], ["달리기", 60*7  ] ],
+	[ ["19일차", 60*30], ["걷기", 60*4  ], ["달리기", 60*10 ] ],
+	[ ["21일차", 60*30], ["걷기", 60*2  ], ["달리기", 60*13 ] ],
+	[ ["23일차", 60*32], ["걷기", 60*2  ], ["달리기", 60*13 ], ["걷기", 60*2  ], ["달리기", 60*15 ] ],
+	[ ["25일차", 60*30], ["걷기", 60*3  ], ["달리기", 60*5  ], ["걷기", 60*2  ], ["달리기", 60*20 ] ],
+	[ ["27일차", 60*30], ["걷기", 60*2.5], ["달리기", 60*25 ], ["걷기", 60*2.5] ],
+	[ ["29일차", 60*35], ["걷기", 60*2.5], ["달리기", 60*30 ], ["걷기", 60*2.5] ],
 ]

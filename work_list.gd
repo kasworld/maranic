@@ -25,24 +25,23 @@ class Work:
 	var errmsg :String
 	func has_error()->bool:
 		return not errmsg.is_empty()
-	var title :String
 	var sub_work_list :Array[SubWork]
 	func _init(rawdata)->void:
-		rawdata = rawdata.duplicate()
-		title = rawdata.pop_front()
 		for sw in rawdata:
 			var s = SubWork.new(sw)
 			if s.has_error():
 				errmsg = s.errmsg
 				return
 			sub_work_list.append( s )
+	func get_title()->String:
+		return sub_work_list[0].name
 	func to_data()->Array:
-		var swl = [title]
+		var swl = []
 		for d in sub_work_list:
 			swl.append(d.to_data())
 		return swl
 	func to_str()->String:
-		var rtn = "%s:" % [ title ]
+		var rtn = ""
 		for j in sub_work_list:
 			rtn += j.to_str()
 		return rtn
