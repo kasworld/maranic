@@ -88,7 +88,7 @@ func load_work_list()->void:
 func save_work_list()->void:
 	var msg = work_list.save(file_name)
 	if msg.is_empty() :
-		$TimedMessage.show_message("목록파일을 저장했습니다. %s" %[file_name] )
+		$TimedMessage.show_message(tr("목록파일을 저장했습니다. %s") %[file_name] )
 	else:
 		$TimedMessage.show_message(msg)
 

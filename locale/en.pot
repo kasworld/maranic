@@ -18,15 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: main.gd
-msgid "초기화합니다."
+msgid "목록을 초기화합니다."
 msgstr ""
 
 #: main.gd
-msgid "load %s"
+msgid "목록파일을 읽었습니다. %s"
 msgstr ""
 
 #: main.gd
-msgid "새 워크를 추가합니다."
+msgid "목록파일을 저장했습니다. %s"
+msgstr ""
+
+#: main.gd
+msgid "목록에 새 워크를 추가합니다."
 msgstr ""
 
 #: main.gd
@@ -73,7 +77,7 @@ msgid "워크선택"
 msgstr ""
 
 #: main.tscn
-msgid "워크목록메뉴"
+msgid "목록메뉴"
 msgstr ""
 
 #: subwork_node.tscn
