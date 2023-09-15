@@ -40,6 +40,8 @@ func dec_remain_sec() -> bool:
 		return false # not success
 	return true
 
+func disable_menu(i :int, b :bool)->void:
+	$MenuButton.get_popup().set_item_disabled(i,b)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

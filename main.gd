@@ -147,6 +147,8 @@ func make_subwork_nodes(wk :WorkList.Work)->void:
 	for i in subwork_nodes.size():
 		var sw = wk.subwork_list[i]
 		subwork_nodes[i].set_subwork(i,sw)
+	if subwork_nodes.size() <= 1 :
+		subwork_nodes[0].disable_menu(1,true)
 
 func _on_work_container_del_subwork(index :int, sw :WorkList.SubWork)->void:
 	var wk = work_list.get_at(current_work_index)
@@ -162,6 +164,7 @@ func _on_work_container_add_subwork(index :int, sw :WorkList.SubWork)->void:
 	wk.add_new_subwork( WorkList.SubWork.new(["운동", 60*3]) )
 	work_list2work_list_menu()
 	select_work(current_work_index)
+	subwork_nodes[0].disable_menu(1,false)
 
 func _on_start_button_toggled(button_pressed: bool) -> void:
 	if subwork_nodes.size() == 0 :
