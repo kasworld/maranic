@@ -3,7 +3,7 @@ extends Node2D
 var work_scene = preload("res://subwork_node.tscn")
 
 var voices = DisplayServer.tts_get_voices_for_language(OS.get_locale_language())
-func text2speech(s):
+func text2speech(s :String):
 	DisplayServer.tts_stop()
 	DisplayServer.tts_speak(s, voices[0])
 
@@ -74,7 +74,7 @@ func reset_work_list()->void:
 	work_list = new_wl
 #	print_debug(work_list.to_data())
 	work_list2work_list_menu()
-	$TimedMessage.show_message(tr("초기화합니다."))
+	$TimedMessage.show_message(tr("목록을 초기화합니다."))
 
 func load_work_list()->void:
 	var new_wl =  work_list.load_new(file_name)
@@ -83,11 +83,14 @@ func load_work_list()->void:
 		return
 	work_list = new_wl
 	work_list2work_list_menu()
-	$TimedMessage.show_message(tr("읽어옴 %s") % [file_name])
+	$TimedMessage.show_message(tr("목록파일을 읽었습니다. %s") % [file_name] )
 
 func save_work_list()->void:
 	var msg = work_list.save(file_name)
-	$TimedMessage.show_message(msg)
+	if msg.is_empty() :
+		$TimedMessage.show_message("목록파일을 저장했습니다. %s" %[file_name] )
+	else:
+		$TimedMessage.show_message(msg)
 
 func add_new_work()->void:
 	var wk = [ ["새워크", 60*30], ["운동", 60*3], ["휴식", 60*1] ]
@@ -95,10 +98,10 @@ func add_new_work()->void:
 	if new_work.has_error():
 		$TimedMessage.show_message(new_work.errmsg)
 		return
-	var new_work_index = work_list.add_new_work( new_work )
+	current_work_index = work_list.add_new_work( new_work )
 	work_list2work_list_menu()
-	$TimedMessage.show_message(tr("새 워크를 추가합니다."))
-	select_work( new_work_index )
+	$TimedMessage.show_message(tr("목록에 새 워크를 추가합니다."))
+	select_work( current_work_index )
 
 func del_current_work()->void:
 	var errmsg = work_list.del_at(current_work_index)
@@ -109,7 +112,7 @@ func del_current_work()->void:
 
 # subwork ##########################################################################################
 
-func select_work(work_index)->void:
+func select_work(work_index :int)->void:
 	var sel_wd = work_list.get_at(work_index)
 	text2speech(tr("%s로 설정합니다.") % sel_wd.get_title())
 	clear_subwork_nodes()

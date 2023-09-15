@@ -88,13 +88,13 @@ func add_new_work(wk :Work)->int:
 	works.append(wk)
 	return works.size()-1
 
-func del_at(pos)->String:
+func del_at(pos :int)->String:
 	if pos < 0 or pos >= works.size() :
 		return "invalid index"
 	works.remove_at(pos)
 	return ""
 
-func get_at(pos)->Work:
+func get_at(pos :int)->Work:
 	return works[pos]
 
 func size()->int:
@@ -103,6 +103,7 @@ func size()->int:
 func file_exist(file_name :String)->bool:
 	return FileAccess.file_exists(file_name)
 
+# return error message
 func save(file_name :String)-> String:
 	var fileobj = FileAccess.open(file_name, FileAccess.WRITE)
 	if fileobj == null :
@@ -110,7 +111,7 @@ func save(file_name :String)-> String:
 	var work_list = to_data()
 	var json_string = JSON.stringify(work_list)
 	fileobj.store_line(json_string)
-	return "save %s" % [file_name]
+	return ""
 
 func load_new(file_name :String)->WorkList:
 	var fileobj = FileAccess.open(file_name, FileAccess.READ)
