@@ -24,11 +24,11 @@ layout_mode = 2
 theme = ExtResource("3_u1yx1")
 text = "서브워크메뉴"
 item_count = 3
-popup/item_0/text = "서브워크이름바꾸기"
+popup/item_0/text = "이름바꾸기"
 popup/item_0/id = 0
-popup/item_1/text = "서브워크지우기"
+popup/item_1/text = "지우기"
 popup/item_1/id = 1
-popup/item_2/text = "서브워크추가하기"
+popup/item_2/text = "추가하기"
 popup/item_2/id = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="."]

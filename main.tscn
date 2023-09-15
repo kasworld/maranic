@@ -30,13 +30,13 @@ flat = false
 [node name="CmdMenuButton" type="MenuButton" parent="VBoxContainer/TitleContainer"]
 layout_mode = 2
 theme = ExtResource("3_sxpny")
-text = "워크목록메뉴"
+text = "목록메뉴"
 item_count = 5
-popup/item_0/text = "워크목록읽어오기"
+popup/item_0/text = "목록읽어오기"
 popup/item_0/id = 0
-popup/item_1/text = "워크목록저장하기"
+popup/item_1/text = "목록저장하기"
 popup/item_1/id = 1
-popup/item_2/text = "워크목록초기화하기"
+popup/item_2/text = "목록초기화하기"
 popup/item_2/id = 2
 popup/item_3/text = "새워크추가하기"
 popup/item_3/id = 3

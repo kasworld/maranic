@@ -105,6 +105,8 @@ func file_exist(file_name :String)->bool:
 
 func save(file_name :String)-> String:
 	var fileobj = FileAccess.open(file_name, FileAccess.WRITE)
+	if fileobj == null :
+		return "fail to save %s" % [ file_name ]
 	var work_list = to_data()
 	var json_string = JSON.stringify(work_list)
 	fileobj.store_line(json_string)
@@ -112,6 +114,11 @@ func save(file_name :String)-> String:
 
 func load_new(file_name :String)->WorkList:
 	var fileobj = FileAccess.open(file_name, FileAccess.READ)
+	if fileobj == null :
+		var neww = WorkList.new([])
+#		var err = FileAccess.get_open_error()
+		neww.errmsg = "fail to load %s" % [ file_name ]
+		return neww
 	var json_string = fileobj.get_as_text()
 	var json = JSON.new()
 	var error = json.parse(json_string)

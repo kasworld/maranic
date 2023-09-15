@@ -83,7 +83,7 @@ func load_work_list()->void:
 		return
 	work_list = new_wl
 	work_list2work_list_menu()
-	$TimedMessage.show_message(tr("load %s") % [file_name])
+	$TimedMessage.show_message(tr("읽어옴 %s") % [file_name])
 
 func save_work_list()->void:
 	var msg = work_list.save(file_name)
