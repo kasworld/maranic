@@ -119,6 +119,7 @@ func select_work(work_index :int)->void:
 	make_subwork_nodes(sel_wd)
 	reset_time()
 	update_time_labels()
+	CmdMenuButton.get_popup().set_item_disabled(4,false)
 
 func clear_subwork_nodes()->void:
 	# clear
@@ -132,6 +133,7 @@ func clear_subwork_nodes()->void:
 	]
 	FirstSubWorkNode.disable_buttons(true)
 	FirstSubWorkNode.reset()
+	CmdMenuButton.get_popup().set_item_disabled(4,true)
 
 func make_subwork_nodes(wk :WorkList.Work)->void:
 	FirstSubWorkNode.disable_buttons(false)
