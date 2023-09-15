@@ -2,7 +2,7 @@ extends Node2D
 
 var work_scene = preload("res://subwork_node.tscn")
 
-var voices = DisplayServer.tts_get_voices_for_language("ko")
+var voices = DisplayServer.tts_get_voices_for_language(OS.get_locale_language())
 func text2speech(s):
 	DisplayServer.tts_stop()
 	DisplayServer.tts_speak(s, voices[0])
@@ -74,7 +74,7 @@ func reset_work_list()->void:
 	work_list = new_wl
 #	print_debug(work_list.to_data())
 	work_list2work_list_menu()
-	$TimedMessage.show_message("초기화합니다.")
+	$TimedMessage.show_message(tr("초기화합니다."))
 
 func load_work_list()->void:
 	var new_wl =  work_list.load_new(file_name)
@@ -83,7 +83,7 @@ func load_work_list()->void:
 		return
 	work_list = new_wl
 	work_list2work_list_menu()
-	$TimedMessage.show_message("load %s" % [file_name])
+	$TimedMessage.show_message(tr("load %s") % [file_name])
 
 func save_work_list()->void:
 	var msg = work_list.save(file_name)
@@ -97,7 +97,7 @@ func add_new_work()->void:
 		return
 	var new_work_index = work_list.add_new_work( new_work )
 	work_list2work_list_menu()
-	$TimedMessage.show_message("새워크를추가합니다.")
+	$TimedMessage.show_message(tr("새 워크를 추가합니다."))
 	select_work( new_work_index )
 
 func del_current_work()->void:
@@ -111,7 +111,7 @@ func del_current_work()->void:
 
 func select_work(work_index)->void:
 	var sel_wd = work_list.get_at(work_index)
-	text2speech("%s로 설정합니다." % sel_wd.get_title())
+	text2speech(tr("%s로 설정합니다.") % sel_wd.get_title())
 	clear_subwork_nodes()
 	make_subwork_nodes(sel_wd)
 	reset_time()
@@ -146,7 +146,7 @@ func make_subwork_nodes(wk :WorkList.Work)->void:
 func _on_work_container_del_subwork(index :int, sw :WorkList.SubWork)->void:
 	var wk = work_list.get_at(current_work_index)
 	if wk.size() <= 1:
-		$TimedMessage.show_message("빈 워크가 되어 지울 수 없습니다.")
+		$TimedMessage.show_message(tr("빈 워크가 되어 지울 수 없습니다."))
 		return
 	wk.del_at(index)
 	work_list2work_list_menu()
@@ -165,12 +165,12 @@ func _on_start_button_toggled(button_pressed: bool) -> void:
 	if button_pressed :
 		if subwork_nodes[0].remainSec<=0:
 			reset_time()
-		StartButton.text = "멈추기"
-		text2speech("%s를 시작합니다." % [ sel_wd.get_title() ])
+		StartButton.text = tr("멈추기")
+		text2speech(tr("%s를 시작합니다.") % [ sel_wd.get_title() ])
 		$Timer.start()
 	else:
-		StartButton.text = "시작하기"
-		text2speech("%s를 멈춥니다." % [ sel_wd.get_title() ])
+		StartButton.text = tr("시작하기")
+		text2speech(tr("%s를 멈춥니다.") % [ sel_wd.get_title() ])
 		$Timer.stop()
 	disable_buttons(button_pressed)
 
@@ -185,7 +185,7 @@ func _on_timer_timeout() -> void:
 			if subwork_nodes.size() <= subwork_index:
 				subwork_index = 1
 			var newWorkStr = subwork_nodes[subwork_index].get_label_text()
-			text2speech("%s를 끝내고 %s를 시작합니다." %[oldWorkStr,newWorkStr])
+			text2speech(tr("%s를 끝내고 %s를 시작합니다.") %[oldWorkStr,newWorkStr])
 			subwork_nodes[subwork_index].grab_focus()
 	update_time_labels()
 

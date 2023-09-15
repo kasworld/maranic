@@ -1,0 +1,97 @@
+# LANGUAGE translation for gd4timer for the following files:
+# res://main.gd
+# res://subwork_node.gd
+# res://timed_message.gd
+# res://work_list.gd
+# res://main.tscn
+# res://subwork_node.tscn
+# res://timed_message.tscn
+#
+# FIRST AUTHOR < EMAIL @ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: gd4timer\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: main.gd
+msgid "초기화합니다."
+msgstr ""
+
+#: main.gd
+msgid "load %s"
+msgstr ""
+
+#: main.gd
+msgid "새 워크를 추가합니다."
+msgstr ""
+
+#: main.gd
+msgid "%s로 설정합니다."
+msgstr ""
+
+#: main.gd
+msgid "빈 워크가 되어 지울 수 없습니다."
+msgstr ""
+
+#: main.gd
+msgid "멈추기"
+msgstr ""
+
+#: main.gd
+msgid "%s를 시작합니다."
+msgstr ""
+
+#: main.gd
+#: main.tscn
+msgid "시작하기"
+msgstr ""
+
+#: main.gd
+msgid "%s를 멈춥니다."
+msgstr ""
+
+#: main.gd
+msgid "%s를 끝내고 %s를 시작합니다."
+msgstr ""
+
+#: subwork_node.gd
+#: subwork_node.tscn
+msgid "00:00"
+msgstr ""
+
+#: subwork_node.gd
+#: subwork_node.tscn
+msgid ""
+msgstr ""
+
+#: main.tscn
+msgid "워크선택"
+msgstr ""
+
+#: main.tscn
+msgid "워크목록메뉴"
+msgstr ""
+
+#: subwork_node.tscn
+msgid "제목공간"
+msgstr ""
+
+#: subwork_node.tscn
+msgid "서브워크메뉴"
+msgstr ""
+
+#: subwork_node.tscn
+msgid "<"
+msgstr ""
+
+#: subwork_node.tscn
+msgid ">"
+msgstr ""
+
+#: timed_message.tscn
+msgid "인터벌 타이머 2.0"
+msgstr ""
