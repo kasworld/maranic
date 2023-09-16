@@ -120,6 +120,7 @@ func select_work(work_index :int)->void:
 	reset_time()
 	update_time_labels()
 	CmdMenuButton.get_popup().set_item_disabled(4,false)
+	StartButton.disabled = false
 
 func clear_subwork_nodes()->void:
 	# clear
@@ -134,6 +135,7 @@ func clear_subwork_nodes()->void:
 	FirstSubWorkNode.disable_buttons(true)
 	FirstSubWorkNode.reset()
 	CmdMenuButton.get_popup().set_item_disabled(4,true)
+	StartButton.disabled = true
 
 func make_subwork_nodes(wk :WorkList.Work)->void:
 	FirstSubWorkNode.disable_buttons(false)
@@ -205,10 +207,10 @@ func reset_time()->void:
 	for o in subwork_nodes:
 		o.reset_time()
 
-func disable_buttons(disable :bool)->void:
-	WorkListMenuButton.disabled =disable
+func disable_buttons(b :bool)->void:
+	WorkListMenuButton.disabled = b
 	for o in subwork_nodes:
-		o.disable_buttons(disable)
+		o.disable_buttons(b)
 
 # raw data #########################################################################################
 

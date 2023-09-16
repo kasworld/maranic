@@ -7,7 +7,7 @@ var subwork :WorkList.SubWork
 var subwork_index :int
 var remainSec = 0
 
-func set_subwork(i :int,  sw :WorkList.SubWork)->void:
+func set_subwork(i :int, sw :WorkList.SubWork)->void:
 	subwork_index = i
 	subwork = sw
 	$NameEdit.text = subwork.name
@@ -23,10 +23,10 @@ func update_time_labels()->void:
 	$SecLabel.text = subwork.second2text(subwork.second)
 	$SecRemainLabel.text = subwork.second2text(remainSec)
 
-func disable_buttons(disable :bool)->void:
-	$MenuButton.disabled = disable
-	$SecDecButton.disabled = disable
-	$SecIncButton.disabled = disable
+func disable_buttons(b :bool)->void:
+	$MenuButton.disabled = b
+	$SecDecButton.disabled = b
+	$SecIncButton.disabled = b
 
 func reset_time()->void:
 	remainSec = subwork.second
