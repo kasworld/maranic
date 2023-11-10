@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c6cct2gj2a3im"]
 
-[ext_resource type="Script" path="res://timed_message.gd" id="1_4npvt"]
+[ext_resource type="Script" path="res://timed_message/timed_message.gd" id="1_4npvt"]
 [ext_resource type="Theme" uid="uid://ddksgr4axityd" path="res://menulist_theme.tres" id="2_cb4ra"]
 
 [node name="TimedMessage" type="PanelContainer"]

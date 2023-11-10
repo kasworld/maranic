@@ -1,9 +1,9 @@
 extends PanelContainer
 
-func show_message(msg)->void:
+func show_message(msg :String, sec :float = 3)->void:
 	$VBoxContainer/Label.text = msg
 	visible = true
-	$Timer.start(3.0)
+	$Timer.start(sec)
 
 func _on_timer_timeout() -> void:
 	visible = false
