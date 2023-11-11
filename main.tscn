@@ -68,10 +68,8 @@ size_flags_horizontal = 3
 
 [node name="TimedMessage" parent="." instance=ExtResource("4_mflyv")]
 visible = false
-offset_left = 94.0
-offset_top = 595.0
-offset_right = 1811.0
-offset_bottom = 767.0
+offset_right = 358.0
+offset_bottom = 62.0
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="toggled" from="VBoxContainer/TitleContainer/WorkListMenuButton" to="." method="_on_work_list_menu_button_toggled"]

@@ -4,7 +4,8 @@
 [ext_resource type="Theme" uid="uid://ddksgr4axityd" path="res://menulist_theme.tres" id="2_cb4ra"]
 
 [node name="TimedMessage" type="PanelContainer"]
-offset_right = 1.0
+offset_right = 358.0
+offset_bottom = 62.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_4npvt")
@@ -17,7 +18,7 @@ layout_mode = 2
 [node name="VersionLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_cb4ra")
-text = "인터벌 타이머 2.0"
+text = "version string here"
 
 [node name="Label" type="RichTextLabel" parent="VBoxContainer"]
 layout_mode = 2
