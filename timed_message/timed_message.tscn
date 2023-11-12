@@ -18,10 +18,12 @@ layout_mode = 2
 
 [node name="VersionLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 text = "version string here"
 
 [node name="Label" type="RichTextLabel" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+fit_content = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

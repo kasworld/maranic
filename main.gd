@@ -21,8 +21,8 @@ var subwork_index = 1
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var vp_rect = get_viewport_rect()
-	var msgrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.4   )
-	$TimedMessage.init(msgrect, tr("인터벌 타이머 2.0"))
+	var msgrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.3 )
+	$TimedMessage.init(msgrect, tr("인터벌 타이머 2.0.1"))
 	WorkListMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	CmdMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	reset_work_list()
