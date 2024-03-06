@@ -6,8 +6,12 @@ var click_inc_sec = 10
 var repeat_inc_sec = 0
 var max_inc_sec = 60
 
-func set_label(s :String)->void:
-	$SecLabel.text = s
+func set_sec(s :int)->void:
+	var td = TickLib.tick2dict(s)
+	$SecLabel.text = TickLib.tickdict2str(td)
+
+func clear()->void:
+	$SecLabel.text = "00:00"
 
 func disable_buttons(b :bool)->void:
 	$SecDecButton.disabled = b
