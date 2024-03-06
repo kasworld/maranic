@@ -7,6 +7,21 @@ var subwork :WorkList.SubWork
 var subwork_index :int
 var remainSec = 0
 
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	$MenuButton.get_popup().theme = preload("res://menulist_theme.tres")
+	$MenuButton.get_popup().index_pressed.connect(menu_index_pressed)
+	$TimeEdit.time_changed.connect(add_subwork_second)
+
+func add_subwork_second(diff :int) ->void:
+	subwork.second += diff
+	if subwork.second < 0 :
+		subwork.second = 0
+	reset_time()
+	update_time_labels()
+
 func set_subwork(i :int, sw :WorkList.SubWork)->void:
 	subwork_index = i
 	subwork = sw
@@ -15,18 +30,19 @@ func set_subwork(i :int, sw :WorkList.SubWork)->void:
 func reset()->void:
 	subwork_index = -1
 	subwork = null
-	$SecLabel.text = "00:00"
+	$TimeEdit.set_label("00:00")
 	$SecRemainLabel.text = "00:00"
 	$NameEdit.text = ""
 
 func update_time_labels()->void:
-	$SecLabel.text = subwork.second2text(subwork.second)
+	$TimeEdit.set_label(subwork.second2text(subwork.second))
 	$SecRemainLabel.text = subwork.second2text(remainSec)
 
 func disable_buttons(b :bool)->void:
 	$MenuButton.disabled = b
-	$SecDecButton.disabled = b
-	$SecIncButton.disabled = b
+	$TimeEdit.disable_buttons(b)
+	#$SecDecButton.disabled = b
+	#$SecIncButton.disabled = b
 
 func reset_time()->void:
 	remainSec = subwork.second
@@ -42,11 +58,6 @@ func dec_remain_sec() -> bool:
 
 func disable_menu(i :int, b :bool)->void:
 	$MenuButton.get_popup().set_item_disabled(i,b)
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	$MenuButton.get_popup().theme = preload("res://menulist_theme.tres")
-	$MenuButton.get_popup().index_pressed.connect(menu_index_pressed)
 
 func menu_index_pressed(sel :int)->void:
 	match sel :
@@ -69,45 +80,5 @@ func _on_name_edit_focus_exited() -> void:
 func _on_name_edit_focus_entered() -> void:
 	$NameEdit.editable = true
 
-# subwork second edit #########################################
 
-func add_subwork_second(diff :int) ->void:
-	subwork.second += diff
-	if subwork.second < 0 :
-		subwork.second = 0
-	reset_time()
-	update_time_labels()
-
-var click_inc_sec = 10
-var repeat_inc_sec = 0
-var max_inc_sec = 60
-
-func _on_sec_dec_button_button_down() -> void:
-	repeat_inc_sec = -1
-	$Timer.start(0.1)
-func _on_sec_dec_button_button_up() -> void:
-	if repeat_inc_sec == -1 :
-		add_subwork_second(-click_inc_sec)
-	repeat_inc_sec = 0
-	$Timer.stop()
-
-func _on_sec_inc_button_button_down() -> void:
-	repeat_inc_sec = 1
-	$Timer.start(0.1)
-func _on_sec_inc_button_button_up() -> void:
-	if repeat_inc_sec == 1 :
-		add_subwork_second(click_inc_sec)
-	repeat_inc_sec = 0
-	$Timer.stop()
-
-func _on_timer_timeout() -> void:
-	add_subwork_second(repeat_inc_sec)
-	if repeat_inc_sec < 0 :
-		repeat_inc_sec -=1
-		if repeat_inc_sec < -max_inc_sec :
-			repeat_inc_sec = -max_inc_sec
-	else :
-		repeat_inc_sec +=1
-		if repeat_inc_sec > max_inc_sec :
-			repeat_inc_sec = max_inc_sec
 

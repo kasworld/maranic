@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dvgdal4hlx1ws"]
+[gd_scene load_steps=5 format=3 uid="uid://dvgdal4hlx1ws"]
 
 [ext_resource type="Script" path="res://subwork_node.gd" id="1_mqriv"]
 [ext_resource type="Theme" uid="uid://i63124txlj1h" path="res://label_theme.tres" id="2_dbx7h"]
 [ext_resource type="Theme" uid="uid://ppd28w7sx5wa" path="res://button_theme.tres" id="3_u1yx1"]
+[ext_resource type="PackedScene" uid="uid://dllxbmyyau3u5" path="res://time_edit/time_edit.tscn" id="4_01jbw"]
 
 [node name="SubWorkNode" type="HBoxContainer"]
 offset_top = 496.0
@@ -23,7 +24,7 @@ expand_to_text_length = true
 layout_mode = 2
 theme = ExtResource("3_u1yx1")
 action_mode = 1
-text = "서브워크메뉴"
+text = "편집"
 item_count = 3
 popup/item_0/text = "이름바꾸기"
 popup/item_0/id = 0
@@ -36,33 +37,14 @@ popup/item_2/id = 4
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SecDecButton" type="Button" parent="."]
+[node name="TimeEdit" parent="." instance=ExtResource("4_01jbw")]
 layout_mode = 2
-theme = ExtResource("3_u1yx1")
-text = "<"
-
-[node name="SecLabel" type="Label" parent="."]
-layout_mode = 2
-theme = ExtResource("2_dbx7h")
-text = "00:00"
-
-[node name="SecIncButton" type="Button" parent="."]
-layout_mode = 2
-theme = ExtResource("3_u1yx1")
-text = ">"
 
 [node name="SecRemainLabel" type="Label" parent="."]
 layout_mode = 2
 theme = ExtResource("2_dbx7h")
 text = "00:00"
 
-[node name="Timer" type="Timer" parent="."]
-
 [connection signal="focus_entered" from="NameEdit" to="." method="_on_name_edit_focus_entered"]
 [connection signal="focus_exited" from="NameEdit" to="." method="_on_name_edit_focus_exited"]
 [connection signal="text_submitted" from="NameEdit" to="." method="_on_name_edit_text_submitted"]
-[connection signal="button_down" from="SecDecButton" to="." method="_on_sec_dec_button_button_down"]
-[connection signal="button_up" from="SecDecButton" to="." method="_on_sec_dec_button_button_up"]
-[connection signal="button_down" from="SecIncButton" to="." method="_on_sec_inc_button_button_down"]
-[connection signal="button_up" from="SecIncButton" to="." method="_on_sec_inc_button_button_up"]
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
