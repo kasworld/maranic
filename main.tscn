@@ -70,6 +70,4 @@ size_flags_horizontal = 3
 visible = false
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
-[connection signal="toggled" from="VBoxContainer/TitleContainer/WorkListMenuButton" to="." method="_on_work_list_menu_button_toggled"]
-[connection signal="toggled" from="VBoxContainer/TitleContainer/CmdMenuButton" to="." method="_on_cmd_menu_button_toggled"]
 [connection signal="toggled" from="VBoxContainer/TitleContainer/StartButton" to="." method="_on_start_button_toggled"]

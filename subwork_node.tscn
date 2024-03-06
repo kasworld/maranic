@@ -22,6 +22,7 @@ expand_to_text_length = true
 [node name="MenuButton" type="MenuButton" parent="."]
 layout_mode = 2
 theme = ExtResource("3_u1yx1")
+action_mode = 1
 text = "서브워크메뉴"
 item_count = 3
 popup/item_0/text = "이름바꾸기"
@@ -60,7 +61,6 @@ text = "00:00"
 [connection signal="focus_entered" from="NameEdit" to="." method="_on_name_edit_focus_entered"]
 [connection signal="focus_exited" from="NameEdit" to="." method="_on_name_edit_focus_exited"]
 [connection signal="text_submitted" from="NameEdit" to="." method="_on_name_edit_text_submitted"]
-[connection signal="toggled" from="MenuButton" to="." method="_on_menu_button_toggled"]
 [connection signal="button_down" from="SecDecButton" to="." method="_on_sec_dec_button_button_down"]
 [connection signal="button_up" from="SecDecButton" to="." method="_on_sec_dec_button_button_up"]
 [connection signal="button_down" from="SecIncButton" to="." method="_on_sec_inc_button_button_down"]

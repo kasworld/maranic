@@ -22,9 +22,11 @@ var subwork_index = 1
 func _ready() -> void:
 	var vp_rect = get_viewport_rect()
 	var msgrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.3 )
-	$TimedMessage.init(msgrect, tr("인터벌 타이머 2.0.1"))
+	$TimedMessage.init(msgrect, tr("인터벌 타이머 3.0.0"))
 	WorkListMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	CmdMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
+	WorkListMenuButton.get_popup().index_pressed.connect(work_list_menu_index_pressed)
+	CmdMenuButton.get_popup().index_pressed.connect(cmd_menu_index_pressed)
 	reset_work_list()
 	work_list2work_list_menu()
 	FirstSubWorkNode.disable_buttons(true)
@@ -39,21 +41,11 @@ func work_list2work_list_menu()->void:
 		WorkListMenuButton.get_popup().add_item(work_list.get_at(i).to_str(),i)
 	clear_subwork_nodes()
 
-func _on_work_list_menu_button_toggled(button_pressed: bool) -> void:
-	if button_pressed: # list opened
-		return
-	var sel = WorkListMenuButton.get_popup().get_focused_item()
-	if sel ==-1 :
-		return
+func work_list_menu_index_pressed(sel :int)->void:
 	current_work_index = sel
 	select_work(sel)
 
-func _on_cmd_menu_button_toggled(button_pressed: bool) -> void:
-	if button_pressed: # list opened
-		return
-	var sel = CmdMenuButton.get_popup().get_focused_item()
-	if sel ==-1 :
-		return
+func cmd_menu_index_pressed(sel :int)->void:
 	match sel :
 		0: # 워크목록읽어오기
 			load_work_list()

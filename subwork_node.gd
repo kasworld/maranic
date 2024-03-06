@@ -46,13 +46,9 @@ func disable_menu(i :int, b :bool)->void:
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	$MenuButton.get_popup().theme = preload("res://menulist_theme.tres")
+	$MenuButton.get_popup().index_pressed.connect(menu_index_pressed)
 
-func _on_menu_button_toggled(button_pressed: bool) -> void:
-	if button_pressed: # list opened
-		return
-	var sel = $MenuButton.get_popup().get_focused_item()
-	if sel ==-1 :
-		return
+func menu_index_pressed(sel :int)->void:
 	match sel :
 		0: # 서브워크이름바꾸기
 			$NameEdit.editable = true
@@ -62,7 +58,6 @@ func _on_menu_button_toggled(button_pressed: bool) -> void:
 			add_subwork.emit(subwork_index, subwork)
 		_: # unknown
 			print_debug("unknown", sel)
-
 
 func _on_name_edit_text_submitted(new_text: String) -> void:
 	$NameEdit.editable = false
