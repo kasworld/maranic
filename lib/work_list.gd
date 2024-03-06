@@ -1,6 +1,5 @@
-class_name WorkList
-
 extends Object
+class_name WorkList
 
 class SubWork:
 	var errmsg :String
