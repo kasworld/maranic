@@ -7,11 +7,10 @@ var repeat_inc_sec = 0
 var max_inc_sec = 60
 
 func set_sec(s :int)->void:
-	var td = TickLib.tick2dict(s)
-	$SecLabel.text = TickLib.tickdict2str(td)
+	$SecLabel.text = TickLib.tick2str(s)
 
 func clear()->void:
-	$SecLabel.text = "00:00"
+	$SecLabel.text = TickLib.tick2str(0)
 
 func disable_buttons(b :bool)->void:
 	$SecDecButton.disabled = b

@@ -29,12 +29,12 @@ func reset()->void:
 	subwork_index = -1
 	subwork = null
 	$TimeEdit.clear()
-	$SecRemainLabel.text = "00:00"
+	$SecRemainLabel.text = TickLib.tick2str(0)
 	$NameEdit.text = ""
 
 func update_time_labels()->void:
 	$TimeEdit.set_sec(subwork.second)
-	$SecRemainLabel.text = subwork.second2text(remainSec)
+	$SecRemainLabel.text = TickLib.tick2str(remainSec)
 
 func disable_buttons(b :bool)->void:
 	$MenuButton.disabled = b
