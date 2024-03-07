@@ -1,4 +1,8 @@
-extends Control
+extends PanelContainer
+
+@onready var seclabel = $HBoxContainer/SecLabel
+@onready var incbtn = $HBoxContainer/VBoxContainer/SecIncButton
+@onready var decbtn = $HBoxContainer/VBoxContainer/SecDecButton
 
 signal time_changed(diff :int)
 
@@ -7,14 +11,14 @@ var repeat_inc_sec = 0
 var max_inc_sec = 60
 
 func set_sec(s :int)->void:
-	$SecLabel.text = TickLib.tick2str(s)
+	seclabel.text = TickLib.tick2str(s)
 
 func clear()->void:
-	$SecLabel.text = TickLib.tick2str(0)
+	seclabel.text = TickLib.tick2str(0)
 
 func disable_buttons(b :bool)->void:
-	$SecDecButton.disabled = b
-	$SecIncButton.disabled = b
+	decbtn.disabled = b
+	incbtn.disabled = b
 
 func _on_sec_dec_button_button_down() -> void:
 	repeat_inc_sec = -1

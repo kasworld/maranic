@@ -39,8 +39,6 @@ func update_time_labels()->void:
 func disable_buttons(b :bool)->void:
 	$MenuButton.disabled = b
 	$TimeEdit.disable_buttons(b)
-	#$SecDecButton.disabled = b
-	#$SecIncButton.disabled = b
 
 func reset_time()->void:
 	remainSec = subwork.second

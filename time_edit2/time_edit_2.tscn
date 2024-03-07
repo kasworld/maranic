@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://cr0slffbwke0w"]
+
+[ext_resource type="Script" path="res://time_edit2/time_edit_2.gd" id="1_6b6hp"]
+
+[sub_resource type="Theme" id="Theme_jgf8w"]
+
+[node name="TimeEdit2" type="HBoxContainer"]
+offset_right = 257.0
+offset_bottom = 31.0
+script = ExtResource("1_6b6hp")
+
+[node name="HourSpinBox" type="SpinBox" parent="."]
+layout_mode = 2
+theme = SubResource("Theme_jgf8w")
+allow_greater = true
+
+[node name="MinuteSpinBox" type="SpinBox" parent="."]
+layout_mode = 2
+max_value = 59.0
+
+[node name="SecondSpinBox" type="SpinBox" parent="."]
+layout_mode = 2
+max_value = 59.0

@@ -1,33 +1,51 @@
-[gd_scene load_steps=4 format=3 uid="uid://dllxbmyyau3u5"]
+[gd_scene load_steps=5 format=3 uid="uid://dllxbmyyau3u5"]
 
 [ext_resource type="Script" path="res://time_edit/time_edit.gd" id="1_1l5ua"]
-[ext_resource type="Theme" uid="uid://ppd28w7sx5wa" path="res://button_theme.tres" id="2_64npy"]
+[ext_resource type="Theme" uid="uid://bbytu4ty4m74p" path="res://updownbuttontheme.tres" id="3_cgpi6"]
 [ext_resource type="Theme" uid="uid://i63124txlj1h" path="res://label_theme.tres" id="3_p0w1i"]
 
-[node name="TimeEdit" type="HBoxContainer"]
-offset_right = 393.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mvqnd"]
+bg_color = Color(0.25098, 0.25098, 0.25098, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[node name="TimeEdit" type="PanelContainer"]
+offset_left = 343.0
+offset_right = 343.0
 offset_bottom = 145.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_mvqnd")
 script = ExtResource("1_1l5ua")
 
-[node name="SecDecButton" type="Button" parent="."]
-layout_mode = 2
-theme = ExtResource("2_64npy")
-text = "<"
+[node name="Timer" type="Timer" parent="."]
 
-[node name="SecLabel" type="Label" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="SecLabel" type="Label" parent="HBoxContainer"]
 layout_mode = 2
 theme = ExtResource("3_p0w1i")
 text = "00:00"
 
-[node name="SecIncButton" type="Button" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
-theme = ExtResource("2_64npy")
-text = ">"
+alignment = 1
 
-[node name="Timer" type="Timer" parent="."]
+[node name="SecIncButton" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_cgpi6")
+text = "Inc"
 
-[connection signal="button_down" from="SecDecButton" to="." method="_on_sec_dec_button_button_down"]
-[connection signal="button_up" from="SecDecButton" to="." method="_on_sec_dec_button_button_up"]
-[connection signal="button_down" from="SecIncButton" to="." method="_on_sec_inc_button_button_down"]
-[connection signal="button_up" from="SecIncButton" to="." method="_on_sec_inc_button_button_up"]
+[node name="SecDecButton" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_cgpi6")
+text = "Dec"
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="button_down" from="HBoxContainer/VBoxContainer/SecIncButton" to="." method="_on_sec_inc_button_button_down"]
+[connection signal="button_up" from="HBoxContainer/VBoxContainer/SecIncButton" to="." method="_on_sec_inc_button_button_up"]
+[connection signal="button_down" from="HBoxContainer/VBoxContainer/SecDecButton" to="." method="_on_sec_dec_button_button_down"]
+[connection signal="button_up" from="HBoxContainer/VBoxContainer/SecDecButton" to="." method="_on_sec_dec_button_button_up"]
