@@ -1,10 +1,10 @@
 extends PanelContainer
 
-class_name TimeEdit
+class_name IntEdit
 
-@onready var seclabel = $HBoxContainer/SecLabel
-@onready var incbtn = $HBoxContainer/VBoxContainer/SecIncButton
-@onready var decbtn = $HBoxContainer/VBoxContainer/SecDecButton
+@onready var vallabel = $HBoxContainer/ValueLabel
+@onready var incbtn = $HBoxContainer/VBoxContainer/IncButton
+@onready var decbtn = $HBoxContainer/VBoxContainer/DecButton
 
 signal value_changed() # emit button up
 signal over_limit_low_reached() # emit when try dec on low limit value
@@ -34,7 +34,7 @@ func reset()->void:
 	update_label()
 
 func update_label()->void:
-	$HBoxContainer/SecLabel.text = TickLib.tick2stri(current_value)
+	vallabel.text = TickLib.tick2stri(current_value)
 
 func get_value()->int:
 	return current_value
@@ -68,19 +68,19 @@ func dec(v :int)->void:
 const click_inc_sec = 1
 var repeat_inc_sec = 0
 
-func _on_sec_dec_button_button_down() -> void:
+func _on_dec_button_button_down() -> void:
 	repeat_inc_sec = -1
 	$Timer.start(0.1)
-func _on_sec_dec_button_button_up() -> void:
+func _on_dec_button_button_up() -> void:
 	if repeat_inc_sec == -1 :
 		dec(click_inc_sec)
 	repeat_inc_sec = 0
 	$Timer.stop()
 
-func _on_sec_inc_button_button_down() -> void:
+func _on_inc_button_button_down() -> void:
 	repeat_inc_sec = 1
 	$Timer.start(0.1)
-func _on_sec_inc_button_button_up() -> void:
+func _on_inc_button_button_up() -> void:
 	if repeat_inc_sec == 1 :
 		inc(click_inc_sec)
 	repeat_inc_sec = 0

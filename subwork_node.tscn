@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://subwork_node.gd" id="1_mqriv"]
 [ext_resource type="Theme" uid="uid://i63124txlj1h" path="res://label_theme.tres" id="2_dbx7h"]
 [ext_resource type="Theme" uid="uid://ppd28w7sx5wa" path="res://button_theme.tres" id="3_u1yx1"]
-[ext_resource type="PackedScene" uid="uid://dllxbmyyau3u5" path="res://time_edit/time_edit.tscn" id="4_01jbw"]
+[ext_resource type="PackedScene" uid="uid://dllxbmyyau3u5" path="res://int_edit/int_edit.tscn" id="4_fn27v"]
 
 [node name="SubWorkNode" type="HBoxContainer"]
 offset_top = 496.0
@@ -37,7 +37,7 @@ popup/item_2/id = 4
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TimeEdit" parent="." instance=ExtResource("4_01jbw")]
+[node name="TimeEdit" parent="." instance=ExtResource("4_fn27v")]
 layout_mode = 2
 
 [node name="SecRemainLabel" type="Label" parent="."]
