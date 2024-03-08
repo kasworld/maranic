@@ -1,31 +1,79 @@
 extends PanelContainer
 
+class_name TimeEdit
+
 @onready var seclabel = $HBoxContainer/SecLabel
 @onready var incbtn = $HBoxContainer/VBoxContainer/SecIncButton
 @onready var decbtn = $HBoxContainer/VBoxContainer/SecDecButton
 
-signal time_changed(diff :int)
+signal value_changed() # emit button up
+signal over_limit_low_reached() # emit when try dec on low limit value
+signal over_limit_high_reached() # emit when try inc on high limit value
 
-var click_inc_sec = 10
-var repeat_inc_sec = 0
-var max_inc_sec = 60
+var limit_high :int
+var use_limit_high :bool
+var init_value :int
+var limit_low :int
+var use_limit_low :bool
+var current_value :int
 
-func set_sec(s :int)->void:
-	seclabel.text = TickLib.tick2str(s)
+func init(llow :int, uselow :bool, val :int, lhigh :int, usehigh :bool)->void:
+	limit_low = llow
+	use_limit_low = uselow
+	init_value = val
+	limit_high = lhigh
+	use_limit_high = usehigh
+	reset()
 
-func clear()->void:
-	seclabel.text = TickLib.tick2str(0)
+func set_init_value(v :int)->void:
+	init_value = v
+	reset()
+
+func reset()->void:
+	current_value = init_value
+	update_label()
+
+func update_label()->void:
+	$HBoxContainer/SecLabel.text = TickLib.tick2stri(current_value)
+
+func get_value()->int:
+	return current_value
 
 func disable_buttons(b :bool)->void:
 	decbtn.disabled = b
 	incbtn.disabled = b
+
+func inc(v :int)->void:
+	var oldval = current_value
+	current_value += v
+	if use_limit_high:
+		if current_value >= limit_high:
+			current_value = limit_high
+			over_limit_high_reached.emit()
+	if current_value != oldval:
+		value_changed.emit()
+		update_label()
+
+func dec(v :int)->void:
+	var oldval = current_value
+	current_value -= v
+	if use_limit_low:
+		if current_value <= limit_low:
+			current_value = limit_low
+			over_limit_low_reached.emit()
+	if current_value != oldval:
+		value_changed.emit()
+		update_label()
+
+const click_inc_sec = 1
+var repeat_inc_sec = 0
 
 func _on_sec_dec_button_button_down() -> void:
 	repeat_inc_sec = -1
 	$Timer.start(0.1)
 func _on_sec_dec_button_button_up() -> void:
 	if repeat_inc_sec == -1 :
-		time_changed.emit(-click_inc_sec)
+		dec(click_inc_sec)
 	repeat_inc_sec = 0
 	$Timer.stop()
 
@@ -34,17 +82,14 @@ func _on_sec_inc_button_button_down() -> void:
 	$Timer.start(0.1)
 func _on_sec_inc_button_button_up() -> void:
 	if repeat_inc_sec == 1 :
-		time_changed.emit(click_inc_sec)
+		inc(click_inc_sec)
 	repeat_inc_sec = 0
 	$Timer.stop()
 
 func _on_timer_timeout() -> void:
-	time_changed.emit(repeat_inc_sec)
 	if repeat_inc_sec < 0 :
+		dec(-repeat_inc_sec)
 		repeat_inc_sec -=1
-		if repeat_inc_sec < -max_inc_sec :
-			repeat_inc_sec = -max_inc_sec
 	else :
+		inc(repeat_inc_sec)
 		repeat_inc_sec +=1
-		if repeat_inc_sec > max_inc_sec :
-			repeat_inc_sec = max_inc_sec

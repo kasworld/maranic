@@ -11,10 +11,11 @@ var remainSec = 0
 func _ready() -> void:
 	$MenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	$MenuButton.get_popup().index_pressed.connect(menu_index_pressed)
-	$TimeEdit.time_changed.connect(add_subwork_second)
+	$TimeEdit.init(0,true,0,99,false)
+	$TimeEdit.value_changed.connect(set_subwork_second)
 
-func add_subwork_second(diff :int) ->void:
-	subwork.second += diff
+func set_subwork_second() ->void:
+	subwork.second = $TimeEdit.get_value()
 	if subwork.second < 0 :
 		subwork.second = 0
 	reset_time()
@@ -28,13 +29,12 @@ func set_subwork(i :int, sw :WorkList.SubWork)->void:
 func reset()->void:
 	subwork_index = -1
 	subwork = null
-	$TimeEdit.clear()
-	$SecRemainLabel.text = TickLib.tick2str(0)
+	$TimeEdit.reset()
+	$SecRemainLabel.text = TickLib.tick2stri(0)
 	$NameEdit.text = ""
 
 func update_time_labels()->void:
-	$TimeEdit.set_sec(subwork.second)
-	$SecRemainLabel.text = TickLib.tick2str(remainSec)
+	$SecRemainLabel.text = TickLib.tick2stri(remainSec)
 
 func disable_buttons(b :bool)->void:
 	$MenuButton.disabled = b
@@ -42,6 +42,7 @@ func disable_buttons(b :bool)->void:
 
 func reset_time()->void:
 	remainSec = subwork.second
+	$TimeEdit.set_init_value(remainSec)
 
 func get_label_text()->String:
 	return $NameEdit.text

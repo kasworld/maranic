@@ -21,3 +21,12 @@ static func tickdict2str(td :Dictionary)->String:
 
 static func tick2str(tick :float)->String:
 	return TickLib.tickdict2str(TickLib.tick2dict(tick))
+
+static func tickdict2stri(td :Dictionary)->String:
+	if td.hour == 0:
+		return "%02d:%02d" % [td.min, td.sec]
+	return "%d:%02d:%02d" % [td.hour, td.min, td.sec]
+
+static func tick2stri(tick :float)->String:
+	return TickLib.tickdict2stri(TickLib.tick2dict(tick))
+
