@@ -25,6 +25,7 @@ func set_subwork(i :int, sw :WorkList.SubWork)->void:
 	subwork_index = i
 	subwork = sw
 	$NameEdit.text = subwork.name
+	$MenuButton.text = subwork.name
 
 func reset()->void:
 	subwork_index = -1
@@ -56,10 +57,15 @@ func dec_remain_sec() -> bool:
 func disable_menu(i :int, b :bool)->void:
 	$MenuButton.get_popup().set_item_disabled(i,b)
 
+func edit_name(b :bool)->void:
+	$NameEdit.editable = b
+	$NameEdit.visible = b
+	$MenuButton.visible = not b
+
 func menu_index_pressed(sel :int)->void:
 	match sel :
 		0: # 서브워크이름바꾸기
-			$NameEdit.editable = true
+			edit_name( true)
 		1: # 서브워크지우기
 			del_subwork.emit(subwork_index, subwork)
 		2: # 서브워크추가하기
@@ -68,14 +74,15 @@ func menu_index_pressed(sel :int)->void:
 			print_debug("unknown", sel)
 
 func _on_name_edit_text_submitted(new_text: String) -> void:
-	$NameEdit.editable = false
+	edit_name( false)
 	subwork.name = $NameEdit.text
+	$MenuButton.text = subwork.name
 
 func _on_name_edit_focus_exited() -> void:
-	$NameEdit.editable = false
+	edit_name( false)
 
 func _on_name_edit_focus_entered() -> void:
-	$NameEdit.editable = true
+	edit_name( true)
 
 
 

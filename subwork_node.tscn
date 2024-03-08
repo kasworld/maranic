@@ -6,14 +6,14 @@
 [ext_resource type="PackedScene" uid="uid://dllxbmyyau3u5" path="res://int_edit/int_edit.tscn" id="4_fn27v"]
 
 [node name="SubWorkNode" type="HBoxContainer"]
-offset_top = 496.0
 offset_right = 1920.0
-offset_bottom = 643.0
+offset_bottom = 145.0
+size_flags_horizontal = 3
 size_flags_vertical = 3
-alignment = 1
 script = ExtResource("1_mqriv")
 
 [node name="NameEdit" type="LineEdit" parent="."]
+visible = false
 layout_mode = 2
 theme = ExtResource("2_dbx7h")
 placeholder_text = "제목공간"
@@ -38,6 +38,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="TimeEdit" parent="." instance=ExtResource("4_fn27v")]
+layout_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="."]
+custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 
 [node name="SecRemainLabel" type="Label" parent="."]
