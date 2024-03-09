@@ -16,13 +16,15 @@ var init_value :int
 var limit_low :int
 var use_limit_low :bool
 var current_value :int
+var formater :Callable
 
-func init(llow :int, uselow :bool, val :int, lhigh :int, usehigh :bool)->void:
+func init(llow :int, uselow :bool, val :int, lhigh :int, usehigh :bool, fmt :Callable = TickLib.tick2stri)->void:
 	limit_low = llow
 	use_limit_low = uselow
 	init_value = val
 	limit_high = lhigh
 	use_limit_high = usehigh
+	formater = fmt
 	reset()
 
 func set_init_value(v :int)->void:
@@ -34,7 +36,7 @@ func reset()->void:
 	update_label()
 
 func update_label()->void:
-	vallabel.text = TickLib.tick2stri(current_value)
+	vallabel.text = formater.call(current_value)
 
 func get_value()->int:
 	return current_value
