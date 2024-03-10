@@ -1,5 +1,8 @@
 extends HBoxContainer
 
+@onready var timeedit = $TimeEdit
+@onready var timerecorder = $TimeRecorder
+
 signal del_subwork(index :int, sw :WorkList.SubWork)
 signal add_subwork(index :int, sw :WorkList.SubWork)
 
@@ -18,6 +21,7 @@ func set_subwork_second() ->void:
 	subwork.second = $TimeEdit.get_value()
 	if subwork.second < 0 :
 		subwork.second = 0
+	$TimeRecorder.set_initial_sec(subwork.second)
 	reset_time()
 	update_time_labels()
 
@@ -26,6 +30,8 @@ func set_subwork(i :int, sw :WorkList.SubWork)->void:
 	subwork = sw
 	$NameEdit.text = subwork.name
 	$MenuButton.text = subwork.name
+	$TimeRecorder.init(i, 200, TickLib.tick2stri)
+	$TimeRecorder.set_initial_sec(subwork.second)
 
 func reset()->void:
 	subwork_index = -1
@@ -34,6 +40,7 @@ func reset()->void:
 	update_time_labels()
 	$NameEdit.text = ""
 	$TimeEdit.reset()
+	$TimeRecorder.set_initial_sec(remainSec)
 
 func update_time_labels()->void:
 	$SecRemainLabel.text = TickLib.tick2stri(remainSec)

@@ -3,5 +3,6 @@
 [sub_resource type="SystemFont" id="SystemFont_sdk14"]
 
 [resource]
+resource_local_to_scene = true
 default_font = SubResource("SystemFont_sdk14")
 default_font_size = 100

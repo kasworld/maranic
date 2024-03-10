@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://time_recorder/time_recorder.gd" id="1_gtvcd"]
 [ext_resource type="Theme" uid="uid://c2mukxm1c10ti" path="res://timed_message/timed_message.tres" id="1_rrceb"]
 
-[node name="Stopwatch" type="Container"]
+[node name="TimeRecorder" type="PanelContainer"]
 focus_mode = 2
 theme = ExtResource("1_rrceb")
 script = ExtResource("1_gtvcd")

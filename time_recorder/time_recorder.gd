@@ -1,4 +1,4 @@
-extends Container
+extends PanelContainer
 
 class_name TimeRecorder
 
@@ -10,15 +10,20 @@ var sum_tick :float
 var is_paused :bool
 var is_inuse :bool
 var index :int
+var is_downward :bool # count down timer
 
-func init(swsize :Vector2, idx :int)->void:
-	size = swsize
-	custom_minimum_size = swsize
+var formater :Callable = default_formater
+func default_formater(v:float)->String:
+	return "%02.02f" % v
+
+func init(idx :int, fsize :int, fmt :Callable=default_formater)->void:
 	index = idx
-	$ButtonSec.theme.default_font_size = size.x/4.2
+	formater = fmt
+	theme.default_font_size = fsize
 
 func set_initial_sec(t :float)->void:
 	initial_sec = t
+	is_downward = true
 	reset()
 
 func reset() -> void:
@@ -40,8 +45,12 @@ func resume()->void:
 	start_tick = Time.get_unix_time_from_system()
 
 func _process(delta: float) -> void:
-	var dur = get_remain_sec()
-	$ButtonSec.text = TickLib.tick2str(dur)
+	var dur :float
+	if is_downward:
+		dur = get_remain_sec()
+	else:
+		dur = get_progress_sec()
+	$ButtonSec.text = formater.call(dur)
 
 func get_last_dur()->float:
 	return Time.get_unix_time_from_system() - start_tick
@@ -71,10 +80,11 @@ func _on_button_sec_button_up() -> void:
 	else:
 		if not is_inuse:
 			start1st()
-		if is_paused:
-			resume()
 		else:
-			pause()
+			if is_paused:
+				resume()
+			else:
+				pause()
 	button_down_tick = 0
 
 func _on_timer_timeout() -> void:
