@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://cnuti22mjwpd8"]
+
+[ext_resource type="Script" path="res://time_recorder/time_recorder.gd" id="1_gtvcd"]
+[ext_resource type="Theme" uid="uid://c2mukxm1c10ti" path="res://timed_message/timed_message.tres" id="1_rrceb"]
+
+[node name="Stopwatch" type="Container"]
+focus_mode = 2
+theme = ExtResource("1_rrceb")
+script = ExtResource("1_gtvcd")
+
+[node name="ButtonSec" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_rrceb")
+text = "00:00.00"
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="button_down" from="ButtonSec" to="." method="_on_button_sec_button_down"]
+[connection signal="button_up" from="ButtonSec" to="." method="_on_button_sec_button_up"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
