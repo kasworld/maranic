@@ -34,19 +34,22 @@ func reset() -> void:
 	sum_tick = 0
 
 func start1st()->void:
-	is_inuse = true
-	started.emit(index)
-	resume()
+	if not is_inuse:
+		is_inuse = true
+		started.emit(index)
+		resume()
 
 func start()->void:
-	if is_inuse:
-		resume()
-	else:
-		start1st()
+	if is_paused:
+		if is_inuse:
+			resume()
+		else:
+			start1st()
 
 func pause()->void:
-	is_paused = true
-	sum_tick += get_last_dur()
+	if not is_paused:
+		is_paused = true
+		sum_tick += get_last_dur()
 
 func resume()->void:
 	is_paused = false

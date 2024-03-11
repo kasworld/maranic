@@ -18,12 +18,13 @@ var work_index = -1 # inxex to worklist
 
 var subwork_node_list = [] # == work_list[work_index]
 var subwork_index :int = 1 # index to subwork_node_list
+var is_running :bool
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var vp_rect = get_viewport_rect()
 	var msgrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.3 )
-	$TimedMessage.init(msgrect, tr("인터벌 타이머 8.0.0"))
+	$TimedMessage.init(msgrect, tr("인터벌 타이머 8.1.0"))
 	WorkListMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	CmdMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	WorkListMenuButton.get_popup().index_pressed.connect(work_list_menu_index_pressed)
@@ -112,7 +113,7 @@ func select_work(wi :int)->void:
 	text2speech(tr("%s로 설정합니다.") % sel_wd.get_title())
 	clear_subwork_node_list()
 	make_subwork_node_list(sel_wd)
-	reset_time()
+	reset_time_all()
 	CmdMenuButton.get_popup().set_item_disabled(4,false)
 	StartButton.disabled = false
 
@@ -161,25 +162,30 @@ func _on_work_time_reached(idx :int, v :float)->void:
 		subwork_index += 1
 		if subwork_node_list.size() <= subwork_index:
 			subwork_index = 1
-		var newWorkStr = subwork_node_list[subwork_index].get_label_text()
-		text2speech(tr("%s를 끝내고 %s를 시작합니다.") %[oldWorkStr,newWorkStr])
-		subwork_node_list[subwork_index].grab_focus()
+		if is_running:
+			subwork_node_list[subwork_index].start()
+			var newWorkStr = subwork_node_list[subwork_index].get_label_text()
+			text2speech(tr("%s를 끝내고 %s를 시작합니다.") %[oldWorkStr,newWorkStr])
+			subwork_node_list[subwork_index].grab_focus()
 
 # start and resume
 func start_master()->void:
-	subwork_node_list[0].start()
-	subwork_node_list[subwork_index].start()
-	var sel_wd = work_list.get_at(work_index)
-	StartButton.text = tr("멈추기")
-	text2speech(tr("%s를 시작합니다.") % [ sel_wd.get_title() ])
+	if not is_running:
+		is_running = true
+		subwork_node_list[0].start()
+		subwork_node_list[subwork_index].start()
+		var sel_wd = work_list.get_at(work_index)
+		StartButton.text = tr("멈추기")
+		text2speech(tr("%s를 시작합니다.") % [ sel_wd.get_title() ])
 
 # stop and pause
 func pause_master()->void:
-	subwork_node_list[0].pause()
-	subwork_node_list[subwork_index].pause()
-	var sel_wd = work_list.get_at(work_index)
-	StartButton.text = tr("시작하기")
-	text2speech(tr("%s를 멈춥니다.") % [ sel_wd.get_title() ])
+	if is_running:
+		is_running = false
+		pause_all()
+		var sel_wd = work_list.get_at(work_index)
+		StartButton.text = tr("시작하기")
+		text2speech(tr("%s를 멈춥니다.") % [ sel_wd.get_title() ])
 
 func _on_work_container_del_subwork(index :int, sw :WorkList.SubWork)->void:
 	var wk = work_list.get_at(work_index)
@@ -206,10 +212,13 @@ func _on_start_button_toggled(button_pressed: bool) -> void:
 		pause_master()
 	disable_buttons(button_pressed)
 
-
-func reset_time()->void:
+func reset_time_all()->void:
 	for o in subwork_node_list:
 		o.reset_time()
+
+func pause_all()->void:
+	for o in subwork_node_list:
+		o.pause()
 
 func disable_buttons(b :bool)->void:
 	WorkListMenuButton.disabled = b
@@ -221,6 +230,7 @@ func disable_buttons(b :bool)->void:
 var file_name = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/gd4timer_workdata.json"
 var work_rawdata = [
 	# 워크이름 총시간 sec, subwork1 sec, subwork2 sec, etc
+	[ ["test",  60*1], ["걷기", 20*1  ], ["달리기", 20*1  ] ],
 	[ ["1일차",  60*30], ["걷기", 60*3  ], ["달리기", 60*1  ] ],
 	[ ["3일차",  60*30], ["걷기", 60*3  ], ["달리기", 60*1.5] ],
 	[ ["5일차",  60*30], ["걷기", 60*3  ], ["달리기", 60*2  ] ],
