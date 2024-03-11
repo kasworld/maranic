@@ -2,7 +2,8 @@ extends PanelContainer
 
 class_name TimeRecorder
 
-signal started(n:int)
+signal started(n:int) # emit when 1st start
+signal overrun(v :float) # emit when count down over 0 with overrun value(<0)
 
 var initial_sec :float
 var start_tick :float
@@ -21,6 +22,7 @@ func init(idx :int, fsize :int, fmt :Callable=default_formater)->void:
 	formater = fmt
 	theme.default_font_size = fsize
 
+# set initial sec and count donw timer
 func set_initial_sec(t :float)->void:
 	initial_sec = t
 	is_downward = true
@@ -36,6 +38,12 @@ func start1st()->void:
 	started.emit(index)
 	resume()
 
+func start()->void:
+	if is_inuse:
+		resume()
+	else:
+		start1st()
+
 func pause()->void:
 	is_paused = true
 	sum_tick += get_last_dur()
@@ -48,6 +56,8 @@ func _process(delta: float) -> void:
 	var dur :float
 	if is_downward:
 		dur = get_remain_sec()
+		if dur < 0 :
+			overrun.emit(dur)
 	else:
 		dur = get_progress_sec()
 	$ButtonSec.text = formater.call(dur)

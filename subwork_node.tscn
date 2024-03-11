@@ -8,7 +8,7 @@
 
 [sub_resource type="SystemFont" id="SystemFont_sdk14"]
 
-[sub_resource type="Theme" id="Theme_84h71"]
+[sub_resource type="Theme" id="Theme_lr5g8"]
 resource_local_to_scene = true
 default_font = SubResource("SystemFont_sdk14")
 default_font_size = 100
@@ -52,14 +52,9 @@ layout_mode = 2
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 
-[node name="SecRemainLabel" type="Label" parent="."]
-layout_mode = 2
-theme = ExtResource("2_dbx7h")
-text = "00:00"
-
 [node name="TimeRecorder" parent="." instance=ExtResource("5_miup7")]
 layout_mode = 2
-theme = SubResource("Theme_84h71")
+theme = SubResource("Theme_lr5g8")
 
 [connection signal="focus_entered" from="NameEdit" to="." method="_on_name_edit_focus_entered"]
 [connection signal="focus_exited" from="NameEdit" to="." method="_on_name_edit_focus_exited"]

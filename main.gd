@@ -10,13 +10,13 @@ func text2speech(s :String):
 @onready var WorkListMenuButton = $VBoxContainer/TitleContainer/WorkListMenuButton
 @onready var CmdMenuButton = $VBoxContainer/TitleContainer/CmdMenuButton
 @onready var StartButton = $VBoxContainer/TitleContainer/StartButton
-@onready var FirstSubWorkNode = $VBoxContainer/FirstSubWorkNode
+@onready var MasterWorkNode = $VBoxContainer/MasterWorkNode
 @onready var SubWorkNodesContainer = $VBoxContainer/ScrollContainer/SubWorkNodesContainer
 
 var work_list :WorkList
-var current_work_index = -1
-var subwork_nodes = []
-var subwork_index = 1
+var current_work_index = -1 # inxex to worklist
+
+var subwork_node_list = [] # == work_list[current_work_index]
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -29,9 +29,8 @@ func _ready() -> void:
 	CmdMenuButton.get_popup().index_pressed.connect(cmd_menu_index_pressed)
 	reset_work_list()
 	work_list2work_list_menu()
-	FirstSubWorkNode.disable_buttons(true)
-	FirstSubWorkNode.add_subwork.connect(_on_work_container_add_subwork)
-	FirstSubWorkNode.del_subwork.connect(_on_work_container_del_subwork)
+	MasterWorkNode.disable_buttons(true)
+	work_connect(MasterWorkNode)
 
 # work list ########################################################################################
 
@@ -39,7 +38,7 @@ func work_list2work_list_menu()->void:
 	WorkListMenuButton.get_popup().clear()
 	for i in work_list.works.size():
 		WorkListMenuButton.get_popup().add_item(work_list.get_at(i).to_str(),i)
-	clear_subwork_nodes()
+	clear_subwork_node_list()
 
 func work_list_menu_index_pressed(sel :int)->void:
 	current_work_index = sel
@@ -107,45 +106,80 @@ func del_current_work()->void:
 
 # subwork ##########################################################################################
 
-func select_work(work_index :int)->void:
-	var sel_wd = work_list.get_at(work_index)
+func select_work(wi :int)->void:
+	var sel_wd = work_list.get_at(wi)
 	text2speech(tr("%s로 설정합니다.") % sel_wd.get_title())
-	clear_subwork_nodes()
-	make_subwork_nodes(sel_wd)
+	clear_subwork_node_list()
+	make_subwork_node_list(sel_wd)
 	reset_time()
-	update_time_labels()
 	CmdMenuButton.get_popup().set_item_disabled(4,false)
 	StartButton.disabled = false
 
-func clear_subwork_nodes()->void:
+func clear_subwork_node_list()->void:
 	# clear
-	for i in subwork_nodes.size():
+	for i in subwork_node_list.size():
 		if i == 0:
 			continue
-		SubWorkNodesContainer.remove_child(subwork_nodes[i])
-		subwork_nodes[i].queue_free()
-	subwork_nodes = [
-		FirstSubWorkNode
+		SubWorkNodesContainer.remove_child(subwork_node_list[i])
+		subwork_node_list[i].queue_free()
+	subwork_node_list = [
+		MasterWorkNode
 	]
-	FirstSubWorkNode.disable_buttons(true)
-	FirstSubWorkNode.reset()
+	MasterWorkNode.disable_buttons(true)
+	MasterWorkNode.clear()
 	CmdMenuButton.get_popup().set_item_disabled(4,true)
 	StartButton.disabled = true
 
-func make_subwork_nodes(wk :WorkList.Work)->void:
-	FirstSubWorkNode.disable_buttons(false)
+func make_subwork_node_list(wk :WorkList.Work)->void:
+	MasterWorkNode.disable_buttons(false)
 	for i in wk.subwork_list.size()-1:
 		var wn = work_scene.instantiate()
 		wn.focus_mode = Control.FOCUS_ALL
-		wn.add_subwork.connect(_on_work_container_add_subwork)
-		wn.del_subwork.connect(_on_work_container_del_subwork)
-		subwork_nodes.append(wn)
+		work_connect(wn)
+		subwork_node_list.append(wn)
 		SubWorkNodesContainer.add_child(wn)
-	for i in subwork_nodes.size():
+	for i in subwork_node_list.size():
 		var sw = wk.subwork_list[i]
-		subwork_nodes[i].set_subwork(i,sw)
-	if subwork_nodes.size() <= 1 :
-		subwork_nodes[0].disable_menu(1,true)
+		subwork_node_list[i].init(i,sw)
+	if subwork_node_list.size() <= 1 :
+		subwork_node_list[0].disable_menu(1,true)
+
+func work_connect(wn :SubWorkNode)->void:
+	wn.add_subwork.connect(_on_work_container_add_subwork)
+	wn.del_subwork.connect(_on_work_container_del_subwork)
+	wn.time_reached.connect(_on_work_time_reached)
+
+var subwork_index :int = 1
+func _on_work_time_reached(idx :int, v :float)->void:
+	if idx == 0: # masterwork
+		StartButton.button_pressed = false
+		pause_master()
+	else:
+		subwork_index = idx
+		subwork_node_list[subwork_index].reset_time()
+		var oldWorkStr = subwork_node_list[subwork_index].get_label_text()
+		subwork_index += 1
+		if subwork_node_list.size() <= subwork_index:
+			subwork_index = 1
+		var newWorkStr = subwork_node_list[subwork_index].get_label_text()
+		text2speech(tr("%s를 끝내고 %s를 시작합니다.") %[oldWorkStr,newWorkStr])
+		subwork_node_list[subwork_index].grab_focus()
+
+# start and resume
+func start_master()->void:
+	subwork_node_list[0].start()
+	subwork_node_list[subwork_index].start()
+	var sel_wd = work_list.get_at(current_work_index)
+	StartButton.text = tr("멈추기")
+	text2speech(tr("%s를 시작합니다.") % [ sel_wd.get_title() ])
+
+# stop and pause
+func pause_master()->void:
+	subwork_node_list[0].pause()
+	subwork_node_list[subwork_index].pause()
+	var sel_wd = work_list.get_at(current_work_index)
+	StartButton.text = tr("시작하기")
+	text2speech(tr("%s를 멈춥니다.") % [ sel_wd.get_title() ])
 
 func _on_work_container_del_subwork(index :int, sw :WorkList.SubWork)->void:
 	var wk = work_list.get_at(current_work_index)
@@ -161,50 +195,25 @@ func _on_work_container_add_subwork(index :int, sw :WorkList.SubWork)->void:
 	wk.add_new_subwork( WorkList.SubWork.new(["운동", 60*3]) )
 	work_list2work_list_menu()
 	select_work(current_work_index)
-	subwork_nodes[0].disable_menu(1,false)
+	subwork_node_list[0].disable_menu(1,false)
 
 func _on_start_button_toggled(button_pressed: bool) -> void:
-	if subwork_nodes.size() == 0 :
+	if subwork_node_list.size() == 0 :
 		return
-	var sel_wd = work_list.get_at(current_work_index)
-	if button_pressed :
-		if subwork_nodes[0].remainSec<=0:
-			reset_time()
-		StartButton.text = tr("멈추기")
-		text2speech(tr("%s를 시작합니다.") % [ sel_wd.get_title() ])
-		$Timer.start()
+	if button_pressed : # start current work
+		start_master()
 	else:
-		StartButton.text = tr("시작하기")
-		text2speech(tr("%s를 멈춥니다.") % [ sel_wd.get_title() ])
-		$Timer.stop()
+		pause_master()
 	disable_buttons(button_pressed)
 
-func _on_timer_timeout() -> void:
-	if subwork_nodes[0].dec_remain_sec() != true: # fail to dec
-		StartButton.button_pressed = false
-	elif subwork_nodes.size() > subwork_index:
-		if subwork_nodes[subwork_index].dec_remain_sec() != true: # move to next sub work
-			subwork_nodes[subwork_index].reset_time()
-			var oldWorkStr = subwork_nodes[subwork_index].get_label_text()
-			subwork_index += 1
-			if subwork_nodes.size() <= subwork_index:
-				subwork_index = 1
-			var newWorkStr = subwork_nodes[subwork_index].get_label_text()
-			text2speech(tr("%s를 끝내고 %s를 시작합니다.") %[oldWorkStr,newWorkStr])
-			subwork_nodes[subwork_index].grab_focus()
-	update_time_labels()
-
-func update_time_labels()->void:
-	for o in subwork_nodes:
-		o.update_time_labels()
 
 func reset_time()->void:
-	for o in subwork_nodes:
+	for o in subwork_node_list:
 		o.reset_time()
 
 func disable_buttons(b :bool)->void:
 	WorkListMenuButton.disabled = b
-	for o in subwork_nodes:
+	for o in subwork_node_list:
 		o.disable_buttons(b)
 
 # raw data #########################################################################################
