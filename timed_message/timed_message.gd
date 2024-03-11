@@ -6,7 +6,7 @@ func init(rt :Rect2, ver :String)->void:
 	$VBoxContainer/VersionLabel.text = ver
 	theme.default_font_size = rt.size.y / 4
 
-func show_message(msg :String, sec :float = 3)->void:
+func show_message(msg :String, sec :float = 1)->void:
 	$VBoxContainer/Label.text = msg
 	visible = true
 	$Timer.start(sec)
