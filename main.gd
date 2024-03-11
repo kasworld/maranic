@@ -14,15 +14,16 @@ func text2speech(s :String):
 @onready var SubWorkNodesContainer = $VBoxContainer/ScrollContainer/SubWorkNodesContainer
 
 var work_list :WorkList
-var current_work_index = -1 # inxex to worklist
+var work_index = -1 # inxex to worklist
 
-var subwork_node_list = [] # == work_list[current_work_index]
+var subwork_node_list = [] # == work_list[work_index]
+var subwork_index :int = 1 # index to subwork_node_list
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var vp_rect = get_viewport_rect()
 	var msgrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.3 )
-	$TimedMessage.init(msgrect, tr("인터벌 타이머 7.1.1"))
+	$TimedMessage.init(msgrect, tr("인터벌 타이머 8.0.0"))
 	WorkListMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	CmdMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	WorkListMenuButton.get_popup().index_pressed.connect(work_list_menu_index_pressed)
@@ -41,7 +42,7 @@ func work_list2work_list_menu()->void:
 	clear_subwork_node_list()
 
 func work_list_menu_index_pressed(sel :int)->void:
-	current_work_index = sel
+	work_index = sel
 	select_work(sel)
 
 func cmd_menu_index_pressed(sel :int)->void:
@@ -92,13 +93,13 @@ func add_new_work()->void:
 	if new_work.has_error():
 		$TimedMessage.show_message(new_work.errmsg)
 		return
-	current_work_index = work_list.add_new_work( new_work )
+	work_index = work_list.add_new_work( new_work )
 	work_list2work_list_menu()
 	$TimedMessage.show_message(tr("목록에 새 워크를 추가합니다."))
-	select_work( current_work_index )
+	select_work( work_index )
 
 func del_current_work()->void:
-	var errmsg = work_list.del_at(current_work_index)
+	var errmsg = work_list.del_at(work_index)
 	if not errmsg.is_empty() :
 		$TimedMessage.show_message(errmsg)
 		return
@@ -149,7 +150,6 @@ func work_connect(wn :SubWorkNode)->void:
 	wn.del_subwork.connect(_on_work_container_del_subwork)
 	wn.time_reached.connect(_on_work_time_reached)
 
-var subwork_index :int = 1
 func _on_work_time_reached(idx :int, v :float)->void:
 	if idx == 0: # masterwork
 		StartButton.button_pressed = false
@@ -169,7 +169,7 @@ func _on_work_time_reached(idx :int, v :float)->void:
 func start_master()->void:
 	subwork_node_list[0].start()
 	subwork_node_list[subwork_index].start()
-	var sel_wd = work_list.get_at(current_work_index)
+	var sel_wd = work_list.get_at(work_index)
 	StartButton.text = tr("멈추기")
 	text2speech(tr("%s를 시작합니다.") % [ sel_wd.get_title() ])
 
@@ -177,24 +177,24 @@ func start_master()->void:
 func pause_master()->void:
 	subwork_node_list[0].pause()
 	subwork_node_list[subwork_index].pause()
-	var sel_wd = work_list.get_at(current_work_index)
+	var sel_wd = work_list.get_at(work_index)
 	StartButton.text = tr("시작하기")
 	text2speech(tr("%s를 멈춥니다.") % [ sel_wd.get_title() ])
 
 func _on_work_container_del_subwork(index :int, sw :WorkList.SubWork)->void:
-	var wk = work_list.get_at(current_work_index)
+	var wk = work_list.get_at(work_index)
 	if wk.size() <= 1:
 		$TimedMessage.show_message(tr("빈 워크가 되어 지울 수 없습니다."))
 		return
 	wk.del_at(index)
 	work_list2work_list_menu()
-	select_work(current_work_index)
+	select_work(work_index)
 
 func _on_work_container_add_subwork(index :int, sw :WorkList.SubWork)->void:
-	var wk = work_list.get_at(current_work_index)
+	var wk = work_list.get_at(work_index)
 	wk.add_new_subwork( WorkList.SubWork.new(["운동", 60*3]) )
 	work_list2work_list_menu()
-	select_work(current_work_index)
+	select_work(work_index)
 	subwork_node_list[0].disable_menu(1,false)
 
 func _on_start_button_toggled(button_pressed: bool) -> void:

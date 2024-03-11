@@ -37,7 +37,6 @@ func set_init_value(v :int)->void:
 func reset()->void:
 	current_value = init_value
 	update_label()
-	print_debug("reset")
 
 func default_formater(v:int)->String:
 	return "%d" % v
