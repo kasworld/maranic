@@ -14,9 +14,10 @@ func init(i :int, sw :WorkList.SubWork)->void:
 	subwork = sw
 	$NameEdit.text = subwork.name
 	$MenuButton.text = subwork.name
-	$TimeRecorder.init(i, 200, TickLib.tick2stri)
+	$TimeRecorder.init(i, 100, TickLib.tick2stri)
 	$TimeRecorder.set_initial_sec(subwork.second)
 	$TimeEdit.set_init_value(subwork.second)
+	$TimeEdit.disable_buttons(true)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -58,6 +59,7 @@ func pause()->void:
 func disable_buttons(b :bool)->void:
 	$MenuButton.disabled = b
 	$TimeEdit.disable_buttons(b)
+	$TimeRecorder.disable_buttons(b)
 
 func get_label_text()->String:
 	return $NameEdit.text

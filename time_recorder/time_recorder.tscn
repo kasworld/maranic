@@ -1,17 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://cnuti22mjwpd8"]
+[gd_scene load_steps=4 format=3 uid="uid://cnuti22mjwpd8"]
 
 [ext_resource type="Script" path="res://time_recorder/time_recorder.gd" id="1_gtvcd"]
-[ext_resource type="Theme" uid="uid://c2mukxm1c10ti" path="res://timed_message/timed_message.tres" id="1_rrceb"]
+
+[sub_resource type="SystemFont" id="SystemFont_krevf"]
+
+[sub_resource type="Theme" id="Theme_7ymif"]
+default_font = SubResource("SystemFont_krevf")
+default_font_size = 100
 
 [node name="TimeRecorder" type="PanelContainer"]
 focus_mode = 2
-theme = ExtResource("1_rrceb")
+theme = SubResource("Theme_7ymif")
 script = ExtResource("1_gtvcd")
 
 [node name="ButtonSec" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_rrceb")
 text = "00:00.00"
 
 [node name="Timer" type="Timer" parent="."]

@@ -1,17 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://dvgdal4hlx1ws"]
+[gd_scene load_steps=6 format=3 uid="uid://dvgdal4hlx1ws"]
 
 [ext_resource type="Script" path="res://subwork_node.gd" id="1_mqriv"]
 [ext_resource type="Theme" uid="uid://i63124txlj1h" path="res://label_theme.tres" id="2_dbx7h"]
 [ext_resource type="Theme" uid="uid://ppd28w7sx5wa" path="res://button_theme.tres" id="3_u1yx1"]
 [ext_resource type="PackedScene" uid="uid://dllxbmyyau3u5" path="res://int_edit/int_edit.tscn" id="4_fn27v"]
 [ext_resource type="PackedScene" uid="uid://cnuti22mjwpd8" path="res://time_recorder/time_recorder.tscn" id="5_miup7"]
-
-[sub_resource type="SystemFont" id="SystemFont_sdk14"]
-
-[sub_resource type="Theme" id="Theme_v56gx"]
-resource_local_to_scene = true
-default_font = SubResource("SystemFont_sdk14")
-default_font_size = 100
 
 [node name="SubWorkNode" type="HBoxContainer"]
 offset_right = 1920.0
@@ -54,7 +47,6 @@ layout_mode = 2
 
 [node name="TimeRecorder" parent="." instance=ExtResource("5_miup7")]
 layout_mode = 2
-theme = SubResource("Theme_v56gx")
 
 [connection signal="focus_entered" from="NameEdit" to="." method="_on_name_edit_focus_entered"]
 [connection signal="focus_exited" from="NameEdit" to="." method="_on_name_edit_focus_exited"]

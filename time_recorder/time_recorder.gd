@@ -28,6 +28,9 @@ func set_initial_sec(t :float)->void:
 	is_downward = true
 	reset()
 
+func disable_buttons(b :bool)->void:
+	$ButtonSec.disabled = b
+
 func reset() -> void:
 	is_paused = true
 	is_inuse = false
