@@ -24,7 +24,7 @@ var is_running :bool
 func _ready() -> void:
 	var vp_rect = get_viewport_rect()
 	var msgrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.3 )
-	$TimedMessage.init(msgrect, tr("인터벌 타이머 8.1.0"))
+	$TimedMessage.init(msgrect, tr("인터벌 타이머 8.2.0"))
 	WorkListMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	CmdMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	WorkListMenuButton.get_popup().index_pressed.connect(work_list_menu_index_pressed)
@@ -82,6 +82,7 @@ func make_subwork_node_list(wk :WorkList.Work)->void:
 	if subwork_node_list.size() <= 1 :
 		subwork_node_list[0].disable_menu(1,true)
 
+# v : overrun value (<=0)
 func _on_work_time_reached(idx :int, v :float)->void:
 	if idx == 0: # masterwork
 		StartButton.button_pressed = false
@@ -94,7 +95,7 @@ func _on_work_time_reached(idx :int, v :float)->void:
 		if subwork_node_list.size() <= subwork_index:
 			subwork_index = 1
 		if is_running:
-			subwork_node_list[subwork_index].start()
+			subwork_node_list[subwork_index].start(-v)
 			var newWorkStr = subwork_node_list[subwork_index].get_label_text()
 			text2speech(tr("%s를 끝내고 %s를 시작합니다.") %[oldWorkStr,newWorkStr])
 			subwork_node_list[subwork_index].grab_focus()

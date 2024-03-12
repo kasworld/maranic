@@ -4,7 +4,7 @@ class_name SubWorkNode
 
 signal del_subwork(index :int, sw :WorkList.SubWork)
 signal add_subwork(index :int, sw :WorkList.SubWork)
-signal time_reached(index :int, v :float)
+signal time_reached(index :int, v :float) # v : overrun value (<=0)
 
 var subwork :WorkList.SubWork
 var subwork_index :int
@@ -49,8 +49,8 @@ func reset_time()->void:
 	$TimeRecorder.reset()
 
 # start and resume
-func start()->void:
-	$TimeRecorder.start()
+func start(offset:float=0)->void:
+	$TimeRecorder.start(offset)
 
 # stop and pause
 func pause()->void:

@@ -3,7 +3,7 @@ extends PanelContainer
 class_name TimeRecorder
 
 signal started(n:int) # emit when 1st start
-signal overrun(v :float) # emit when count down over 0 with overrun value(<0)
+signal overrun(v :float) # emit when count down over 0 with overrun value(<=0)
 
 var initial_sec :float
 var start_tick :float
@@ -33,27 +33,28 @@ func reset() -> void:
 	is_inuse = false
 	sum_tick = 0
 
-func start1st()->void:
+func start1st(offset:float=0)->void:
 	if not is_inuse:
 		is_inuse = true
 		started.emit(index)
-		resume()
+		resume(offset)
 
-func start()->void:
+func start(offset:float=0)->void:
 	if is_paused:
 		if is_inuse:
-			resume()
+			resume(offset)
 		else:
-			start1st()
+			start1st(offset)
 
 func pause()->void:
 	if not is_paused:
 		is_paused = true
 		sum_tick += get_last_dur()
 
-func resume()->void:
+func resume(offset:float=0)->void:
 	is_paused = false
 	start_tick = Time.get_unix_time_from_system()
+	sum_tick += offset
 
 func _process(delta: float) -> void:
 	var dur :float
