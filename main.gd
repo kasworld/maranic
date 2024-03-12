@@ -16,8 +16,7 @@ func text2speech(s :String):
 var work_list :WorkList
 var work_index = -1 # inxex to worklist
 
-var subwork_node_list = [] # == work_list[work_index]
-var subwork_index :int = 1 # index to subwork_node_list
+var subwork_index :int = 1 # index to SubWorkNodesContainer +1
 var is_running :bool
 
 # Called when the node enters the scene tree for the first time.
@@ -41,28 +40,25 @@ func subwork_connect(wn :SubWorkNode)->void:
 	wn.time_reached.connect(_on_work_time_reached)
 
 func reset_time_all()->void:
-	for o in subwork_node_list:
+	MasterWorkNode.reset_time()
+	for o in SubWorkNodesContainer.get_children():
 		o.reset_time()
 
 func pause_all()->void:
-	for o in subwork_node_list:
+	MasterWorkNode.pause()
+	for o in SubWorkNodesContainer.get_children():
 		o.pause()
 
 func disable_buttons(b :bool)->void:
 	WorkListMenuButton.disabled = b
-	for o in subwork_node_list:
+	MasterWorkNode.disable_buttons(b)
+	for o in SubWorkNodesContainer.get_children():
 		o.disable_buttons(b)
 
 func clear_subwork_node_list()->void:
 	# clear
-	for i in subwork_node_list.size():
-		if i == 0:
-			continue
-		SubWorkNodesContainer.remove_child(subwork_node_list[i])
-		subwork_node_list[i].queue_free()
-	subwork_node_list = [
-		MasterWorkNode
-	]
+	for o in SubWorkNodesContainer.get_children():
+		SubWorkNodesContainer.remove_child(o)
 	MasterWorkNode.disable_buttons(true)
 	MasterWorkNode.clear()
 	CmdMenuButton.get_popup().set_item_disabled(4,true)
@@ -74,13 +70,13 @@ func make_subwork_node_list(wk :WorkList.Work)->void:
 		var wn = work_scene.instantiate()
 		wn.focus_mode = Control.FOCUS_ALL
 		subwork_connect(wn)
-		subwork_node_list.append(wn)
 		SubWorkNodesContainer.add_child(wn)
-	for i in subwork_node_list.size():
-		var sw = wk.subwork_list[i]
-		subwork_node_list[i].init(i,sw)
-	if subwork_node_list.size() <= 1 :
-		subwork_node_list[0].disable_menu(1,true)
+	MasterWorkNode.init(0,wk.subwork_list[0])
+	for i in SubWorkNodesContainer.get_child_count():
+		var sw = wk.subwork_list[i+1]
+		SubWorkNodesContainer.get_child(i).init(i+1,sw)
+	if SubWorkNodesContainer.get_child_count() == 0 :
+		MasterWorkNode.disable_menu(1,true)
 
 # v : overrun value (<=0)
 func _on_work_time_reached(idx :int, v :float)->void:
@@ -89,23 +85,25 @@ func _on_work_time_reached(idx :int, v :float)->void:
 		pause_master()
 	else:
 		subwork_index = idx
-		subwork_node_list[subwork_index].reset_time()
-		var oldWorkStr = subwork_node_list[subwork_index].get_label_text()
+		var o = SubWorkNodesContainer.get_child(subwork_index-1)
+		o.reset_time()
+		var oldWorkStr = o.get_label_text()
 		subwork_index += 1
-		if subwork_node_list.size() <= subwork_index:
+		if SubWorkNodesContainer.get_child_count() <= subwork_index-1:
 			subwork_index = 1
+		o = SubWorkNodesContainer.get_child(subwork_index-1)
 		if is_running:
-			subwork_node_list[subwork_index].start(-v)
-			var newWorkStr = subwork_node_list[subwork_index].get_label_text()
+			o.start(-v)
+			var newWorkStr = o.get_label_text()
 			text2speech(tr("%s를 끝내고 %s를 시작합니다.") %[oldWorkStr,newWorkStr])
-			subwork_node_list[subwork_index].grab_focus()
+			o.grab_focus()
 
 # start and resume
 func start_master()->void:
 	if not is_running:
 		is_running = true
-		subwork_node_list[0].start()
-		subwork_node_list[subwork_index].start()
+		MasterWorkNode.start()
+		SubWorkNodesContainer.get_child(subwork_index-1).start()
 		var sel_wd = work_list.get_at(work_index)
 		StartButton.text = tr("멈추기")
 		text2speech(tr("%s를 시작합니다.") % [ sel_wd.get_title() ])
@@ -133,11 +131,9 @@ func _on_work_container_add_subwork(index :int, sw :WorkList.SubWork)->void:
 	wk.add_new_subwork( WorkList.SubWork.new(["운동", 60*3]) )
 	work_list2work_list_menu()
 	select_work(work_index)
-	subwork_node_list[0].disable_menu(1,false)
+	MasterWorkNode.disable_menu(1,false)
 
 func _on_start_button_toggled(button_pressed: bool) -> void:
-	if subwork_node_list.size() == 0 :
-		return
 	if button_pressed : # start current work
 		start_master()
 	else:

@@ -18,7 +18,6 @@ func init(i :int, sw :WorkList.SubWork)->void:
 	$TimeRecorder.set_initial_sec(subwork.second)
 	$TimeEdit.set_init_value(subwork.second)
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	$MenuButton.get_popup().theme = preload("res://menulist_theme.tres")
