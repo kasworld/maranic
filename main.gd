@@ -23,7 +23,7 @@ var is_running :bool
 func _ready() -> void:
 	var vp_rect = get_viewport_rect()
 	var msgrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.3 )
-	$TimedMessage.init(msgrect, tr("인터벌 타이머 8.2.0"))
+	$TimedMessage.init(msgrect, tr("인터벌 타이머 8.3.0"))
 	WorkListMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	CmdMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	WorkListMenuButton.get_popup().index_pressed.connect(work_list_menu_index_pressed)
@@ -85,18 +85,16 @@ func _on_work_time_reached(idx :int, v :float)->void:
 		pause_master()
 	else:
 		subwork_index = idx
-		var o = SubWorkNodesContainer.get_child(subwork_index-1)
-		o.reset_time()
-		var oldWorkStr = o.get_label_text()
+		var old_sn = SubWorkNodesContainer.get_child(subwork_index-1)
+		old_sn.reset_time()
 		subwork_index += 1
 		if SubWorkNodesContainer.get_child_count() <= subwork_index-1:
 			subwork_index = 1
-		o = SubWorkNodesContainer.get_child(subwork_index-1)
 		if is_running:
-			o.start(-v)
-			var newWorkStr = o.get_label_text()
-			text2speech(tr("%s를 끝내고 %s를 시작합니다.") %[oldWorkStr,newWorkStr])
-			o.grab_focus()
+			var new_sn = SubWorkNodesContainer.get_child(subwork_index-1)
+			new_sn.start(-v)
+			text2speech(tr("%s를 끝내고 %s를 시작합니다.") %[old_sn.get_label_text(),new_sn.get_label_text()])
+			new_sn.grab_focus()
 
 # start and resume
 func start_master()->void:
