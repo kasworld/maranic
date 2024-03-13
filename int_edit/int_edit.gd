@@ -18,19 +18,26 @@ var init_value :int
 var limit_low :int
 var use_limit_low :bool
 var current_value :int
-var formater :Callable
+var formater :Callable = default_formater
 
 func _ready() -> void:
 	pass
 
-func init(llow :int, uselow :bool, val :int, lhigh :int, usehigh :bool, fmt :Callable=default_formater)->void:
+func init(fsize :int, fmt :Callable=default_formater)->void:
+	$HBoxContainer/ValueLabel.theme.default_font_size = fsize
+	$HBoxContainer/VBoxContainer/IncButton.theme.default_font_size = fsize*0.9/2
+	$HBoxContainer/VBoxContainer/DecButton.theme.default_font_size = fsize*0.9/2
+	set_formater(fmt)
+
+func set_limits(llow :int, uselow :bool, val :int, lhigh :int, usehigh :bool)->void:
 	limit_low = llow
 	use_limit_low = uselow
-	init_value = val
 	limit_high = lhigh
 	use_limit_high = usehigh
+	set_init_value(val)
+
+func set_formater(fmt :Callable)->void:
 	formater = fmt
-	reset()
 
 func set_init_value(v :int)->void:
 	init_value = v

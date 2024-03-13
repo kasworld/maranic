@@ -10,20 +10,21 @@ var subwork :WorkList.SubWork
 var subwork_index :int
 
 func init(i :int, sw :WorkList.SubWork)->void:
+	var fsize = 100
 	subwork_index = i
 	subwork = sw
 	$NameEdit.text = subwork.name
 	$MenuButton.text = subwork.name
-	$TimeRecorder.init(i, 100, TickLib.tick2stri)
+	$TimeRecorder.init(i, fsize, TickLib.tick2stri)
 	$TimeRecorder.set_initial_sec(subwork.second)
-	$TimeEdit.set_init_value(subwork.second)
+	$TimeEdit.init(fsize, TickLib.tick2stri)
+	$TimeEdit.set_limits( 0,true,subwork.second,99,false)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	$MenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	$MenuButton.get_popup().index_pressed.connect(_on_menu_index_pressed)
 	$TimeRecorder.overrun.connect(_on_timerecorder_overrun)
-	$TimeEdit.init(0,true,0,99,false,TickLib.tick2stri)
 	$TimeEdit.value_changed.connect(_on_edit_value_changed)
 
 func _on_timerecorder_overrun(v:float)->void:

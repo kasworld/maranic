@@ -28,6 +28,11 @@ func set_initial_sec(t :float)->void:
 	is_downward = true
 	reset()
 
+func set_stopwatch()->void:
+	is_downward = false
+	initial_sec = 0
+	reset()
+
 func disable_buttons(b :bool)->void:
 	$ButtonSec.disabled = b
 
