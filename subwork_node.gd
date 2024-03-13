@@ -19,9 +19,6 @@ func init(i :int, sw :WorkList.SubWork)->void:
 	$TimeRecorder.set_initial_sec(subwork.second)
 	$TimeEdit.init(fsize, TickLib.tick2stri)
 	$TimeEdit.set_limits( 0,true,subwork.second,99,false)
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
 	$MenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	$MenuButton.get_popup().index_pressed.connect(_on_menu_index_pressed)
 	$TimeRecorder.overrun.connect(_on_timerecorder_overrun)

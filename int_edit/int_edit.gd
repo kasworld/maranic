@@ -20,9 +20,6 @@ var use_limit_low :bool
 var current_value :int
 var formater :Callable = default_formater
 
-func _ready() -> void:
-	pass
-
 func init(fsize :int, fmt :Callable=default_formater)->void:
 	$HBoxContainer/ValueLabel.theme.default_font_size = fsize
 	$HBoxContainer/VBoxContainer/IncButton.theme.default_font_size = fsize*0.9/2
