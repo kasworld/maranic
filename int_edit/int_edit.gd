@@ -2,6 +2,8 @@ extends PanelContainer
 
 class_name IntEdit
 
+# ▲△▼▽↑↓⇑⇓Ýß­¯
+
 @onready var vallabel = $HBoxContainer/ValueLabel
 @onready var incbtn = $HBoxContainer/VBoxContainer/IncButton
 @onready var decbtn = $HBoxContainer/VBoxContainer/DecButton

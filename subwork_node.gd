@@ -17,7 +17,6 @@ func init(i :int, sw :WorkList.SubWork)->void:
 	$TimeRecorder.init(i, 100, TickLib.tick2stri)
 	$TimeRecorder.set_initial_sec(subwork.second)
 	$TimeEdit.set_init_value(subwork.second)
-	$TimeEdit.disable_buttons(true)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

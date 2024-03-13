@@ -23,7 +23,7 @@ var is_running :bool
 func _ready() -> void:
 	var vp_rect = get_viewport_rect()
 	var msgrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.3 )
-	$TimedMessage.init(msgrect, tr("인터벌 타이머 8.3.0"))
+	$TimedMessage.init(msgrect, tr("인터벌 타이머 8.4.0"))
 	WorkListMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	CmdMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	WorkListMenuButton.get_popup().index_pressed.connect(work_list_menu_index_pressed)
@@ -136,7 +136,6 @@ func _on_start_button_toggled(button_pressed: bool) -> void:
 		start_master()
 	else:
 		pause_master()
-	disable_buttons(button_pressed)
 
 # work list ########################################################################################
 

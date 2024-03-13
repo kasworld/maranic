@@ -37,12 +37,12 @@ alignment = 1
 [node name="IncButton" type="Button" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("3_nup17")
-text = "Inc"
+text = "⇑"
 
 [node name="DecButton" type="Button" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("3_nup17")
-text = "Dec"
+text = "⇓"
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="button_down" from="HBoxContainer/VBoxContainer/IncButton" to="." method="_on_inc_button_button_down"]
