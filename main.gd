@@ -23,14 +23,14 @@ var is_running :bool
 func _ready() -> void:
 	var vp_rect = get_viewport_rect()
 	var msgrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.3 )
-	$TimedMessage.init(msgrect, tr("인터벌 타이머 9.0.0"))
+	$TimedMessage.init(msgrect, tr("인터벌 타이머 9.2.0"))
 	WorkListMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	CmdMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	WorkListMenuButton.get_popup().index_pressed.connect(work_list_menu_index_pressed)
 	CmdMenuButton.get_popup().index_pressed.connect(cmd_menu_index_pressed)
 	reset_work_list()
 	work_list2work_list_menu()
-	MasterWorkNode.init(0,WorkList.SubWork.new(["새워크", 60*30]))
+	MasterWorkNode.init()
 	MasterWorkNode.disable_buttons(true)
 	subwork_connect(MasterWorkNode)
 
@@ -72,10 +72,11 @@ func make_subwork_node_list(wk :WorkList.Work)->void:
 		wn.focus_mode = Control.FOCUS_ALL
 		subwork_connect(wn)
 		SubWorkNodesContainer.add_child(wn)
-	MasterWorkNode.init(0,wk.subwork_list[0])
+	MasterWorkNode.set_subwork(0,wk.subwork_list[0])
 	for i in SubWorkNodesContainer.get_child_count():
 		var sw = wk.subwork_list[i+1]
-		SubWorkNodesContainer.get_child(i).init(i+1,sw)
+		SubWorkNodesContainer.get_child(i).init()
+		SubWorkNodesContainer.get_child(i).set_subwork(i+1,sw)
 	if SubWorkNodesContainer.get_child_count() == 0 :
 		MasterWorkNode.disable_menu(1,true)
 

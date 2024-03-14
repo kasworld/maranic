@@ -44,7 +44,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 theme = SubResource("Theme_ygxnd")
 toggle_mode = true
-text = "⏱"
+text = "⏳"
 
 [node name="IntEdit" parent="." instance=ExtResource("4_fn27v")]
 layout_mode = 2

@@ -9,21 +9,25 @@ signal time_reached(index :int, v :float) # v : overrun value (<=0)
 var subwork :WorkList.SubWork
 var subwork_index :int
 
-func init(i :int, sw :WorkList.SubWork)->void:
+func init()->void:
 	var fsize = 100
+	$MenuButton.get_popup().theme = preload("res://menulist_theme.tres")
+	$MenuButton.get_popup().index_pressed.connect(_on_menu_index_pressed)
+	$TimeRecorder.init(0, fsize, TickLib.tick2str)
+	$TimeRecorder.overrun.connect(_on_timerecorder_overrun)
+	$IntEdit.init(fsize, TickLib.tick2str)
+	$IntEdit.set_limits( 0,true,0,99,false)
+	$IntEdit.value_changed.connect(_on_edit_value_changed)
+	$ToggleButton.theme.default_font_size = fsize
+
+func set_subwork(i :int, sw :WorkList.SubWork)->void:
 	subwork_index = i
 	subwork = sw
 	$NameEdit.text = subwork.name
 	$MenuButton.text = subwork.name
-	$MenuButton.get_popup().theme = preload("res://menulist_theme.tres")
-	$MenuButton.get_popup().index_pressed.connect(_on_menu_index_pressed)
-	$TimeRecorder.init(i, fsize, TickLib.tick2stri)
 	$TimeRecorder.set_initial_sec(subwork.second)
-	$TimeRecorder.overrun.connect(_on_timerecorder_overrun)
-	$IntEdit.init(fsize, TickLib.tick2stri)
-	$IntEdit.set_limits( 0,true,subwork.second,99,false)
-	$IntEdit.value_changed.connect(_on_edit_value_changed)
-	$ToggleButton.theme.default_font_size = fsize
+	$IntEdit.set_init_value(subwork.second)
+
 
 func _on_timerecorder_overrun(v:float)->void:
 	time_reached.emit(subwork_index, v)
