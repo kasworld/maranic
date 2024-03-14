@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://dvgdal4hlx1ws"]
+[gd_scene load_steps=7 format=3 uid="uid://dvgdal4hlx1ws"]
 
 [ext_resource type="Script" path="res://subwork_node.gd" id="1_mqriv"]
 [ext_resource type="Theme" uid="uid://i63124txlj1h" path="res://label_theme.tres" id="2_dbx7h"]
 [ext_resource type="Theme" uid="uid://ppd28w7sx5wa" path="res://button_theme.tres" id="3_u1yx1"]
 [ext_resource type="PackedScene" uid="uid://dllxbmyyau3u5" path="res://int_edit/int_edit.tscn" id="4_fn27v"]
 [ext_resource type="PackedScene" uid="uid://cnuti22mjwpd8" path="res://time_recorder/time_recorder.tscn" id="5_miup7"]
+
+[sub_resource type="Theme" id="Theme_ygxnd"]
 
 [node name="SubWorkNode" type="HBoxContainer"]
 offset_right = 1920.0
@@ -38,7 +40,13 @@ popup/item_2/id = 4
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TimeEdit" parent="." instance=ExtResource("4_fn27v")]
+[node name="ToggleButton" type="Button" parent="."]
+layout_mode = 2
+theme = SubResource("Theme_ygxnd")
+toggle_mode = true
+text = "⏱"
+
+[node name="IntEdit" parent="." instance=ExtResource("4_fn27v")]
 layout_mode = 2
 
 [node name="VSeparator" type="VSeparator" parent="."]
@@ -51,3 +59,4 @@ layout_mode = 2
 [connection signal="focus_entered" from="NameEdit" to="." method="_on_name_edit_focus_entered"]
 [connection signal="focus_exited" from="NameEdit" to="." method="_on_name_edit_focus_exited"]
 [connection signal="text_submitted" from="NameEdit" to="." method="_on_name_edit_text_submitted"]
+[connection signal="toggled" from="ToggleButton" to="." method="_on_toggle_button_toggled"]

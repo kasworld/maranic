@@ -15,21 +15,22 @@ func init(i :int, sw :WorkList.SubWork)->void:
 	subwork = sw
 	$NameEdit.text = subwork.name
 	$MenuButton.text = subwork.name
-	$TimeRecorder.init(i, fsize, TickLib.tick2stri)
-	$TimeRecorder.set_initial_sec(subwork.second)
-	$TimeEdit.init(fsize, TickLib.tick2stri)
-	$TimeEdit.set_limits( 0,true,subwork.second,99,false)
 	$MenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	$MenuButton.get_popup().index_pressed.connect(_on_menu_index_pressed)
+	$TimeRecorder.init(i, fsize, TickLib.tick2stri)
+	$TimeRecorder.set_initial_sec(subwork.second)
 	$TimeRecorder.overrun.connect(_on_timerecorder_overrun)
-	$TimeEdit.value_changed.connect(_on_edit_value_changed)
+	$IntEdit.init(fsize, TickLib.tick2stri)
+	$IntEdit.set_limits( 0,true,subwork.second,99,false)
+	$IntEdit.value_changed.connect(_on_edit_value_changed)
+	$ToggleButton.theme.default_font_size = fsize
 
 func _on_timerecorder_overrun(v:float)->void:
 	time_reached.emit(subwork_index, v)
 	reset_time()
 
 func _on_edit_value_changed() ->void:
-	subwork.second = $TimeEdit.get_value()
+	subwork.second = $IntEdit.get_value()
 	if subwork.second < 0 :
 		subwork.second = 0
 	$TimeRecorder.set_initial_sec(subwork.second)
@@ -39,7 +40,7 @@ func clear()->void:
 	subwork_index = -1
 	subwork = null
 	$NameEdit.text = ""
-	$TimeEdit.set_init_value(0)
+	$IntEdit.set_init_value(0)
 	$TimeRecorder.set_initial_sec(0)
 
 func reset_time()->void:
@@ -55,7 +56,7 @@ func pause()->void:
 
 func disable_buttons(b :bool)->void:
 	$MenuButton.disabled = b
-	$TimeEdit.disable_buttons(b)
+	$IntEdit.disable_buttons(b)
 	$TimeRecorder.disable_buttons(b)
 
 func get_label_text()->String:
@@ -91,5 +92,12 @@ func _on_name_edit_focus_exited() -> void:
 func _on_name_edit_focus_entered() -> void:
 	edit_name( true)
 
-
-
+func _on_toggle_button_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		$ToggleButton.text = "⏳"
+		$IntEdit.disable_buttons(false)
+	else:
+		$ToggleButton.text = "⏱"
+		$IntEdit.disable_buttons(true)
+		$TimeRecorder.set_stopwatch()
+		$IntEdit.set_init_value(0)

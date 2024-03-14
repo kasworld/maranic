@@ -23,13 +23,14 @@ var is_running :bool
 func _ready() -> void:
 	var vp_rect = get_viewport_rect()
 	var msgrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.3 )
-	$TimedMessage.init(msgrect, tr("인터벌 타이머 8.5.0"))
+	$TimedMessage.init(msgrect, tr("인터벌 타이머 9.0.0"))
 	WorkListMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	CmdMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	WorkListMenuButton.get_popup().index_pressed.connect(work_list_menu_index_pressed)
 	CmdMenuButton.get_popup().index_pressed.connect(cmd_menu_index_pressed)
 	reset_work_list()
 	work_list2work_list_menu()
+	MasterWorkNode.init(0,WorkList.SubWork.new(["새워크", 60*30]))
 	MasterWorkNode.disable_buttons(true)
 	subwork_connect(MasterWorkNode)
 

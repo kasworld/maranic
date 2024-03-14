@@ -18,7 +18,7 @@ func init(idx :int, fsize :int)->void:
 	$IntEdit.init(fsize, TickLib.tick2stri)
 	$IntEdit.set_limits( 0,true,0,99,false)
 	$TimeRecorder.started.connect(_on_tr_started)
-	$ToggleButton.theme.default_font_size = fsize/2
+	$ToggleButton.theme.default_font_size = fsize
 	$IntEdit.value_changed.connect(_on_edit_value_changed)
 	$IntEdit.disable_buttons(true)
 
