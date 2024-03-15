@@ -2,20 +2,18 @@
 
 [ext_resource type="Script" path="res://time_recorder/time_recorder.gd" id="1_gtvcd"]
 
-[sub_resource type="SystemFont" id="SystemFont_krevf"]
+[sub_resource type="SystemFont" id="SystemFont_s237w"]
 
-[sub_resource type="Theme" id="Theme_7ymif"]
-default_font = SubResource("SystemFont_krevf")
-default_font_size = 100
+[sub_resource type="Theme" id="Theme_lwwqo"]
+default_font = SubResource("SystemFont_s237w")
 
 [node name="TimeRecorder" type="PanelContainer"]
 focus_mode = 2
-theme = SubResource("Theme_7ymif")
+theme = SubResource("Theme_lwwqo")
 script = ExtResource("1_gtvcd")
 
 [node name="ButtonSec" type="Button" parent="."]
 layout_mode = 2
-size_flags_horizontal = 3
 text = "00:00.00"
 
 [node name="Timer" type="Timer" parent="."]

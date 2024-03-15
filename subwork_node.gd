@@ -15,10 +15,11 @@ func init()->void:
 	$MenuButton.get_popup().index_pressed.connect(_on_menu_index_pressed)
 	$TimeRecorder.init(0, fsize, TickLib.tick2str)
 	$TimeRecorder.overrun.connect(_on_timerecorder_overrun)
-	$IntEdit.init(fsize, TickLib.tick2str)
-	$IntEdit.set_limits( 0,true,0,99,false)
+	$IntEdit.init(0,fsize, TickLib.tick2str)
+	$IntEdit.set_limits(0,true,0,99,false)
 	$IntEdit.value_changed.connect(_on_edit_value_changed)
 	$ToggleButton.theme.default_font_size = fsize
+	mode_countdowntimer()
 
 func set_subwork(i :int, sw :WorkList.SubWork)->void:
 	subwork_index = i
@@ -28,12 +29,11 @@ func set_subwork(i :int, sw :WorkList.SubWork)->void:
 	$TimeRecorder.set_initial_sec(subwork.second)
 	$IntEdit.set_init_value(subwork.second)
 
-
 func _on_timerecorder_overrun(v:float)->void:
 	time_reached.emit(subwork_index, v)
 	reset_time()
 
-func _on_edit_value_changed() ->void:
+func _on_edit_value_changed(n:int) ->void:
 	subwork.second = $IntEdit.get_value()
 	if subwork.second < 0 :
 		subwork.second = 0
@@ -96,12 +96,18 @@ func _on_name_edit_focus_exited() -> void:
 func _on_name_edit_focus_entered() -> void:
 	edit_name( true)
 
+func mode_stopwatch()->void:
+	$ToggleButton.text = "⏱"
+	$TimeRecorder.set_stopwatch()
+	$IntEdit.visible = false
+
+func mode_countdowntimer()->void:
+	$ToggleButton.text = "⏳"
+	$IntEdit.visible = true
+	$TimeRecorder.set_initial_sec($IntEdit.get_value())
+
 func _on_toggle_button_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		$ToggleButton.text = "⏳"
-		$IntEdit.disable_buttons(false)
+		mode_stopwatch()
 	else:
-		$ToggleButton.text = "⏱"
-		$IntEdit.disable_buttons(true)
-		$TimeRecorder.set_stopwatch()
-		$IntEdit.set_init_value(0)
+		mode_countdowntimer()

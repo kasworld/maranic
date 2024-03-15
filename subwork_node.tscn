@@ -40,18 +40,18 @@ popup/item_2/id = 4
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ToggleButton" type="Button" parent="."]
-layout_mode = 2
-theme = SubResource("Theme_ygxnd")
-toggle_mode = true
-text = "⏳"
-
 [node name="IntEdit" parent="." instance=ExtResource("4_fn27v")]
 layout_mode = 2
 
 [node name="VSeparator" type="VSeparator" parent="."]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
+
+[node name="ToggleButton" type="Button" parent="."]
+layout_mode = 2
+theme = SubResource("Theme_ygxnd")
+toggle_mode = true
+text = "⏳"
 
 [node name="TimeRecorder" parent="." instance=ExtResource("5_miup7")]
 layout_mode = 2
