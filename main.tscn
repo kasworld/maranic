@@ -1,9 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://cfjxkoduefsup"]
+[gd_scene load_steps=7 format=3 uid="uid://cfjxkoduefsup"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_qfeat"]
 [ext_resource type="PackedScene" uid="uid://dvgdal4hlx1ws" path="res://subwork_node.tscn" id="2_ongj6"]
 [ext_resource type="Theme" uid="uid://ppd28w7sx5wa" path="res://button_theme.tres" id="3_sxpny"]
 [ext_resource type="PackedScene" uid="uid://c6cct2gj2a3im" path="res://timed_message/timed_message.tscn" id="4_mflyv"]
+
+[sub_resource type="SystemFont" id="SystemFont_bejao"]
+
+[sub_resource type="Theme" id="Theme_iwicw"]
+resource_local_to_scene = true
+default_font = SubResource("SystemFont_bejao")
 
 [node name="main" type="Node2D"]
 script = ExtResource("1_qfeat")
@@ -66,5 +72,6 @@ size_flags_horizontal = 3
 
 [node name="TimedMessage" parent="." instance=ExtResource("4_mflyv")]
 visible = false
+theme = SubResource("Theme_iwicw")
 
 [connection signal="toggled" from="VBoxContainer/TitleContainer/StartButton" to="." method="_on_start_button_toggled"]

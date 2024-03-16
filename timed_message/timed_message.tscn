@@ -3,20 +3,21 @@
 [ext_resource type="Script" path="res://timed_message/timed_message.gd" id="1_4npvt"]
 [ext_resource type="Theme" uid="uid://c2mukxm1c10ti" path="res://timed_message/timed_message.tres" id="1_d10pc"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w6bxv"]
-bg_color = Color(0.215686, 0.215686, 0.215686, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rqs3v"]
+bg_color = Color(0.337255, 0.337255, 0.337255, 1)
 border_width_left = 2
 border_width_top = 2
-border_width_right = 1
-border_width_bottom = 1
+border_width_right = 2
+border_width_bottom = 2
 
 [node name="TimedMessage" type="PanelContainer"]
+z_index = 1
 offset_right = 358.0
 offset_bottom = 62.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("1_d10pc")
-theme_override_styles/panel = SubResource("StyleBoxFlat_w6bxv")
+theme_override_styles/panel = SubResource("StyleBoxFlat_rqs3v")
 script = ExtResource("1_4npvt")
 
 [node name="Timer" type="Timer" parent="."]
@@ -26,12 +27,12 @@ layout_mode = 2
 
 [node name="VersionLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
 text = "version string here"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Label" type="RichTextLabel" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-fit_content = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

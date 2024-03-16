@@ -3,4 +3,5 @@
 [sub_resource type="SystemFont" id="SystemFont_bejao"]
 
 [resource]
+resource_local_to_scene = true
 default_font = SubResource("SystemFont_bejao")
