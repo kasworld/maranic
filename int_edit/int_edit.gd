@@ -1,14 +1,15 @@
-extends PanelContainer
+extends HBoxContainer
 
 class_name IntEdit
 
 # ▲△▼▽↑↓⇑⇓Ýß­¯
 
-@onready var vallabel = $HBoxContainer/ValueLabel
-@onready var incbtn = $HBoxContainer/VBoxContainer/IncButton
-@onready var decbtn = $HBoxContainer/VBoxContainer/DecButton
+@onready var vallabel = $ValueLabel
+@onready var incbtn = $VBoxContainer/IncButton
+@onready var decbtn = $VBoxContainer/DecButton
 
 signal value_changed(idx:int) # emit button up
+signal value_changing(idx:int) # emit value changed
 signal over_limit_low_reached(idx:int) # emit when try dec on low limit value
 signal over_limit_high_reached(idx:int) # emit when try inc on high limit value
 
@@ -24,11 +25,13 @@ var formater :Callable = default_formater
 func default_formater(v:int)->String:
 	return "%d" % v
 
-func init(idx:int, fsize :int, fmt :Callable=default_formater)->void:
+func init(idx:int,lbtxt:String, fsize :int, fmt :Callable=default_formater)->void:
 	index = idx
-	$HBoxContainer/ValueLabel.theme.default_font_size = fsize
-	$HBoxContainer/VBoxContainer/IncButton.theme.default_font_size = fsize*0.9/2
-	$HBoxContainer/VBoxContainer/DecButton.theme.default_font_size = fsize*0.9/2
+	$Label.text = lbtxt
+	$Label.theme.default_font_size = fsize
+	$ValueLabel.theme.default_font_size = fsize
+	$VBoxContainer/IncButton.theme.default_font_size = fsize*0.9/2
+	$VBoxContainer/DecButton.theme.default_font_size = fsize*0.9/2
 	set_formater(fmt)
 
 func set_limits(llow :int, uselow :bool, val :int, lhigh :int, usehigh :bool)->void:
@@ -67,7 +70,7 @@ func inc(v :int)->void:
 			current_value = limit_high
 			over_limit_high_reached.emit(index)
 	if current_value != oldval:
-		value_changed.emit(index)
+		value_changing.emit(index)
 		update_label()
 
 func dec(v :int)->void:
@@ -78,7 +81,7 @@ func dec(v :int)->void:
 			current_value = limit_low
 			over_limit_low_reached.emit(index)
 	if current_value != oldval:
-		value_changed.emit(index)
+		value_changing.emit(index)
 		update_label()
 
 const click_inc_sec = 1
@@ -92,6 +95,7 @@ func _on_dec_button_button_up() -> void:
 		dec(click_inc_sec)
 	repeat_inc_sec = 0
 	$Timer.stop()
+	value_changed.emit(index)
 
 func _on_inc_button_button_down() -> void:
 	repeat_inc_sec = 1
@@ -101,6 +105,7 @@ func _on_inc_button_button_up() -> void:
 		inc(click_inc_sec)
 	repeat_inc_sec = 0
 	$Timer.stop()
+	value_changed.emit(index)
 
 func _on_timer_timeout() -> void:
 	if repeat_inc_sec < 0 :

@@ -15,9 +15,9 @@ func init()->void:
 	$MenuButton.get_popup().index_pressed.connect(_on_menu_index_pressed)
 	$TimeRecorder.init(0, fsize, TickLib.tick2str)
 	$TimeRecorder.overrun.connect(_on_timerecorder_overrun)
-	$IntEdit.init(0,fsize, TickLib.tick2str)
+	$IntEdit.init(0,"",fsize, TickLib.tick2stri)
 	$IntEdit.set_limits(0,true,0,99,false)
-	$IntEdit.value_changed.connect(_on_edit_value_changed)
+	$IntEdit.value_changing.connect(_on_edit_value_changed)
 	$ToggleButton.theme.default_font_size = fsize
 	mode_countdowntimer()
 

@@ -26,8 +26,8 @@ func _ready() -> void:
 	$TimedMessage.init(100, msgrect, tr("인터벌 타이머 9.3.0"))
 	WorkListMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
 	CmdMenuButton.get_popup().theme = preload("res://menulist_theme.tres")
-	WorkListMenuButton.get_popup().index_pressed.connect(work_list_menu_index_pressed)
-	CmdMenuButton.get_popup().index_pressed.connect(cmd_menu_index_pressed)
+	WorkListMenuButton.get_popup().index_pressed.connect(_on_work_list_menu_index_pressed)
+	CmdMenuButton.get_popup().index_pressed.connect(_on_cmd_menu_index_pressed)
 	reset_work_list()
 	work_list2work_list_menu()
 	MasterWorkNode.init()
@@ -156,11 +156,11 @@ func work_list2work_list_menu()->void:
 		WorkListMenuButton.get_popup().add_item(work_list.get_at(i).to_str(),i)
 	clear_subwork_node_list()
 
-func work_list_menu_index_pressed(sel :int)->void:
+func _on_work_list_menu_index_pressed(sel :int)->void:
 	work_index = sel
 	select_work(sel)
 
-func cmd_menu_index_pressed(sel :int)->void:
+func _on_cmd_menu_index_pressed(sel :int)->void:
 	match sel :
 		0: # 워크목록읽어오기
 			load_work_list()
