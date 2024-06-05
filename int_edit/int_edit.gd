@@ -28,10 +28,8 @@ func default_formater(v:int)->String:
 func init(idx:int,lbtxt:String, fsize :int, fmt :Callable=default_formater)->void:
 	index = idx
 	$Label.text = lbtxt
-	$Label.theme.default_font_size = fsize
-	$ValueLabel.theme.default_font_size = fsize
-	$VBoxContainer/IncButton.theme.default_font_size = fsize*0.9/2
-	$VBoxContainer/DecButton.theme.default_font_size = fsize*0.9/2
+	theme.default_font_size = fsize
+	$VBoxContainer.theme.default_font_size = fsize*0.9/2
 	set_formater(fmt)
 
 func set_limits(llow :int, uselow :bool, val :int, lhigh :int, usehigh :bool)->void:

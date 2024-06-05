@@ -6,3 +6,4 @@
 *.pck
 *.mo
 *.tmp
+.vscode
