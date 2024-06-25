@@ -25,19 +25,21 @@ var formater :Callable = default_formater
 func default_formater(v:int)->String:
 	return "%d" % v
 
-func init(idx:int,lbtxt:String, fsize :int, fmt :Callable=default_formater)->void:
+func init(idx:int,lbtxt:String, fsize :int, fmt :Callable=default_formater)->IntEdit:
 	index = idx
 	$Label.text = lbtxt
 	theme.default_font_size = fsize
 	$VBoxContainer.theme.default_font_size = fsize*0.9/2
 	set_formater(fmt)
+	return self
 
-func set_limits(llow :int, uselow :bool, val :int, lhigh :int, usehigh :bool)->void:
+func set_limits(llow :int, uselow :bool, val :int, lhigh :int, usehigh :bool)->IntEdit:
 	limit_low = llow
 	use_limit_low = uselow
 	limit_high = lhigh
 	use_limit_high = usehigh
 	set_init_value(val)
+	return self
 
 func set_formater(fmt :Callable)->void:
 	formater = fmt
