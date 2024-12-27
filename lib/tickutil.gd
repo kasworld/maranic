@@ -29,4 +29,3 @@ static func tickdict2stri(td :Dictionary)->String:
 
 static func tick2stri(tick :float)->String:
 	return TickLib.tickdict2stri(TickLib.tick2dict(tick))
-

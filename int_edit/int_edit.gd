@@ -13,12 +13,12 @@ signal value_changing(idx:int) # emit value changed
 signal over_limit_low_reached(idx:int) # emit when try dec on low limit value
 signal over_limit_high_reached(idx:int) # emit when try inc on high limit value
 
-var index :int
-var limit_high :int
-var use_limit_high :bool
-var init_value :int
-var limit_low :int
-var use_limit_low :bool
+@export var index :int = 0
+@export var limit_low :int = 0
+@export var use_limit_low :bool = false
+@export var init_value :int = 10
+@export var limit_high :int = 100
+@export var use_limit_high :bool = false
 var current_value :int
 
 var formater :Callable = default_formater
@@ -31,6 +31,7 @@ func init(idx:int,lbtxt:String, fsize :int, fmt :Callable=default_formater)->Int
 	theme.default_font_size = fsize
 	$VBoxContainer.theme.default_font_size = fsize*0.9/2
 	set_formater(fmt)
+	set_init_value(init_value)
 	return self
 
 func set_limits(llow :int, uselow :bool, val :int, lhigh :int, usehigh :bool)->IntEdit:

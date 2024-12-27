@@ -37,7 +37,6 @@ theme = ExtResource("3_sxpny")
 text = "목록메뉴"
 item_count = 5
 popup/item_0/text = "목록읽어오기"
-popup/item_0/id = 0
 popup/item_1/text = "목록저장하기"
 popup/item_1/id = 1
 popup/item_2/text = "목록초기화하기"

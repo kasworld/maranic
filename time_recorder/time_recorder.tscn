@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://time_recorder/time_recorder.gd" id="1_gtvcd"]
 
 [sub_resource type="SystemFont" id="SystemFont_s237w"]
+subpixel_positioning = 0
 
 [sub_resource type="Theme" id="Theme_lwwqo"]
 default_font = SubResource("SystemFont_s237w")
